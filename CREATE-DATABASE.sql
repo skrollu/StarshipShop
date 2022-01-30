@@ -40,10 +40,8 @@ CREATE TABLE weapon (
 );
 
 CREATE TABLE rel_starship_weapon (
-	id_rel_starship_weapon INT NOT NULL AUTO_INCREMENT,
     id_starship INT NOT NULL,
     id_weapon INT NOT NULL,
-    CONSTRAINT PK_Rel_Starship_Weapon PRIMARY KEY (id_rel_starship_weapon),
     CONSTRAINT FK_Starship FOREIGN KEY (id_starship) REFERENCES starship(id_starship),
     CONSTRAINT FK_Weapon FOREIGN KEY (id_weapon) REFERENCES weapon(id_weapon)
 );

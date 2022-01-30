@@ -1,4 +1,4 @@
-package com.example.starShipShop.jpa;
+package com.example.starshipShop.jpa;
 
 import java.util.List;
 
