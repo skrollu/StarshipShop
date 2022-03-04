@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,22 @@ public class StarshipController {
 	@Autowired
 	private StarshipRepository starshipRepository;
 
-	@GetMapping()
-	public List<Starship> getAllEmployees() {
-		return starshipRepository.findAll();
+	public StarshipController(StarshipRepository starshipRepository) {
+		super();
+		this.starshipRepository = starshipRepository;
+	}
+
+	@GetMapping
+	public List<Starship> getStarships() {
+		List<Starship> result = starshipRepository.findAll();
+		System.out.println("result: " + result);
+		return result;
+	}
+
+	@GetMapping("/{id}")
+	public Starship getStarshipById(@PathVariable Long id) {
+		Starship result = starshipRepository.findById(id)
+											.get();
+		return result;
 	}
 }
