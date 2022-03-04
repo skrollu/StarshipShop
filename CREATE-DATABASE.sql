@@ -1,3 +1,11 @@
+CREATE TABLE student (
+    id_test2 INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    id_test INT NOT NULL,
+	CONSTRAINT PK_Test2 PRIMARY KEY (id_test2),
+	CONSTRAINT FK_Test FOREIGN KEY (id_test) REFERENCES test(id_test)
+);
+
 CREATE TABLE manufacturer (
     id_manufacturer INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -34,6 +42,7 @@ CREATE TABLE starship
 CREATE TABLE weapon (
     id_weapon INT NOT NULL AUTO_INCREMENT,
     reference VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
     id_manufacturer INT, 
     CONSTRAINT PK_Weapon PRIMARY KEY (id_weapon),
     CONSTRAINT FK_Manufacturer FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
