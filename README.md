@@ -1,6 +1,7 @@
 # Starship shop S3
 
-On souhaite créer un projet e-commerce de vaisseau Star wars en ligne. En utilisant les technologies react(type script)/SpringBoot.
+On souhaite créer un projet e-commerce de vaisseau Star wars en ligne.
+En utilisant les technologies react(type script)/SpringBoot.
 
 ### Feature 0
 
@@ -19,14 +20,24 @@ Imaginer un modèle relationnel et créer les entités JPA corespondantes.
 
 ### Feature 2
 
-Inclure un système d'open API et d'hyper media driven
-Tester
+-   Inclure un système d'open API et d'hyper media driven
+-   Tester
 
 ### Feature 3
 
-Sécurisé l'api avec JWT.
-Tester
+-   Sécurisé l'api avec JWT.
+-   Tester
 
 ### Feature 4
 
-Créer une interface simple afin de d'utiliser les différents endpoints
+-   Trouver une solution pour intégrer des images pour les starships
+-   améliorer les modèle (engines, name, short name, etc...)
+
+### Feature 5
+
+-   Créer une interface simple afin de d'utiliser les différents endpoints
+
+### Feature 6
+
+-   Protéger les endpoints en intégrant Spring Security
+-   Utiliser la nouvelle api protégée sur l'interface
