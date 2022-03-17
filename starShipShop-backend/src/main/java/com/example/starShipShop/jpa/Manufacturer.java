@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "manufacturer")
@@ -26,15 +26,15 @@ public class Manufacturer {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private Set<HyperdriveSystem> hyperdriveSystems;
 
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private Set<Starship> starships;
 
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private Set<Weapon> weapons;
 

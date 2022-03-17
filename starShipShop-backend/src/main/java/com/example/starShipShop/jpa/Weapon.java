@@ -15,7 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "weapon")
@@ -32,11 +33,12 @@ public class Weapon {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_manufacturer", nullable = false, foreignKey = @ForeignKey(name = "FK_manufacturer_weapon"))
 	private Manufacturer manufacturer;
 
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToMany(mappedBy = "weapons", fetch = FetchType.LAZY)
 	private Set<Starship> starships;
 

@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "starship")
 public class Starship {
@@ -51,14 +53,17 @@ public class Starship {
 	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
 
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_manufacturer", foreignKey = @ForeignKey(name = "FK_manufacturer_starship"))
 	private Manufacturer manufacturer;
 
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_hyperdrive_system", foreignKey = @ForeignKey(name = "FK_hyperdriveSystem_starship"))
 	private HyperdriveSystem hyperdriveSystems;
 
+	@JsonManagedReference
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "starships_weapons", joinColumns = {
 			@JoinColumn(name = "id_starship", nullable = false, foreignKey = @ForeignKey(name = "FK_starship")) }, inverseJoinColumns = {

@@ -15,7 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "hyperdrive_system")
@@ -31,11 +32,12 @@ public class HyperdriveSystem {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_manufacturer", nullable = false, foreignKey = @ForeignKey(name = "FK_manufacturer_hyperdriveSystem"))
 	private Manufacturer manufacturer;
 
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "hyperdriveSystems", fetch = FetchType.LAZY)
 	private Set<Starship> starships;
 
