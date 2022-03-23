@@ -1,6 +1,5 @@
 package com.example.starshipShop.jpa;
 
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,6 +13,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "manufacturer")
 public class Manufacturer {
@@ -51,67 +53,4 @@ public class Manufacturer {
 		this.starships = starships;
 		this.weapons = weapons;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<HyperdriveSystem> getHyperdriveSystems() {
-		return hyperdriveSystems;
-	}
-
-	public void setHyperdriveSystems(Set<HyperdriveSystem> hyperdriveSystems) {
-		this.hyperdriveSystems = hyperdriveSystems;
-	}
-
-	public Set<Starship> getStarships() {
-		return starships;
-	}
-
-	public void setStarships(Set<Starship> starships) {
-		this.starships = starships;
-	}
-
-	public Set<Weapon> getWeapons() {
-		return weapons;
-	}
-
-	public void setWeapons(Set<Weapon> weapons) {
-		this.weapons = weapons;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, name);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Manufacturer other = (Manufacturer) obj;
-		return id == other.id && Objects.equals(name, other.name);
-	}
-
-	@Override
-	public String toString() {
-		return "Manufacturer [id=" + id + ", name=" + name + "]";
-	}
-
 }
