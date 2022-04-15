@@ -1,19 +1,12 @@
-CREATE TABLE student (
-    id_test2 INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    id_test INT NOT NULL,
-	CONSTRAINT PK_Test2 PRIMARY KEY (id_test2),
-	CONSTRAINT FK_Test FOREIGN KEY (id_test) REFERENCES test(id_test)
-);
 
 CREATE TABLE manufacturer (
-    id_manufacturer INT NOT NULL AUTO_INCREMENT,
+    id_manufacturer BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
 	CONSTRAINT PK_Manufacturer PRIMARY KEY (id_manufacturer)
 );
 
 CREATE TABLE hyperdrive_system (
-	id_hyperdrive_system INT NOT NULL AUTO_INCREMENT,
+	id_hyperdrive_system BIGINT NOT NULL AUTO_INCREMENT,
     reference VARCHAR(255) NOT NULL UNIQUE,
 	name VARCHAR(100) NOT NULL,
 	id_manufacturer INT, 
@@ -23,7 +16,7 @@ CREATE TABLE hyperdrive_system (
 
 CREATE TABLE starship 
 (
-    id_starship INT NOT NULL AUTO_INCREMENT,
+    id_starship BIGINT NOT NULL AUTO_INCREMENT,
     reference VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     engines VARCHAR(255) NOT NULL,
@@ -40,7 +33,7 @@ CREATE TABLE starship
 );
 
 CREATE TABLE weapon (
-    id_weapon INT NOT NULL AUTO_INCREMENT,
+    id_weapon BIGINT NOT NULL AUTO_INCREMENT,
     reference VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     id_manufacturer INT, 
@@ -49,8 +42,8 @@ CREATE TABLE weapon (
 );
 
 CREATE TABLE rel_starship_weapon (
-    id_starship INT NOT NULL,
-    id_weapon INT NOT NULL,
+    id_starship BIGINT NOT NULL,
+    id_weapon BIGINT NOT NULL,
     CONSTRAINT FK_Starship FOREIGN KEY (id_starship) REFERENCES starship(id_starship),
     CONSTRAINT FK_Weapon FOREIGN KEY (id_weapon) REFERENCES weapon(id_weapon)
 );

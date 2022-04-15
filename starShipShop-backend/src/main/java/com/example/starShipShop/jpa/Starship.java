@@ -26,7 +26,7 @@ public class Starship {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_starship", updatable = false)
+	@Column(name = "id_starship", updatable = false, columnDefinition = "BIGINT")
 	private Long id;
 
 	@Column(name = "reference", nullable = false)

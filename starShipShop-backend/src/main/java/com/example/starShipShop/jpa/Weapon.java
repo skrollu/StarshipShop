@@ -24,7 +24,7 @@ public class Weapon {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_weapon", updatable = false)
+	@Column(name = "id_weapon", updatable = false, columnDefinition = "BIGINT")
 	private Long id;
 
 	@Column(name = "reference", nullable = false)

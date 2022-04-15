@@ -22,7 +22,7 @@ public class Manufacturer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_manufacturer", updatable = false)
+	@Column(name = "id_manufacturer", updatable = false, columnDefinition = "BIGINT")
 	private Long id;
 
 	@Column(name = "name", nullable = false)
@@ -42,6 +42,7 @@ public class Manufacturer {
 
 	public Manufacturer() {
 		super();
+
 	}
 
 	public Manufacturer(Long id, String name, Set<HyperdriveSystem> hyperdriveSystems, Set<Starship> starships,

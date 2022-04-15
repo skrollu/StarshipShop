@@ -9,30 +9,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipShop.jpa.Starship;
-import com.example.starshipShop.repository.StarshipRepository;
+import com.example.starshipShop.service.StarshipService;
 
 @RestController
 @RequestMapping("/api/v1/starships")
 public class StarshipController {
 
 	@Autowired
-	private StarshipRepository starshipRepository;
+	private StarshipService starshipService;
 
-	public StarshipController(StarshipRepository starshipRepository) {
+	public StarshipController(StarshipService starshipService) {
 		super();
-		this.starshipRepository = starshipRepository;
+		this.starshipService = starshipService;
 	}
 
 	@GetMapping
 	public List<Starship> getStarships() {
-		List<Starship> result = starshipRepository.findAll();
-		System.out.println("result: " + result);
+		List<Starship> result = starshipService.getStarships();
 		return result;
 	}
 
 	@GetMapping("/{id}")
 	public Starship getStarshipById(@PathVariable Long id) {
-		Starship result = starshipRepository.findById(id)
+		Starship result = starshipService.getStarship(id)
 											.get();
 		return result;
 	}

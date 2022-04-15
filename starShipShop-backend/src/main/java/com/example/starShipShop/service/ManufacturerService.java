@@ -31,7 +31,7 @@ public class ManufacturerService {
 		manufacturerRepository.deleteById(id);
 	}
 
-	public Manufacturer Manufacturer(Manufacturer manufacturer) {
+	public Manufacturer saveManufacturer(Manufacturer manufacturer) {
 		Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
 		return savedManufacturer;
 	}

@@ -9,30 +9,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipShop.jpa.Weapon;
-import com.example.starshipShop.repository.WeaponRepository;
+import com.example.starshipShop.service.WeaponService;
 
 @RestController
 @RequestMapping("/api/v1/weapons")
 public class WeaponController {
 
 	@Autowired
-	private WeaponRepository weaponRepository;
+	private WeaponService weaponService;
 
-	public WeaponController(WeaponRepository weaponRepository) {
+	public WeaponController(WeaponService weaponService) {
 		super();
-		this.weaponRepository = weaponRepository;
+		this.weaponService = weaponService;
 	}
 
 	@GetMapping
 	public List<Weapon> getWeapons() {
-		List<Weapon> result = weaponRepository.findAll();
+		List<Weapon> result = weaponService.getWeapons();
 		System.out.println("result: " + result);
 		return result;
 	}
 
 	@GetMapping("/{id}")
 	public Weapon getWeaponById(@PathVariable Long id) {
-		Weapon result = weaponRepository.findById(id)
+		Weapon result = weaponService.getWeapon(id)
 										.get();
 		return result;
 	}
