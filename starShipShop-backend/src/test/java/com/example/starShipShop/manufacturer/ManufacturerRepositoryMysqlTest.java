@@ -43,9 +43,9 @@ public class ManufacturerRepositoryMysqlTest {
 	}
 
 	@Test
-	void shouldHaveExpectedManufacturerInDb() throws Exception {
+	void shouldGetManufacturerByNameFromDb() throws Exception {
 		List<Manufacturer> manufacturers = manufacturerRepository.findAll();
-		final String expected = "Kuat System Engineering";
+		final String expected = "Koensayr Manufacturing";
 		Manufacturer manufacturer = manufacturers	.stream()
 													.filter(m -> m	.getName()
 																	.equals(expected))
