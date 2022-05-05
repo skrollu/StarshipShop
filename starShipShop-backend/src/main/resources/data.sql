@@ -1,6 +1,7 @@
 insert into manufacturer (name) values 
 ('Koensayr Manufacturing'),
-('Kuat System Engineering')
+('Kuat System Engineering'),
+('Corellian Engineering Corporation')
 ;
 
 insert into hyperdrive_system (reference, name, id_manufacturer) values 

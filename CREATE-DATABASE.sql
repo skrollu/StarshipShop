@@ -11,7 +11,7 @@ CREATE TABLE hyperdrive_system (
 	name VARCHAR(100) NOT NULL,
 	id_manufacturer INT, 
 	CONSTRAINT PK_Hyperdrive_System PRIMARY KEY (id_hyperdrive_system),
-	CONSTRAINT FK_Manufacturer FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
+	CONSTRAINT FK_manufacturer_hyperdriveSystem FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
 );
 
 CREATE TABLE starship 
@@ -28,8 +28,8 @@ CREATE TABLE starship
     id_hyperdrive_system INT, 
     id_manufacturer INT, 
     CONSTRAINT PK_Starship PRIMARY KEY (id_starship),
-    CONSTRAINT FK_Hyperdrive_System FOREIGN KEY (id_hyperdrive_system) REFERENCES hyperdrive_system(id_hyperdrive_system),
-    CONSTRAINT FK_Manufacturer FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
+    CONSTRAINT FK_hyperdriveSystem_starship FOREIGN KEY (id_hyperdrive_system) REFERENCES hyperdrive_system(id_hyperdrive_system),
+    CONSTRAINT FK_manufacturer_starship FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
 );
 
 CREATE TABLE weapon (
@@ -38,7 +38,7 @@ CREATE TABLE weapon (
     name VARCHAR(255) NOT NULL,
     id_manufacturer INT, 
     CONSTRAINT PK_Weapon PRIMARY KEY (id_weapon),
-    CONSTRAINT FK_Manufacturer FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
+    CONSTRAINT FK_manufacturer_weapon FOREIGN KEY (id_manufacturer) REFERENCES manufacturer(id_manufacturer)
 );
 
 CREATE TABLE rel_starship_weapon (
@@ -47,3 +47,5 @@ CREATE TABLE rel_starship_weapon (
     CONSTRAINT FK_Starship FOREIGN KEY (id_starship) REFERENCES starship(id_starship),
     CONSTRAINT FK_Weapon FOREIGN KEY (id_weapon) REFERENCES weapon(id_weapon)
 );
+
+
