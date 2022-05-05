@@ -31,7 +31,14 @@ public class ManufacturerController {
 
 	@GetMapping("/{id}")
 	public Manufacturer getManufacturerById(@PathVariable Long id) {
-		Manufacturer result = manufacturerService	.getManufacturer(id)
+		Manufacturer result = manufacturerService	.getManufacturerById(id)
+													.get();
+		return result;
+	}
+
+	@GetMapping("/name/{name}")
+	public Manufacturer getManufacturerByName(@PathVariable String name) {
+		Manufacturer result = manufacturerService	.getManufacturerByName(name)
 													.get();
 		return result;
 	}

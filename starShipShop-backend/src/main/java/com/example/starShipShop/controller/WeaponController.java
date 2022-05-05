@@ -26,13 +26,12 @@ public class WeaponController {
 	@GetMapping
 	public List<Weapon> getWeapons() {
 		List<Weapon> result = weaponService.getWeapons();
-		System.out.println("result: " + result);
 		return result;
 	}
 
 	@GetMapping("/{id}")
 	public Weapon getWeaponById(@PathVariable Long id) {
-		Weapon result = weaponService.getWeapon(id)
+		Weapon result = weaponService	.getWeapon(id)
 										.get();
 		return result;
 	}

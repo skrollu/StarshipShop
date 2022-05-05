@@ -23,8 +23,12 @@ public class ManufacturerService {
 		return list;
 	}
 
-	public Optional<Manufacturer> getManufacturer(final Long id) {
+	public Optional<Manufacturer> getManufacturerById(final Long id) {
 		return manufacturerRepository.findById(id);
+	}
+
+	public Optional<Manufacturer> getManufacturerByName(final String name) {
+		return manufacturerRepository.findByName(name);
 	}
 
 	public void deleteManufacturer(final Long id) {
