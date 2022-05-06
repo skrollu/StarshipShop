@@ -6,13 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.repository.ManufacturerRepository;
+import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
 
 import lombok.Data;
-import requestDto.ManufacturerRequestDTO;
+
 import static com.example.starshipShop.mapper.ManufacturerMapper.mapToEntity;
 
 @Data

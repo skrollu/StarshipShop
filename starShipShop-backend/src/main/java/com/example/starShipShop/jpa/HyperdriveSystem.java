@@ -44,6 +44,6 @@ public class HyperdriveSystem {
 	private Manufacturer manufacturer;
 
 	@JsonBackReference
-	@OneToMany(mappedBy = "hyperdriveSystems", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "hyperdriveSystem", fetch = FetchType.LAZY)
 	private List<Starship> starships;
 }
