@@ -1,6 +1,6 @@
-package requestDto;
+package com.example.starshipShop.requestDto;
 
-import com.example.starshipShop.jpa.Manufacturer;
+import org.springframework.lang.NonNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ManufacturerRequestDTO {
 
+	@NonNull
 	private String name;
 }

@@ -6,7 +6,7 @@ insert into manufacturer (name) values
 
 insert into hyperdrive_system (reference, name, id_manufacturer) values 
 ('0000000001', 'Koensayr Class 1 R-300-H Hyperdrive', 1),
-('0000000002', '"Icom GBK-785 hyperdrive unit', 2)
+('0000000002', 'Icom GBK-785 hyperdrive unit', 2)
 ;
 
 insert into starship (reference, name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
