@@ -61,13 +61,13 @@ public class Starship {
 
 	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_manufacturer", foreignKey = @ForeignKey(name = "FK_manufacturer_starship"))
+	@JoinColumn(name = "id_manufacturer", nullable = false, foreignKey = @ForeignKey(name = "FK_manufacturer_starship"))
 	private Manufacturer manufacturer;
 
 	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_hyperdrive_system", foreignKey = @ForeignKey(name = "FK_hyperdriveSystem_starship"))
-	private HyperdriveSystem hyperdriveSystems;
+	@JoinColumn(name = "id_hyperdrive_system", nullable = true, foreignKey = @ForeignKey(name = "FK_hyperdriveSystem_starship"))
+	private HyperdriveSystem hyperdriveSystem;
 
 	@JsonManagedReference
 	@ManyToMany(fetch = FetchType.EAGER)
