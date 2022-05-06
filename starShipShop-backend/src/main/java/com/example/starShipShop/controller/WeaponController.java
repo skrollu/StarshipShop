@@ -31,7 +31,7 @@ public class WeaponController {
 
 	@GetMapping("/{id}")
 	public Weapon getWeaponById(@PathVariable Long id) {
-		Weapon result = weaponService	.getWeapon(id)
+		Weapon result = weaponService	.getWeaponById(id)
 										.get();
 		return result;
 	}

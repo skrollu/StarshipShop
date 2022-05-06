@@ -23,8 +23,12 @@ public class WeaponService {
 		return list;
 	}
 
-	public Optional<Weapon> getWeapon(final Long id) {
+	public Optional<Weapon> getWeaponById(final Long id) {
 		return weaponRepository.findById(id);
+	}
+
+	public Optional<Weapon> getWeaponByName(final String name) {
+		return weaponRepository.findByName(name);
 	}
 
 	public void deleteWeapon(final Long id) {
