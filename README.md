@@ -16,6 +16,7 @@ Imaginer un modèle relationnel et créer les entités JPA corespondantes.
     PUT api/v1/starships/{:id}
     DELETE api/v1/starships/{:id}
 
+-   Adapter l'API avec l'utilisation de référence plutôt que des noms
 -   Tester les endpoints.
 
 ### Feature 2

@@ -1,13 +1,17 @@
 package com.example.starshipShop.service;
 
+import static com.example.starshipShop.mapper.WeaponMapper.mapToEntity;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.Weapon;
 import com.example.starshipShop.repository.WeaponRepository;
+import com.example.starshipShop.requestDto.WeaponRequestDTO;
 
 import lombok.Data;
 
@@ -31,12 +35,30 @@ public class WeaponService {
 		return weaponRepository.findByName(name);
 	}
 
-	public void deleteWeapon(final Long id) {
-		weaponRepository.deleteById(id);
-	}
-
 	public Weapon saveWeapon(Weapon weapon) {
 		Weapon savedWeapon = weaponRepository.save(weapon);
 		return savedWeapon;
+	}
+
+	public Weapon saveWeapon(final WeaponRequestDTO weaponRequestDTO) {
+		Weapon weapon = mapToEntity(weaponRequestDTO);
+		Weapon savedWeapon = weaponRepository.save(weapon);
+		return savedWeapon;
+	}
+
+	public Weapon updateWeapon(final Long id, WeaponRequestDTO weaponRequestDTO) {
+		Weapon weaponToUpdate = this.getWeaponById(id)
+									.orElseThrow(() -> new ResourceNotFoundException(
+											"Weapon doesn't exist with this id " + id));
+		weaponToUpdate = mapToEntity(weaponRequestDTO, weaponToUpdate);
+		Weapon result = this.saveWeapon(weaponToUpdate);
+		return result;
+	}
+
+	public void deleteWeapon(final Long id) {
+		Weapon weaponToDelete = this.getWeaponById(id)
+									.orElseThrow(() -> new ResourceNotFoundException(
+											"Weapon doesn't exist with this id " + id));
+		weaponRepository.delete(weaponToDelete);
 	}
 }
