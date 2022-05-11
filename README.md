@@ -17,6 +17,15 @@ Imaginer un modèle relationnel et créer les entités JPA corespondantes.
     DELETE api/v1/starships/{:id}
 
 -   Adapter l'API avec l'utilisation de référence plutôt que des noms
+    -   Manufacturer
+        -   Utilisation du nom avec _underscore_ pour remplacer les espaces
+    -   HyperdriveSystem
+        -   Utilisation des références plutôt que le nom pour la recherche/modification/
+        -   La création nécessite donc uniquement un nom qui
+    -   Wepon
+        -   Idem HdS
+    -   Starship
+        -   idem HdS
 -   Tester les endpoints.
 
 ### Feature 2

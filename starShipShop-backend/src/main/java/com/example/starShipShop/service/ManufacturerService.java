@@ -1,5 +1,7 @@
 package com.example.starshipShop.service;
 
+import static com.example.starshipShop.mapper.ManufacturerMapper.mapToEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +14,6 @@ import com.example.starshipShop.repository.ManufacturerRepository;
 import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
 
 import lombok.Data;
-
-import static com.example.starshipShop.mapper.ManufacturerMapper.mapToEntity;
 
 @Data
 @Service
@@ -34,11 +34,6 @@ public class ManufacturerService {
 	public Optional<Manufacturer> getManufacturerByName(final String name) {
 		return manufacturerRepository.findByName(name);
 	}
-	
-	public Manufacturer saveManufacturer(final Manufacturer manufacturer) {
-		Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
-		return savedManufacturer;
-	}
 
 	public Manufacturer saveManufacturer(final ManufacturerRequestDTO manufacturerRequestDTO) {
 		Manufacturer manufacturer = mapToEntity(manufacturerRequestDTO);
@@ -47,16 +42,18 @@ public class ManufacturerService {
 	}
 
 	public Manufacturer updateManufacturer(final Long id, ManufacturerRequestDTO manufacturerRequestDTO) {
-		Manufacturer manufacturerToUpdate = this.getManufacturerById(id) 
-				.orElseThrow(() -> new	ResourceNotFoundException("Manufacturer doesn't exist with this id " + id));
+		Manufacturer manufacturerToUpdate = this.getManufacturerById(id)
+												.orElseThrow(() -> new ResourceNotFoundException(
+														"Manufacturer doesn't exist with this id " + id));
 		manufacturerToUpdate = mapToEntity(manufacturerRequestDTO, manufacturerToUpdate);
-		Manufacturer result = this.saveManufacturer(manufacturerToUpdate); 
+		Manufacturer result = manufacturerRepository.save(manufacturerToUpdate);
 		return result;
 	}
 
 	public void deleteManufacturer(final Long id) {
 		Manufacturer manufacturerToDelete = this.getManufacturerById(id)
-			.orElseThrow(() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id " + id));
+												.orElseThrow(() -> new ResourceNotFoundException(
+														"Manufacturer doesn't exist with this id " + id));
 		manufacturerRepository.delete(manufacturerToDelete);
 	}
 }

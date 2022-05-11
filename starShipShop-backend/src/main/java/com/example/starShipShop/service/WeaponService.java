@@ -39,11 +39,6 @@ public class WeaponService {
 		return weaponRepository.findByName(name);
 	}
 
-	public Weapon saveWeapon(Weapon weapon) {
-		Weapon savedWeapon = weaponRepository.save(weapon);
-		return savedWeapon;
-	}
-
 	public Weapon saveWeapon(final WeaponRequestDTO weaponRequestDTO) {
 		// Check nullpointer of Manufacturer
 		if (weaponRequestDTO.getManufacturer() == null) {
@@ -94,7 +89,7 @@ public class WeaponService {
 																			+ weaponRequestDTO	.getManufacturer()
 																								.getName()));
 		weaponToUpdate.setManufacturer(manufacturer);
-		return this.saveWeapon(weaponToUpdate);
+		return weaponRepository.save(weaponToUpdate);
 	}
 
 	public void deleteWeapon(final Long id) {

@@ -19,7 +19,7 @@ public class ResourceNotFoundAdvice {
 	@ResponseBody
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String orderNotFoundHandler(ResourceNotFoundException ex) {
+	String resourceNotFoundHandler(ResourceNotFoundException ex) {
 		return "ADVICE: " + ex.getMessage();
 	}
 }

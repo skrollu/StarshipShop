@@ -44,11 +44,6 @@ public class StarshipService {
 		return starshipRepository.findById(id);
 	}
 
-	public Starship saveStarship(final Starship starship) {
-		Starship savedStarship = starshipRepository.save(starship);
-		return savedStarship;
-	}
-
 	public Starship saveStarship(final StarshipRequestDTO starshipRequestDTO) {
 		// Check nullpointer of Manufacturer
 		if (starshipRequestDTO.getManufacturer() == null) {
@@ -111,8 +106,7 @@ public class StarshipService {
 		starship.setManufacturer(manufacturer);
 		starship.setHyperdriveSystem(hyperdriveSystem);
 		starship.setWeapons(weapons);
-		Starship savedStarship = starshipRepository.save(starship);
-		return savedStarship;
+		return starshipRepository.save(starship);
 	}
 
 	public Starship updateStarship(final Long id, StarshipRequestDTO starshipRequestDTO) {
@@ -179,8 +173,7 @@ public class StarshipService {
 		starshipToUpdate.setManufacturer(manufacturer);
 		starshipToUpdate.setHyperdriveSystem(hyperdriveSystem);
 		starshipToUpdate.setWeapons(weapons);
-		Starship result = this.saveStarship(starshipToUpdate);
-		return result;
+		return starshipRepository.save(starshipToUpdate);
 	}
 
 	public void deleteStarship(final Long id) {
