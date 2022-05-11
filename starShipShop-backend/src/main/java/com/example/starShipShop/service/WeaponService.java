@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
+import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.jpa.Weapon;
 import com.example.starshipShop.repository.WeaponRepository;
 import com.example.starshipShop.requestDto.WeaponRequestDTO;
@@ -21,6 +22,9 @@ public class WeaponService {
 
 	@Autowired
 	private WeaponRepository weaponRepository;
+
+	@Autowired
+	private ManufacturerService manufacturerService;
 
 	public List<Weapon> getWeapons() {
 		List<Weapon> list = weaponRepository.findAll();
@@ -41,18 +45,56 @@ public class WeaponService {
 	}
 
 	public Weapon saveWeapon(final WeaponRequestDTO weaponRequestDTO) {
+		// Check nullpointer of Manufacturer
+		if (weaponRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (weaponRequestDTO.getManufacturer()
+							.getName() == null
+				|| weaponRequestDTO	.getManufacturer()
+									.getName()
+									.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
+
 		Weapon weapon = mapToEntity(weaponRequestDTO);
-		Weapon savedWeapon = weaponRepository.save(weapon);
-		return savedWeapon;
+
+		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weapon	.getManufacturer()
+																							.getName())
+															.orElseThrow(() -> new ResourceNotFoundException(
+																	"The given Manufacturer doesn't exist with this name: "
+																			+ weapon.getManufacturer()
+																					.getName()));
+		weapon.setManufacturer(manufacturer);
+		return weaponRepository.save(weapon);
 	}
 
 	public Weapon updateWeapon(final Long id, WeaponRequestDTO weaponRequestDTO) {
-		Weapon weaponToUpdate = this.getWeaponById(id)
+		// Check nullpointer of Manufacturer
+		if (weaponRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (weaponRequestDTO.getManufacturer()
+							.getName() == null
+				|| weaponRequestDTO	.getManufacturer()
+									.getName()
+									.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
+
+		Weapon weaponFromDb = this	.getWeaponById(id)
 									.orElseThrow(() -> new ResourceNotFoundException(
 											"Weapon doesn't exist with this id " + id));
-		weaponToUpdate = mapToEntity(weaponRequestDTO, weaponToUpdate);
-		Weapon result = this.saveWeapon(weaponToUpdate);
-		return result;
+		Weapon weaponToUpdate = mapToEntity(weaponRequestDTO, weaponFromDb);
+
+		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weaponRequestDTO	.getManufacturer()
+																									.getName())
+															.orElseThrow(() -> new ResourceNotFoundException(
+																	"The given Manufacturer doesn't exist with this name: "
+																			+ weaponRequestDTO	.getManufacturer()
+																								.getName()));
+		weaponToUpdate.setManufacturer(manufacturer);
+		return this.saveWeapon(weaponToUpdate);
 	}
 
 	public void deleteWeapon(final Long id) {

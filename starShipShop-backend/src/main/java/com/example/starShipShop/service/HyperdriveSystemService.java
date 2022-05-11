@@ -45,6 +45,17 @@ public class HyperdriveSystemService {
 	}
 
 	public HyperdriveSystem saveHyperdriveSystem(final HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
+		// Check nullpointer of Manufacturer
+		if (hyperdriveSystemRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (hyperdriveSystemRequestDTO	.getManufacturer()
+										.getName() == null
+				|| hyperdriveSystemRequestDTO	.getManufacturer()
+												.getName()
+												.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
 		HyperdriveSystem hyperdriveSystem = mapToEntity(hyperdriveSystemRequestDTO);
 		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(hyperdriveSystem	.getManufacturer()
 																									.getName())
@@ -58,6 +69,17 @@ public class HyperdriveSystemService {
 
 	public HyperdriveSystem updateHyperdriveSystem(final Long id,
 			HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
+		// Check nullpointer of Manufacturer
+		if (hyperdriveSystemRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (hyperdriveSystemRequestDTO	.getManufacturer()
+										.getName() == null
+				|| hyperdriveSystemRequestDTO	.getManufacturer()
+												.getName()
+												.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
 		HyperdriveSystem hyperdriveSystemFromDb = this	.getHyperdriveSystemById(id)
 														.orElseThrow(() -> new ResourceNotFoundException(
 																"HyperdriveSystem doesn't exist with this id " + id));

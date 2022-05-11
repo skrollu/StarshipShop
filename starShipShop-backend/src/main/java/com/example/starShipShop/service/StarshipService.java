@@ -16,7 +16,6 @@ import com.example.starshipShop.jpa.Starship;
 import com.example.starshipShop.jpa.Weapon;
 import com.example.starshipShop.repository.StarshipRepository;
 import com.example.starshipShop.requestDto.StarshipRequestDTO;
-import com.example.starshipShop.requestDto.WeaponRequestDTO;
 
 import lombok.Data;
 
@@ -51,39 +50,54 @@ public class StarshipService {
 	}
 
 	public Starship saveStarship(final StarshipRequestDTO starshipRequestDTO) {
+		// Check nullpointer of Manufacturer
+		if (starshipRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (starshipRequestDTO	.getManufacturer()
+								.getName() == null
+				|| starshipRequestDTO	.getManufacturer()
+										.getName()
+										.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
+		// Check nullpointer of HyperdriveSystem
+		if (starshipRequestDTO.getHyperdriveSystem() == null) {
+			throw new NullPointerException("The given HyperdriveSystem is null");
+		}
+		if (starshipRequestDTO	.getHyperdriveSystem()
+								.getName() == null
+				|| starshipRequestDTO	.getHyperdriveSystem()
+										.getName()
+										.isEmpty()) {
+			throw new NullPointerException("The given HyperdriveSystem name is null or empty");
+		}
+
 		// Map the DTO into a Starship JPA Entity
 		Starship starship = mapToEntity(starshipRequestDTO);
-		if (starship == null) {
-			// TODO throw error
-		}
-		// If the Manufacturer is present, then it by name and set it to starship
-		if (starship.getManufacturer() != null && starship	.getManufacturer()
-															.getName() != null) {
-			Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starship	.getManufacturer()
-																								.getName())
-																.orElseThrow(() -> new ResourceNotFoundException(
-																		"The given Manufacturer doesn't exist with this name: "
-																				+ starship	.getManufacturer()
-																							.getName()));
-			starship.setManufacturer(manufacturer);
-		}
-		// If the HyperdriveSystem is present, then it by name and set it to starship
-		if (starship.getHyperdriveSystem() != null && starship	.getHyperdriveSystem()
-																.getName() != null) {
-			HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
-					starship.getHyperdriveSystem()
-							.getName())
-																			.orElseThrow(
-																					() -> new ResourceNotFoundException(
-																							"The given HyperdriveSystem doesn't exist with this name: "
-																									+ starship	.getHyperdriveSystem()
-																												.getName()));
-			starship.setHyperdriveSystem(hyperdriveSystem);
-		}
-		// If the Weapon are present, then it by name and set them to starship
-		if (starship.getWeapons() != null && !starship	.getWeapons()
-														.isEmpty()) {
-			List<Weapon> weapons = new ArrayList<Weapon>();
+
+		// Search for the manufacturer by name and set it to starship
+		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starship	.getManufacturer()
+																							.getName())
+															.orElseThrow(() -> new ResourceNotFoundException(
+																	"The given Manufacturer doesn't exist with this name: "
+																			+ starship	.getManufacturer()
+																						.getName()));
+
+		// Search for the HyperdriveSystem by name and set it to starship
+		HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
+				starship.getHyperdriveSystem()
+						.getName())
+																		.orElseThrow(
+																				() -> new ResourceNotFoundException(
+																						"The given HyperdriveSystem doesn't exist with this name: "
+																								+ starship	.getHyperdriveSystem()
+																											.getName()));
+
+		// Search for the Weapon by name and set it to starship
+		List<Weapon> weapons = new ArrayList<Weapon>();
+		if (starshipRequestDTO.getWeapons() != null && !starshipRequestDTO	.getWeapons()
+																			.isEmpty()) {
 			for (Weapon w : starship.getWeapons()) {
 				if (w.getName() != null && !w	.getName()
 												.isEmpty()) {
@@ -93,47 +107,66 @@ public class StarshipService {
 																	+ w.getName())));
 				}
 			}
-			starship.setWeapons(weapons);
 		}
+		starship.setManufacturer(manufacturer);
+		starship.setHyperdriveSystem(hyperdriveSystem);
+		starship.setWeapons(weapons);
 		Starship savedStarship = starshipRepository.save(starship);
 		return savedStarship;
 	}
 
 	public Starship updateStarship(final Long id, StarshipRequestDTO starshipRequestDTO) {
+		// Check nullpointer of Manufacturer
+		if (starshipRequestDTO.getManufacturer() == null) {
+			throw new NullPointerException("The given Manufacturer is null");
+		}
+		if (starshipRequestDTO	.getManufacturer()
+								.getName() == null
+				|| starshipRequestDTO	.getManufacturer()
+										.getName()
+										.isEmpty()) {
+			throw new NullPointerException("The given Manufacturer's name is null or empty");
+		}
+		// Check nullpointer of HyperdriveSystem
+		if (starshipRequestDTO.getHyperdriveSystem() == null) {
+			throw new NullPointerException("The given HyperdriveSystem is null");
+		}
+		if (starshipRequestDTO	.getHyperdriveSystem()
+								.getName() == null
+				|| starshipRequestDTO	.getHyperdriveSystem()
+										.getName()
+										.isEmpty()) {
+			throw new NullPointerException("The given HyperdriveSystem name is null or empty");
+		}
+
 		Starship starshipFromDb = this	.getStarshipById(id)
 										.orElseThrow(() -> new ResourceNotFoundException(
 												"Starship doesn't exist with this id " + id));
 		Starship starshipToUpdate = mapToEntity(starshipRequestDTO, starshipFromDb);
-		if (starshipToUpdate == null) {
-			// TODO throw error
-		}
-		if (starshipToUpdate.getManufacturer() != null && starshipToUpdate	.getManufacturer()
-																			.getName() != null) {
-			Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(
-					starshipToUpdate.getManufacturer()
-									.getName())
-																.orElseThrow(() -> new ResourceNotFoundException(
-																		"The given Manufacturer doesn't exist with this name: "
-																				+ starshipToUpdate	.getManufacturer()
-																									.getName()));
-			starshipToUpdate.setManufacturer(manufacturer);
-		}
-		if (starshipToUpdate.getHyperdriveSystem() != null && starshipToUpdate	.getHyperdriveSystem()
-																				.getName() != null) {
-			HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
-					starshipToUpdate.getHyperdriveSystem()
-									.getName())
-																			.orElseThrow(
-																					() -> new ResourceNotFoundException(
-																							"The given HyperdriveSystem doesn't exist with this name: "
-																									+ starshipToUpdate	.getHyperdriveSystem()
-																														.getName()));
-			starshipToUpdate.setHyperdriveSystem(hyperdriveSystem);
-		}
-		if (starshipToUpdate.getWeapons() != null && !starshipToUpdate	.getWeapons()
-																		.isEmpty()) {
-			List<Weapon> weapons = new ArrayList<Weapon>();
-			for (WeaponRequestDTO w : starshipRequestDTO.getWeapons()) {
+
+		// Search for the manufacturer by name and set it to starship
+		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starshipToUpdate	.getManufacturer()
+																									.getName())
+															.orElseThrow(() -> new ResourceNotFoundException(
+																	"The given Manufacturer doesn't exist with this name: "
+																			+ starshipToUpdate	.getManufacturer()
+																								.getName()));
+
+		// Search for the HyperdriveSystem by name and set it to starship
+		HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
+				starshipToUpdate.getHyperdriveSystem()
+								.getName())
+																		.orElseThrow(
+																				() -> new ResourceNotFoundException(
+																						"The given HyperdriveSystem doesn't exist with this name: "
+																								+ starshipToUpdate	.getHyperdriveSystem()
+																													.getName()));
+
+		// Search for the Weapon by name and set it to starship
+		List<Weapon> weapons = new ArrayList<Weapon>();
+		if (starshipRequestDTO.getWeapons() != null && !starshipRequestDTO	.getWeapons()
+																			.isEmpty()) {
+			for (Weapon w : starshipToUpdate.getWeapons()) {
 				if (w.getName() != null && !w	.getName()
 												.isEmpty()) {
 					weapons.add(this.weaponService	.getWeaponByName(w.getName())
@@ -142,8 +175,10 @@ public class StarshipService {
 																	+ w.getName())));
 				}
 			}
-			starshipToUpdate.setWeapons(weapons);
 		}
+		starshipToUpdate.setManufacturer(manufacturer);
+		starshipToUpdate.setHyperdriveSystem(hyperdriveSystem);
+		starshipToUpdate.setWeapons(weapons);
 		Starship result = this.saveStarship(starshipToUpdate);
 		return result;
 	}
