@@ -153,6 +153,41 @@ public class ManufacturerIntegrationTest {
 	}
 
 	@Test
+	public void updateManufacturerWithEmptyNameThrowIllegalArgumentException() throws Exception {
+		final String name = "";
+
+		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
+		requestObj.setName(name);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer()
+								.withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(requestObj);
+
+		mockMvc	.perform(put(BASE_URL + "/3")	.contentType(APPLICATION_JSON_UTF8)
+												.content(requestJson))
+				.andExpect(content().string(containsString("Name cannot be empty.")))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void updateManufacturerWithNullNameThrowIllegalArgumentException() throws Exception {
+		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer()
+								.withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(requestObj);
+
+		mockMvc	.perform(put(BASE_URL + "/3")	.contentType(APPLICATION_JSON_UTF8)
+												.content(requestJson))
+				.andExpect(content().string(containsString("Name cannot be null.")))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
 	public void updateManufacturerThrowResourceNotFoundException() throws Exception {
 		final String name = "Peugeot";
 
