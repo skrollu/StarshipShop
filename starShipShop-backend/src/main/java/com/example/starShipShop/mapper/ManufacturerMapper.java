@@ -15,9 +15,10 @@ public class ManufacturerMapper {
 		result.setName(manufacturerRequestDTO.getName());
 		return result;
 	}
-	/*
-	 * public static ManufacturerRequestDTO mapToDto(Manufacturer manufacturer) {
-	 * ManufacturerRequestDTO result = new ManufacturerRequestDTO();
-	 * result.setName(manufacturer.getName()); return result; }
-	 */
+
+	public static ManufacturerRequestDTO mapToDto(Manufacturer manufacturer) {
+		ManufacturerRequestDTO result = new ManufacturerRequestDTO();
+		result.setName(manufacturer.getName());
+		return result;
+	}
 }

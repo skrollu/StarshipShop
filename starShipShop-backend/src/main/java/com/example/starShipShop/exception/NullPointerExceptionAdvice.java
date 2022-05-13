@@ -11,7 +11,7 @@ public class NullPointerExceptionAdvice {
 
 	@ResponseBody
 	@ExceptionHandler(NullPointerException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	String nullPointerHandler(NullPointerException ex) {
 		return "ADVICE: " + ex.getMessage();
 	}
