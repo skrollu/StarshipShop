@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.Manufacturer;
@@ -36,12 +37,16 @@ public class ManufacturerService {
 	}
 
 	public Manufacturer saveManufacturer(final ManufacturerRequestDTO manufacturerRequestDTO) {
+		Assert.notNull(manufacturerRequestDTO.getName(), String.format("Name cannot be null."));
+		Assert.hasText(manufacturerRequestDTO.getName(), String.format("Name cannot be empty."));
 		Manufacturer manufacturer = mapToEntity(manufacturerRequestDTO);
 		Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
 		return savedManufacturer;
 	}
 
 	public Manufacturer updateManufacturer(final Long id, ManufacturerRequestDTO manufacturerRequestDTO) {
+		Assert.notNull(manufacturerRequestDTO.getName(), String.format("Name cannot be null."));
+		Assert.hasText(manufacturerRequestDTO.getName(), String.format("Name cannot be empty."));
 		Manufacturer manufacturerToUpdate = this.getManufacturerById(id)
 												.orElseThrow(() -> new ResourceNotFoundException(
 														"Manufacturer doesn't exist with this id " + id));
