@@ -1,10 +1,16 @@
 package com.example.starshipShop.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,32 +21,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.starshipShop.assembler.ManufacturerAssembler;
 import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
 import com.example.starshipShop.service.ManufacturerService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/manufacturers")
 public class ManufacturerController {
 
 	@Autowired
 	private ManufacturerService manufacturerService;
-
-	public ManufacturerController(ManufacturerService manufacturerService) {
-		super();
-		this.manufacturerService = manufacturerService;
-	}
+	@Autowired
+	private ManufacturerAssembler manufacturerAssembler;
 
 	@GetMapping
-	public List<Manufacturer> getManufacturers() {
-		List<Manufacturer> result = manufacturerService.getManufacturers();
-		return result;
+	public CollectionModel<EntityModel<Manufacturer>> getManufacturers() {
+		List<EntityModel<Manufacturer>> result = manufacturerService.getManufacturers()
+																	.stream()
+																	.map(manufacturerAssembler::toModelWithSelfLink) //
+																	.collect(Collectors.toList());
+		return CollectionModel.of(result,
+				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withSelfRel());
 	}
 
 	@GetMapping("/{id}")
-	public Manufacturer getManufacturerById(@PathVariable Long id) {
-		Manufacturer result = manufacturerService	.getManufacturerById(id)
-													.get();
+	public EntityModel<Manufacturer> getManufacturerById(@PathVariable Long id) {
+		Manufacturer manufacturer = manufacturerService	.getManufacturerById(id)
+														.get();
+
+		EntityModel<Manufacturer> result = this.manufacturerAssembler.toModel(manufacturer);
 		return result;
 	}
 

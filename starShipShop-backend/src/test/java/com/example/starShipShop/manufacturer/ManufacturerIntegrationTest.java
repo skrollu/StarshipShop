@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.starshipShop.repository.ManufacturerRepository;
 import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -43,15 +42,17 @@ public class ManufacturerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private ManufacturerRepository manufacturerRepository;
-
 	@Test
 	void getManufacturersWorksThroughAllLayers() throws Exception {
 		this.mockMvc.perform(get(BASE_URL))
 					.andDo(print())
 					.andExpect(status().isOk())
-					.andExpect(content().string(containsString("TestManufacturer")));
+					.andExpect(content().string(containsString("TestManufacturer")))
+					.andExpect(jsonPath("$._embedded.manufacturerList[0]").exists())
+					.andExpect(jsonPath("$._embedded.manufacturerList[0].name").value("TestManufacturer"))
+					.andExpect(jsonPath("$._embedded.manufacturerList[0]._links.self.href").exists())
+					.andExpect(jsonPath("$._embedded.manufacturerList[1]._links.self.href").value(BASE_URL + "/1"))
+					.andExpect(jsonPath("$._links.self.href").value(BASE_URL));
 	}
 
 	@Test
