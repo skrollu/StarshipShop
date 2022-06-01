@@ -42,7 +42,7 @@ public class ManufacturerController {
 	public CollectionModel<EntityModel<Manufacturer>> getManufacturers() {
 		List<EntityModel<Manufacturer>> result = manufacturerService.getManufacturers()
 																	.stream()
-																	.map(manufacturerAssembler::toModelWithSelfLink) //
+																	.map(manufacturerAssembler::toModelWithSelfLink)
 																	.collect(Collectors.toList());
 		return CollectionModel.of(result,
 				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withSelfRel());

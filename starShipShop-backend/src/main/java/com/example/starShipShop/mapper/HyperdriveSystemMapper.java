@@ -24,13 +24,13 @@ public class HyperdriveSystemMapper {
 		}
 		return result;
 	}
-	/*
-	 * public static HyperdriveSystemRequestDTO mapToDto(HyperdriveSystem
-	 * hyperdriveSystem) { HyperdriveSystemRequestDTO result = new
-	 * HyperdriveSystemRequestDTO();
-	 * result.setReference(hyperdriveSystem.getReference());
-	 * result.setName(hyperdriveSystem.getName());
-	 * result.setManufacturer(ManufacturerMapper.mapToDto(hyperdriveSystem.
-	 * getManufacturer())); return result; }
-	 */
+
+	public static HyperdriveSystemRequestDTO mapToDto(HyperdriveSystem hyperdriveSystem) {
+		HyperdriveSystemRequestDTO result = new HyperdriveSystemRequestDTO();
+		result.setReference(hyperdriveSystem.getReference());
+		result.setName(hyperdriveSystem.getName());
+		result.setManufacturer(ManufacturerMapper.mapToDto(hyperdriveSystem.getManufacturer()));
+		return result;
+	}
+
 }
