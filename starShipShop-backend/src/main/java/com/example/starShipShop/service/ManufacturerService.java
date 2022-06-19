@@ -1,64 +1,68 @@
 package com.example.starshipShop.service;
 
-import static com.example.starshipShop.mapper.ManufacturerMapper.mapToEntity;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.Manufacturer;
+import com.example.starshipShop.mapper.StarshipShopMapper;
 import com.example.starshipShop.repository.ManufacturerRepository;
-import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 @Service
 public class ManufacturerService {
 
 	@Autowired
-	private ManufacturerRepository manufacturerRepository;
+	private final ManufacturerRepository manufacturerRepository;
 
-	public List<Manufacturer> getManufacturers() {
-		List<Manufacturer> list = manufacturerRepository.findAll();
-		return list;
+	@Autowired
+	private final StarshipShopMapper mapper;
+
+	public List<ManufacturerDto> getManufacturers() {
+		return manufacturerRepository	.findAll()
+										.stream()
+										.map(m -> mapper.toManufacturerDto(m))
+										.collect(Collectors.toList());
 	}
 
-	public Optional<Manufacturer> getManufacturerById(final Long id) {
-		return manufacturerRepository.findById(id);
+	public Optional<ManufacturerDto> getManufacturerById(final Long id) {
+		return manufacturerRepository	.findById(id)
+										.map(m -> mapper.toManufacturerDto(m));
 	}
 
-	public Optional<Manufacturer> getManufacturerByName(final String name) {
-		return manufacturerRepository.findByName(name);
+	public ManufacturerDto createManufacturer(final ManufacturerDto dto) {
+		Assert.notNull(dto.getName(), String.format("Name cannot be null."));
+		Assert.hasText(dto.getName(), String.format("Name cannot be empty."));
+		dto.setId(null);
+		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.toManufacturer(dto)));
 	}
 
-	public Manufacturer saveManufacturer(final ManufacturerRequestDTO manufacturerRequestDTO) {
-		Assert.notNull(manufacturerRequestDTO.getName(), String.format("Name cannot be null."));
-		Assert.hasText(manufacturerRequestDTO.getName(), String.format("Name cannot be empty."));
-		Manufacturer manufacturer = mapToEntity(manufacturerRequestDTO);
-		Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
-		return savedManufacturer;
-	}
-
-	public Manufacturer updateManufacturer(final Long id, ManufacturerRequestDTO manufacturerRequestDTO) {
-		Assert.notNull(manufacturerRequestDTO.getName(), String.format("Name cannot be null."));
-		Assert.hasText(manufacturerRequestDTO.getName(), String.format("Name cannot be empty."));
-		Manufacturer manufacturerToUpdate = this.getManufacturerById(id)
-												.orElseThrow(() -> new ResourceNotFoundException(
-														"Manufacturer doesn't exist with this id " + id));
-		manufacturerToUpdate = mapToEntity(manufacturerRequestDTO, manufacturerToUpdate);
-		Manufacturer result = manufacturerRepository.save(manufacturerToUpdate);
-		return result;
+	public ManufacturerDto updateManufacturer(final Long id, ManufacturerDto dto) {
+		Assert.notNull(dto.getName(), String.format("Name cannot be null."));
+		Assert.hasText(dto.getName(), String.format("Name cannot be empty."));
+		manufacturerRepository	.findById(id)
+								.orElseThrow(
+										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id"));
+		Manufacturer manufacturer = mapper.toManufacturer(dto);
+		manufacturer.setId(id);
+		return mapper.toManufacturerDto(manufacturerRepository.save(manufacturer));
 	}
 
 	public void deleteManufacturer(final Long id) {
-		Manufacturer manufacturerToDelete = this.getManufacturerById(id)
-												.orElseThrow(() -> new ResourceNotFoundException(
-														"Manufacturer doesn't exist with this id " + id));
+		Manufacturer manufacturerToDelete = manufacturerRepository	.findById(id)
+																	.orElseThrow(() -> new ResourceNotFoundException(
+																			"Manufacturer doesn't exist with this id"));
 		manufacturerRepository.delete(manufacturerToDelete);
 	}
+
 }

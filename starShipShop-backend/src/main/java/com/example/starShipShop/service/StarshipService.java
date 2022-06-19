@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.HyperdriveSystem;
-import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.jpa.Starship;
 import com.example.starshipShop.jpa.Weapon;
 import com.example.starshipShop.repository.StarshipRepository;
@@ -72,12 +71,12 @@ public class StarshipService {
 		Starship starship = mapToEntity(starshipRequestDTO);
 
 		// Search for the manufacturer by name and set it to starship
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starship	.getManufacturer()
-																							.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ starship	.getManufacturer()
-																						.getName()));
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starship	.getManufacturer()
+//																							.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ starship	.getManufacturer()
+//																						.getName()));
 
 		// Search for the HyperdriveSystem by name and set it to starship
 		HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
@@ -103,7 +102,7 @@ public class StarshipService {
 				}
 			}
 		}
-		starship.setManufacturer(manufacturer);
+//		starship.setManufacturer(manufacturer);
 		starship.setHyperdriveSystem(hyperdriveSystem);
 		starship.setWeapons(weapons);
 		return starshipRepository.save(starship);
@@ -139,12 +138,12 @@ public class StarshipService {
 		Starship starshipToUpdate = mapToEntity(starshipRequestDTO, starshipFromDb);
 
 		// Search for the manufacturer by name and set it to starship
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starshipToUpdate	.getManufacturer()
-																									.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ starshipToUpdate	.getManufacturer()
-																								.getName()));
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(starshipToUpdate	.getManufacturer()
+//																									.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ starshipToUpdate	.getManufacturer()
+//																								.getName()));
 
 		// Search for the HyperdriveSystem by name and set it to starship
 		HyperdriveSystem hyperdriveSystem = this.hyperdriveSystemService.getHyperdriveSystemByName(
@@ -170,7 +169,7 @@ public class StarshipService {
 				}
 			}
 		}
-		starshipToUpdate.setManufacturer(manufacturer);
+//		starshipToUpdate.setManufacturer(manufacturer);
 		starshipToUpdate.setHyperdriveSystem(hyperdriveSystem);
 		starshipToUpdate.setWeapons(weapons);
 		return starshipRepository.save(starshipToUpdate);

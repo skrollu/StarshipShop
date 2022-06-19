@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
-import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.jpa.Weapon;
 import com.example.starshipShop.repository.WeaponRepository;
 import com.example.starshipShop.requestDto.WeaponRequestDTO;
@@ -53,14 +52,14 @@ public class WeaponService {
 		}
 
 		Weapon weapon = mapToEntity(weaponRequestDTO);
-
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weapon	.getManufacturer()
-																							.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ weapon.getManufacturer()
-																					.getName()));
-		weapon.setManufacturer(manufacturer);
+//
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weapon	.getManufacturer()
+//																							.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ weapon.getManufacturer()
+//																					.getName()));
+//		weapon.setManufacturer(manufacturer);
 		return weaponRepository.save(weapon);
 	}
 
@@ -82,13 +81,13 @@ public class WeaponService {
 											"Weapon doesn't exist with this id " + id));
 		Weapon weaponToUpdate = mapToEntity(weaponRequestDTO, weaponFromDb);
 
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weaponRequestDTO	.getManufacturer()
-																									.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ weaponRequestDTO	.getManufacturer()
-																								.getName()));
-		weaponToUpdate.setManufacturer(manufacturer);
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(weaponRequestDTO	.getManufacturer()
+//																									.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ weaponRequestDTO	.getManufacturer()
+//																								.getName()));
+//		weaponToUpdate.setManufacturer(manufacturer);
 		return weaponRepository.save(weaponToUpdate);
 	}
 

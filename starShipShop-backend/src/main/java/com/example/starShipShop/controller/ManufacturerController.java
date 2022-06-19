@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipShop.assembler.ManufacturerAssembler;
-import com.example.starshipShop.jpa.Manufacturer;
-import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
+import com.example.starshipShop.dto.ManufacturerDto;
+import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.ManufacturerService;
 
 import lombok.AllArgsConstructor;
@@ -39,49 +39,41 @@ public class ManufacturerController {
 	private ManufacturerAssembler manufacturerAssembler;
 
 	@GetMapping
-	public CollectionModel<EntityModel<Manufacturer>> getManufacturers() {
-		List<EntityModel<Manufacturer>> result = manufacturerService.getManufacturers()
-																	.stream()
-																	.map(manufacturerAssembler::toModelWithSelfLink)
-																	.collect(Collectors.toList());
+	public CollectionModel<EntityModel<ManufacturerDto>> getManufacturers() {
+		List<EntityModel<ManufacturerDto>> result = manufacturerService	.getManufacturers()
+																		.stream()
+																		.map(manufacturerAssembler::toModelWithSelfLink)
+																		.collect(Collectors.toList());
 		return CollectionModel.of(result,
-				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withSelfRel());
+				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withRel("manufacturers"));
 	}
 
 	@GetMapping("/{id}")
-	public EntityModel<Manufacturer> getManufacturerById(@PathVariable Long id) {
-		Manufacturer manufacturer = manufacturerService	.getManufacturerById(id)
-														.get();
-
-		EntityModel<Manufacturer> result = this.manufacturerAssembler.toModel(manufacturer);
-		return result;
-	}
-
-	@GetMapping("/name/{name}")
-	public Manufacturer getManufacturerByName(@PathVariable String name) {
-		Manufacturer result = manufacturerService	.getManufacturerByName(name)
-													.get();
-		return result;
+	public EntityModel<ManufacturerDto> getManufacturerById(@PathVariable String id) {
+		ManufacturerDto manufacturer = manufacturerService	.getManufacturerById(HashToIdConverter.convertToId(id))
+															.get();
+		return this.manufacturerAssembler.toModel(manufacturer);
 	}
 
 	@PostMapping
-	public Manufacturer createManufacturer(@RequestBody ManufacturerRequestDTO manufacturer) {
-		return this.manufacturerService.saveManufacturer(manufacturer);
+	public EntityModel<ManufacturerDto> createManufacturer(@RequestBody ManufacturerDto manufacturer) {
+		return this.manufacturerAssembler.toModel(this.manufacturerService.createManufacturer(manufacturer));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Manufacturer> updateManufacturer(@PathVariable Long id,
-			@RequestBody ManufacturerRequestDTO manufacturerRequestDTO) {
-		Manufacturer response = this.manufacturerService.updateManufacturer(id, manufacturerRequestDTO);
+	public ResponseEntity<ManufacturerDto> updateManufacturer(@PathVariable String id,
+			@RequestBody ManufacturerDto manufacturer) {
+
+		ManufacturerDto response = this.manufacturerService.updateManufacturer(HashToIdConverter.convertToId(id),
+				manufacturer);
 		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, Boolean>> deleteManufacturer(@PathVariable Long id) {
-		this.manufacturerService.deleteManufacturer(id);
+	public ResponseEntity<Map<String, Boolean>> deleteManufacturer(@PathVariable String id) {
+		this.manufacturerService.deleteManufacturer(HashToIdConverter.convertToId(id));
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);
 	}
-
 }

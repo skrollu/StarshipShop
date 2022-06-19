@@ -59,22 +59,26 @@ public class HyperdriveSystemController {
 	}
 
 	@PostMapping
-	public ResponseEntity<EntityModel<HyperdriveSystem>> createHyperdriveSystem(@RequestBody HyperdriveSystemRequestDTO hyperdriveSystem) {
-		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(this.hyperdriveSystemService.saveHyperdriveSystem(hyperdriveSystem));
-		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-				.body(entityModel);
+	public ResponseEntity<EntityModel<HyperdriveSystem>> createHyperdriveSystem(
+			@RequestBody HyperdriveSystemRequestDTO hyperdriveSystem) {
+		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(
+				this.hyperdriveSystemService.saveHyperdriveSystem(hyperdriveSystem));
+		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+													.toUri()) //
+								.body(entityModel);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<HyperdriveSystem>> updateHyperdriveSystem(@PathVariable Long id,
 			@RequestBody HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
-		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(this.hyperdriveSystemService.updateHyperdriveSystem(id, hyperdriveSystemRequestDTO));
-		
+		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(
+				this.hyperdriveSystemService.updateHyperdriveSystem(id, hyperdriveSystemRequestDTO));
+
 		return ResponseEntity //
-				.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-				.body(entityModel);
+								.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+													.toUri()) //
+								.body(entityModel);
 	}
-	
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteHyperdriveSystem(@PathVariable Long id) {

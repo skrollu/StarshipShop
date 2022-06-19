@@ -8,23 +8,27 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.example.starshipShop.controller.ManufacturerController;
-import com.example.starshipShop.jpa.Manufacturer;
+import com.example.starshipShop.dto.ManufacturerDto;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
 
 @Component
-public class ManufacturerAssembler implements RepresentationModelAssembler<Manufacturer, EntityModel<Manufacturer>> {
+public class ManufacturerAssembler
+		implements RepresentationModelAssembler<ManufacturerDto, EntityModel<ManufacturerDto>> {
 
 	@Override
-	public EntityModel<Manufacturer> toModel(Manufacturer manufacturer) {
-		return EntityModel.of(manufacturer,
-				linkTo(methodOn(ManufacturerController.class).getManufacturerById(manufacturer.getId())).withSelfRel(),
-				linkTo(methodOn(ManufacturerController.class).getManufacturerByName(
-						manufacturer.getName())).withSelfRel(),
+	public EntityModel<ManufacturerDto> toModel(ManufacturerDto manufacturer) {
+		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
+				IdToHashConverter.convertToId(manufacturer.getId()))).withSelfRel(),
+//				linkTo(methodOn(ManufacturerController.class).createManufacturer(manufacturer)).withRel("create"),
+//				linkTo(methodOn(ManufacturerController.class).updateManufacturer(manufacturer.getId(),
+//						manufacturer)).withRel("update"),
+//				linkTo(methodOn(ManufacturerController.class).deleteManufacturer(manufacturer.getId())).withRel(
+//						"delete"),
 				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withRel("manufacturers"));
 	}
 
-	public EntityModel<Manufacturer> toModelWithSelfLink(Manufacturer manufacturer) {
-		return EntityModel.of(manufacturer,
-				linkTo(methodOn(ManufacturerController.class).getManufacturerById(manufacturer.getId())).withSelfRel());
-
+	public EntityModel<ManufacturerDto> toModelWithSelfLink(ManufacturerDto manufacturer) {
+		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
+				IdToHashConverter.convertToId(manufacturer.getId()))).withSelfRel());
 	}
 }

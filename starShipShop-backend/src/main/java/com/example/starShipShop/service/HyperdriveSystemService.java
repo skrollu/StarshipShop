@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.HyperdriveSystem;
-import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.repository.HyperdriveSystemRepository;
 import com.example.starshipShop.requestDto.HyperdriveSystemRequestDTO;
 
@@ -57,13 +56,13 @@ public class HyperdriveSystemService {
 			throw new NullPointerException("The given Manufacturer's name is null or empty");
 		}
 		HyperdriveSystem hyperdriveSystem = mapToEntity(hyperdriveSystemRequestDTO);
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(hyperdriveSystem	.getManufacturer()
-																									.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ hyperdriveSystem	.getManufacturer()
-																								.getName()));
-		hyperdriveSystem.setManufacturer(manufacturer);
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(hyperdriveSystem	.getManufacturer()
+//																									.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ hyperdriveSystem	.getManufacturer()
+//																								.getName()));
+//		hyperdriveSystem.setManufacturer(manufacturer);
 		return hyperdriveSystemRepository.save(hyperdriveSystem);
 	}
 
@@ -84,15 +83,15 @@ public class HyperdriveSystemService {
 														.orElseThrow(() -> new ResourceNotFoundException(
 																"HyperdriveSystem doesn't exist with this id " + id));
 		HyperdriveSystem hyperdriveSystemToUpdate = mapToEntity(hyperdriveSystemRequestDTO, hyperdriveSystemFromDb);
-
-		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(
-				hyperdriveSystemRequestDTO	.getManufacturer()
-											.getName())
-															.orElseThrow(() -> new ResourceNotFoundException(
-																	"The given Manufacturer doesn't exist with this name: "
-																			+ hyperdriveSystemRequestDTO.getManufacturer()
-																										.getName()));
-		hyperdriveSystemToUpdate.setManufacturer(manufacturer);
+//
+//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(
+//				hyperdriveSystemRequestDTO	.getManufacturer()
+//											.getName())
+//															.orElseThrow(() -> new ResourceNotFoundException(
+//																	"The given Manufacturer doesn't exist with this name: "
+//																			+ hyperdriveSystemRequestDTO.getManufacturer()
+//																										.getName()));
+//		hyperdriveSystemToUpdate.setManufacturer(manufacturer);
 		return this.saveHyperdriveSystem(hyperdriveSystemToUpdate);
 	}
 
