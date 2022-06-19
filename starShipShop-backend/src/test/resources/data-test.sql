@@ -1,6 +1,10 @@
 insert into manufacturer (name) values 
 ('Koensayr Manufacturing'),
-('TestManufacturer')
+('TestManufacturer'),
+('TestManufacturer2'),
+('TestManufacturer3'),
+('TestManufacturer4'),
+('TestManufacturer5')
 ;
 
 insert into hyperdrive_system (reference, name, id_manufacturer) values 

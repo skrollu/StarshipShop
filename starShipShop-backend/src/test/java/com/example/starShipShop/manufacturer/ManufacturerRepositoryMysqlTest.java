@@ -16,6 +16,12 @@ import org.springframework.test.context.ActiveProfiles;
 import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.repository.ManufacturerRepository;
 
+/*
+ * @author Mathieu 
+ * 
+ * Test some repository operations on a MySQL Database.
+ * Same test class as {@link ManufacturerRepositoryH2Test} 
+ */
 @DataJpaTest
 @ActiveProfiles("test-mysql")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
