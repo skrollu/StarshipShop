@@ -8,21 +8,24 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.example.starshipShop.controller.WeaponController;
-import com.example.starshipShop.jpa.Weapon;
+import com.example.starshipShop.dto.WeaponDto;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
 
 @Component
-public class WeaponAssembler implements RepresentationModelAssembler<Weapon, EntityModel<Weapon>> {
+public class WeaponAssembler implements RepresentationModelAssembler<WeaponDto, EntityModel<WeaponDto>> {
 
 	@Override
-	public EntityModel<Weapon> toModel(Weapon weapon) {
+	public EntityModel<WeaponDto> toModel(WeaponDto weapon) {
 		return EntityModel.of(weapon,
-				linkTo(methodOn(WeaponController.class).getWeaponById(weapon.getId())).withSelfRel(),
+				linkTo(methodOn(WeaponController.class).getWeaponById(
+						IdToHashConverter.convertToHash(weapon.getId()))).withSelfRel(),
+				// linkTo(methodOn(WeaponController.class).updateHyperdriveSystem(hyperdriveSystem.getId(),
+				// HyperdriveSystemMapper.mapToDto(hyperdriveSystem))).withRel("update"),
 				linkTo(methodOn(WeaponController.class).getWeapons()).withRel("weapons"));
 	}
 
-	public EntityModel<Weapon> toModelWithSelfLink(Weapon weapon) {
-		return EntityModel.of(weapon,
-				linkTo(methodOn(WeaponController.class).getWeaponById(weapon.getId())).withSelfRel());
-
+	public EntityModel<WeaponDto> toModelWithSelfLink(WeaponDto weapon) {
+		return EntityModel.of(weapon, linkTo(methodOn(WeaponController.class).getWeaponById(
+				IdToHashConverter.convertToHash(weapon.getId()))).withSelfRel());
 	}
 }
