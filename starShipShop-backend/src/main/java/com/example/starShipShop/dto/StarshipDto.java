@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Relation(collectionRelation = "starships", itemRelation = "starship")
 public class StarshipDto {
 	private long id;
-	private String reference;
 	private String name;
 	private String engines;
 	private double height;

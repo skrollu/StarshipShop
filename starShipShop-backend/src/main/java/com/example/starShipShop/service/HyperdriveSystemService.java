@@ -1,17 +1,22 @@
 package com.example.starshipShop.service;
 
-import static com.example.starshipShop.mapper.HyperdriveSystemMapper.mapToEntity;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import com.example.starshipShop.dto.HyperdriveSystemDto;
+import com.example.starshipShop.dto.HyperdriveSystemRequestInput;
+import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.HyperdriveSystem;
+import com.example.starshipShop.mapper.StarshipShopMapper;
+import com.example.starshipShop.mapper.converter.HashToIdConverter;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.example.starshipShop.repository.HyperdriveSystemRepository;
-import com.example.starshipShop.requestDto.HyperdriveSystemRequestDTO;
 
 import lombok.Data;
 
@@ -25,80 +30,75 @@ public class HyperdriveSystemService {
 	@Autowired
 	private HyperdriveSystemRepository hyperdriveSystemRepository;
 
+	@Autowired
+	private final StarshipShopMapper mapper;
+
 	public List<HyperdriveSystem> getHyperdriveSystems() {
-		List<HyperdriveSystem> list = hyperdriveSystemRepository.findAll();
-		return list;
+		return hyperdriveSystemRepository.findAll();
+	}
+
+	public List<HyperdriveSystemDto> getHyperdriveSystemsDto() {
+		return this	.getHyperdriveSystems()
+					.stream()
+					.map(h -> mapper.toHyperdriveSystemDto(h))
+					.collect(Collectors.toList());
 	}
 
 	public Optional<HyperdriveSystem> getHyperdriveSystemById(final Long id) {
 		return hyperdriveSystemRepository.findById(id);
 	}
 
-	public Optional<HyperdriveSystem> getHyperdriveSystemByName(final String name) {
-		return hyperdriveSystemRepository.findByName(name);
+	public Optional<HyperdriveSystemDto> getHyperdriveSystemDtoById(final Long id) {
+		return this	.getHyperdriveSystemById(id)
+					.map(h -> mapper.toHyperdriveSystemDto(h));
 	}
 
-	public HyperdriveSystem saveHyperdriveSystem(HyperdriveSystem hyperdriveSystem) {
-		HyperdriveSystem savedHyperdriveSystem = hyperdriveSystemRepository.save(hyperdriveSystem);
-		return savedHyperdriveSystem;
+	public HyperdriveSystemDto createHyperdriveSystem(HyperdriveSystemRequestInput hsri) {
+		Assert.notNull(hsri.getName(), String.format("Hyperdrive System name cannot be null."));
+		Assert.hasText(hsri.getName(), String.format("Hyperdrive System name cannot be empty."));
+		Assert.notNull(hsri.getManufacturer(), String.format("Manufacturer cannot be null."));
+		Assert.notNull(hsri	.getManufacturer()
+							.getId(),
+				String.format("Manufacturer's id cannot be null."));
+		Assert.hasText(hsri	.getManufacturer()
+							.getName(),
+				String.format("Manufacturer's name cannot be empty."));
+		
+		ManufacturerDto manufacturerDto = this.manufacturerService	.getManufacturerDtoById(hsri.getManufacturer()
+																								.getId())
+																	.orElseThrow(() -> new ResourceNotFoundException(
+																			"The given Manufacturer doesn't exist with this id: " + IdToHashConverter.convertToHash(hsri.getManufacturer().getId())));
+		hsri.setManufacturer(manufacturerDto);
+		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(mapper.fromHyperdriveSystemRequestInput(hsri)));
 	}
 
-	public HyperdriveSystem saveHyperdriveSystem(final HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
-		// Check nullpointer of Manufacturer
-		if (hyperdriveSystemRequestDTO.getManufacturer() == null) {
-			throw new NullPointerException("The given Manufacturer is null");
-		}
-		if (hyperdriveSystemRequestDTO	.getManufacturer()
-										.getName() == null
-				|| hyperdriveSystemRequestDTO	.getManufacturer()
-												.getName()
-												.isEmpty()) {
-			throw new NullPointerException("The given Manufacturer's name is null or empty");
-		}
-		HyperdriveSystem hyperdriveSystem = mapToEntity(hyperdriveSystemRequestDTO);
-//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(hyperdriveSystem	.getManufacturer()
-//																									.getName())
-//															.orElseThrow(() -> new ResourceNotFoundException(
-//																	"The given Manufacturer doesn't exist with this name: "
-//																			+ hyperdriveSystem	.getManufacturer()
-//																								.getName()));
-//		hyperdriveSystem.setManufacturer(manufacturer);
-		return hyperdriveSystemRepository.save(hyperdriveSystem);
-	}
-
-	public HyperdriveSystem updateHyperdriveSystem(final Long id,
-			HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
-		// Check nullpointer of Manufacturer
-		if (hyperdriveSystemRequestDTO.getManufacturer() == null) {
-			throw new NullPointerException("The given Manufacturer is null");
-		}
-		if (hyperdriveSystemRequestDTO	.getManufacturer()
-										.getName() == null
-				|| hyperdriveSystemRequestDTO	.getManufacturer()
-												.getName()
-												.isEmpty()) {
-			throw new NullPointerException("The given Manufacturer's name is null or empty");
-		}
-		HyperdriveSystem hyperdriveSystemFromDb = this	.getHyperdriveSystemById(id)
-														.orElseThrow(() -> new ResourceNotFoundException(
-																"HyperdriveSystem doesn't exist with this id " + id));
-		HyperdriveSystem hyperdriveSystemToUpdate = mapToEntity(hyperdriveSystemRequestDTO, hyperdriveSystemFromDb);
-//
-//		Manufacturer manufacturer = this.manufacturerService.getManufacturerByName(
-//				hyperdriveSystemRequestDTO	.getManufacturer()
-//											.getName())
-//															.orElseThrow(() -> new ResourceNotFoundException(
-//																	"The given Manufacturer doesn't exist with this name: "
-//																			+ hyperdriveSystemRequestDTO.getManufacturer()
-//																										.getName()));
-//		hyperdriveSystemToUpdate.setManufacturer(manufacturer);
-		return this.saveHyperdriveSystem(hyperdriveSystemToUpdate);
+	public HyperdriveSystemDto updateHyperdriveSystem(final Long id, HyperdriveSystemRequestInput hsri) {
+		Assert.notNull(hsri.getName(), String.format("Hyperdrive System name cannot be null."));
+		Assert.hasText(hsri.getName(), String.format("Hyperdrive System name cannot be empty."));
+		Assert.notNull(hsri.getManufacturer(), String.format("Manufacturer cannot be null."));
+		Assert.notNull(hsri	.getManufacturer()
+							.getId(),
+				String.format("Manufacturer's id cannot be null."));
+		Assert.hasText(hsri	.getManufacturer()
+							.getName(),
+				String.format("Manufacturer's name cannot be empty."));
+		this.manufacturerService.getManufacturerDtoById(hsri	.getManufacturer()
+															.getId())
+								.orElseThrow(() -> new ResourceNotFoundException(
+																			"The given Manufacturer doesn't exist with this id: " + IdToHashConverter.convertToHash(hsri.getManufacturer().getId())));
+		HyperdriveSystem hs = mapper.fromHyperdriveSystemRequestInput(hsri);
+		hs.setId(id);
+		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(hs));
 	}
 
 	public void deleteHyperdriveSystem(final Long id) {
-		HyperdriveSystem hyperdriveSystemToDelete = this.getHyperdriveSystemById(id)
-														.orElseThrow(() -> new ResourceNotFoundException(
-																"HyperdriveSystem doesn't exist with this id " + id));
+				Assert.notNull(id, String.format("id cannot be null."));
+
+		HyperdriveSystem hyperdriveSystemToDelete = hyperdriveSystemRepository	.findById(id)
+																				.orElseThrow(
+																						() -> new ResourceNotFoundException(
+																								"HyperdriveSystem doesn't exist with this id: " 				+ IdToHashConverter.convertToHash(
+																							id)));
 		hyperdriveSystemRepository.delete(hyperdriveSystemToDelete);
 	}
 }

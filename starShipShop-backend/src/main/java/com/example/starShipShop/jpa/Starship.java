@@ -35,9 +35,6 @@ public class Starship {
 	@Column(name = "id_starship", updatable = false, columnDefinition = "BIGINT")
 	private Long id;
 
-	@Column(name = "reference", nullable = false)
-	private String reference;
-
 	@Column(name = "name", nullable = false)
 	private String name;
 

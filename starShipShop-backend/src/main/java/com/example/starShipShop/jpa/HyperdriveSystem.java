@@ -32,9 +32,6 @@ public class HyperdriveSystem {
 	@Column(name = "id_hyperdrive_system", updatable = false)
 	private Long id;
 
-	@Column(name = "reference", nullable = false)
-	private String reference;
-
 	@Column(name = "name", nullable = false)
 	private String name;
 

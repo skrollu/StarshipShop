@@ -7,7 +7,6 @@ CREATE TABLE manufacturer (
 
 CREATE TABLE hyperdrive_system (
 	id_hyperdrive_system BIGINT NOT NULL AUTO_INCREMENT,
-    reference VARCHAR(255) NOT NULL UNIQUE,
 	name VARCHAR(100) NOT NULL,
 	id_manufacturer INT, 
 	CONSTRAINT PK_Hyperdrive_System PRIMARY KEY (id_hyperdrive_system),
@@ -17,7 +16,6 @@ CREATE TABLE hyperdrive_system (
 CREATE TABLE starship 
 (
     id_starship BIGINT NOT NULL AUTO_INCREMENT,
-    reference VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     engines VARCHAR(255) NOT NULL,
     height FLOAT NOT NULL,
@@ -34,7 +32,6 @@ CREATE TABLE starship
 
 CREATE TABLE weapon (
     id_weapon BIGINT NOT NULL AUTO_INCREMENT,
-    reference VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     id_manufacturer INT, 
     CONSTRAINT PK_Weapon PRIMARY KEY (id_weapon),

@@ -8,26 +8,26 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.example.starshipShop.controller.HyperdriveSystemController;
-import com.example.starshipShop.jpa.HyperdriveSystem;
+import com.example.starshipShop.dto.HyperdriveSystemDto;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
 
 @Component
 public class HyperdriveSystemAssembler
-		implements RepresentationModelAssembler<HyperdriveSystem, EntityModel<HyperdriveSystem>> {
+		implements RepresentationModelAssembler<HyperdriveSystemDto, EntityModel<HyperdriveSystemDto>> {
 
 	@Override
-	public EntityModel<HyperdriveSystem> toModel(HyperdriveSystem hyperdriveSystem) {
+	public EntityModel<HyperdriveSystemDto> toModel(HyperdriveSystemDto hyperdriveSystem) {
 		return EntityModel.of(hyperdriveSystem,
 				linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystemById(
-						hyperdriveSystem.getId())).withSelfRel(),
+						IdToHashConverter.convertToHash(hyperdriveSystem.getId()))).withSelfRel(),
 				// linkTo(methodOn(HyperdriveSystemController.class).updateHyperdriveSystem(hyperdriveSystem.getId(),
 				// HyperdriveSystemMapper.mapToDto(hyperdriveSystem))).withRel("update"),
 				linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystems()).withRel("hyperdriveSystems"));
 	}
 
-	public EntityModel<HyperdriveSystem> toModelWithSelfLink(HyperdriveSystem hyperdriveSystem) {
+	public EntityModel<HyperdriveSystemDto> toModelWithSelfLink(HyperdriveSystemDto hyperdriveSystem) {
 		return EntityModel.of(hyperdriveSystem,
 				linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystemById(
-						hyperdriveSystem.getId())).withSelfRel());
-
+						IdToHashConverter.convertToHash(hyperdriveSystem.getId()))).withSelfRel());
 	}
 }

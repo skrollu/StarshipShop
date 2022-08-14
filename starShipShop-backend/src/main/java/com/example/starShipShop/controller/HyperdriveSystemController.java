@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipShop.assembler.HyperdriveSystemAssembler;
-import com.example.starshipShop.jpa.HyperdriveSystem;
-import com.example.starshipShop.requestDto.HyperdriveSystemRequestDTO;
+import com.example.starshipShop.dto.HyperdriveSystemDto;
+import com.example.starshipShop.dto.HyperdriveSystemRequestInput;
+import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.HyperdriveSystemService;
 
 import lombok.AllArgsConstructor;
@@ -41,48 +42,46 @@ public class HyperdriveSystemController {
 	private HyperdriveSystemAssembler assembler;
 
 	@GetMapping
-	public CollectionModel<EntityModel<HyperdriveSystem>> getHyperdriveSystems() {
-		List<EntityModel<HyperdriveSystem>> result = hyperdriveSystemService.getHyperdriveSystems()
-																			.stream()
-																			.map(assembler::toModelWithSelfLink)
-																			.collect(Collectors.toList());
+	public CollectionModel<EntityModel<HyperdriveSystemDto>> getHyperdriveSystems() {
+		List<EntityModel<HyperdriveSystemDto>> result = hyperdriveSystemService	.getHyperdriveSystemsDto()
+																				.stream()
+																				.map(assembler::toModelWithSelfLink)
+																				.collect(Collectors.toList());
 		return CollectionModel.of(result,
 				linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystems()).withSelfRel());
 	}
 
 	@GetMapping("/{id}")
-	public EntityModel<HyperdriveSystem> getHyperdriveSystemById(@PathVariable Long id) {
-		HyperdriveSystem hyperdriveSystem = hyperdriveSystemService	.getHyperdriveSystemById(id)
-																	.get();
-		EntityModel<HyperdriveSystem> result = this.assembler.toModel(hyperdriveSystem);
-		return result;
+	public EntityModel<HyperdriveSystemDto> getHyperdriveSystemById(@PathVariable String id) {
+		HyperdriveSystemDto hyperdriveSystem = hyperdriveSystemService	.getHyperdriveSystemDtoById(
+																				HashToIdConverter.convertToId(id))
+																		.get();
+		return this.assembler.toModel(hyperdriveSystem);
 	}
 
 	@PostMapping
-	public ResponseEntity<EntityModel<HyperdriveSystem>> createHyperdriveSystem(
-			@RequestBody HyperdriveSystemRequestDTO hyperdriveSystem) {
-		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(
-				this.hyperdriveSystemService.saveHyperdriveSystem(hyperdriveSystem));
+	public ResponseEntity<EntityModel<HyperdriveSystemDto>> createHyperdriveSystem(
+			@RequestBody HyperdriveSystemRequestInput hsri) {
+		EntityModel<HyperdriveSystemDto> entityModel = assembler.toModel(
+				this.hyperdriveSystemService.createHyperdriveSystem(hsri));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-													.toUri()) //
+													.toUri())
 								.body(entityModel);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<EntityModel<HyperdriveSystem>> updateHyperdriveSystem(@PathVariable Long id,
-			@RequestBody HyperdriveSystemRequestDTO hyperdriveSystemRequestDTO) {
-		EntityModel<HyperdriveSystem> entityModel = assembler.toModel(
-				this.hyperdriveSystemService.updateHyperdriveSystem(id, hyperdriveSystemRequestDTO));
-
-		return ResponseEntity //
-								.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-													.toUri()) //
-								.body(entityModel);
+	public ResponseEntity<EntityModel<HyperdriveSystemDto>> updateHyperdriveSystem(@PathVariable String id,
+			@RequestBody HyperdriveSystemRequestInput hsri) {
+		EntityModel<HyperdriveSystemDto> response = assembler.toModel(
+				this.hyperdriveSystemService.updateHyperdriveSystem(HashToIdConverter.convertToId(id), hsri));
+		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
+													.toUri())
+								.body(response);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, Boolean>> deleteHyperdriveSystem(@PathVariable Long id) {
-		this.hyperdriveSystemService.deleteHyperdriveSystem(id);
+	public ResponseEntity<Map<String, Boolean>> deleteHyperdriveSystem(@PathVariable String id) {
+		this.hyperdriveSystemService.deleteHyperdriveSystem(HashToIdConverter.convertToId(id));
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);

@@ -33,9 +33,6 @@ public class Weapon {
 	@Column(name = "id_weapon", updatable = false, columnDefinition = "BIGINT")
 	private Long id;
 
-	@Column(name = "reference", nullable = false)
-	private String reference;
-
 	@Column(name = "name", nullable = false)
 	private String name;
 

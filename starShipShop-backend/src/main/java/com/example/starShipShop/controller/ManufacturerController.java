@@ -58,8 +58,11 @@ public class ManufacturerController {
 	}
 
 	@PostMapping
-	public EntityModel<ManufacturerDto> createManufacturer(@RequestBody ManufacturerRequestInput mri) {
-		return this.assembler.toModel(this.manufacturerService.createManufacturer(mri));
+	public ResponseEntity<EntityModel<ManufacturerDto>> createManufacturer(@RequestBody ManufacturerRequestInput mri) {
+		EntityModel<ManufacturerDto> entityModel = this.assembler.toModel(this.manufacturerService.createManufacturer(mri));
+			return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+													.toUri())
+								.body(entityModel);
 	}
 
 	@PutMapping("/{id}")

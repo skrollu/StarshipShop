@@ -1,7 +1,5 @@
 package com.example.starshipShop.dto;
 
-import org.springframework.hateoas.server.core.Relation;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Relation(collectionRelation = "weapons", itemRelation = "weapon")
-public class WeaponDto {
-	private long id;
+public class HyperdriveSystemRequestInput {
+
 	private String name;
 	private ManufacturerDto manufacturer;
 }
