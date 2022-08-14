@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.example.starshipShop.dto.ManufacturerDto;
+import com.example.starshipShop.dto.ManufacturerRequestInput;
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.mapper.StarshipShopMapper;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.example.starshipShop.repository.ManufacturerRepository;
 
 import lombok.AllArgsConstructor;
@@ -28,40 +30,53 @@ public class ManufacturerService {
 	@Autowired
 	private final StarshipShopMapper mapper;
 
-	public List<ManufacturerDto> getManufacturers() {
-		return manufacturerRepository	.findAll()
-										.stream()
-										.map(m -> mapper.toManufacturerDto(m))
-										.collect(Collectors.toList());
+	public List<Manufacturer> getManufacturers() {
+		return manufacturerRepository.findAll();
 	}
 
-	public Optional<ManufacturerDto> getManufacturerById(final Long id) {
-		return manufacturerRepository	.findById(id)
-										.map(m -> mapper.toManufacturerDto(m));
+	public List<ManufacturerDto> getManufacturersDto() {
+		return this	.getManufacturers()
+					.stream()
+					.map(m -> mapper.toManufacturerDto(m))
+					.collect(Collectors.toList());
 	}
 
-	public ManufacturerDto createManufacturer(final ManufacturerDto dto) {
-		Assert.notNull(dto.getName(), String.format("Name cannot be null."));
-		Assert.hasText(dto.getName(), String.format("Name cannot be empty."));
-		dto.setId(null);
-		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.toManufacturer(dto)));
+	public Optional<Manufacturer> getManufacturerById(final Long id) {
+		return manufacturerRepository.findById(id);
+
 	}
 
-	public ManufacturerDto updateManufacturer(final Long id, ManufacturerDto dto) {
-		Assert.notNull(dto.getName(), String.format("Name cannot be null."));
-		Assert.hasText(dto.getName(), String.format("Name cannot be empty."));
+	public Optional<ManufacturerDto> getManufacturerDtoById(final Long id) {
+		return this	.getManufacturerById(id)
+					.map(m -> mapper.toManufacturerDto(m));
+	}
+
+	public ManufacturerDto createManufacturer(final ManufacturerRequestInput mri) {
+		Assert.notNull(mri.getName(), String.format("Name cannot be null."));
+		Assert.hasText(mri.getName(), String.format("Name cannot be empty."));
+		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.fromManufaturerRequestInput(mri)));
+	}
+
+	public ManufacturerDto updateManufacturer(final Long id, ManufacturerRequestInput mri) {
+		Assert.notNull(id, String.format("id cannot be null."));
+		Assert.notNull(mri.getName(), String.format("Name cannot be null."));
+		Assert.hasText(mri.getName(), String.format("Name cannot be empty."));
 		manufacturerRepository	.findById(id)
 								.orElseThrow(
-										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id"));
-		Manufacturer manufacturer = mapper.toManufacturer(dto);
+										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
+												+ IdToHashConverter.convertToHash(id)));
+		Manufacturer manufacturer = mapper.fromManufaturerRequestInput(mri);
 		manufacturer.setId(id);
 		return mapper.toManufacturerDto(manufacturerRepository.save(manufacturer));
 	}
 
 	public void deleteManufacturer(final Long id) {
+		Assert.notNull(id, String.format("id cannot be null."));
 		Manufacturer manufacturerToDelete = manufacturerRepository	.findById(id)
 																	.orElseThrow(() -> new ResourceNotFoundException(
-																			"Manufacturer doesn't exist with this id"));
+																			"Manufacturer doesn't exist with this id: "
+																					+ IdToHashConverter.convertToHash(
+																							id)));
 		manufacturerRepository.delete(manufacturerToDelete);
 	}
 

@@ -11,8 +11,9 @@ public class HashToIdConverter extends StdConverter<String, Long> {
 		Hashids hashids = new Hashids("mySuperSalt", 8);
 		long[] numbers = hashids.decode(hash);
 		if (numbers.length == 0) {
-			throw new ResourceNotFoundException("Cannot find resource with the given id: " + hash);
+			throw new ResourceNotFoundException("Cannot find convert hash to id with the given id: " + hash);
 		}
+		System.out.println("Hash " + hash + " To Id " + numbers[0]);
 		return numbers[0];
 	}
 

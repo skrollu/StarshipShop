@@ -18,7 +18,7 @@ public class ManufacturerAssembler
 	@Override
 	public EntityModel<ManufacturerDto> toModel(ManufacturerDto manufacturer) {
 		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
-				IdToHashConverter.convertToId(manufacturer.getId()))).withSelfRel(),
+				IdToHashConverter.convertToHash(manufacturer.getId()))).withSelfRel(),
 //				linkTo(methodOn(ManufacturerController.class).createManufacturer(manufacturer)).withRel("create"),
 //				linkTo(methodOn(ManufacturerController.class).updateManufacturer(manufacturer.getId(),
 //						manufacturer)).withRel("update"),
@@ -29,6 +29,6 @@ public class ManufacturerAssembler
 
 	public EntityModel<ManufacturerDto> toModelWithSelfLink(ManufacturerDto manufacturer) {
 		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
-				IdToHashConverter.convertToId(manufacturer.getId()))).withSelfRel());
+				IdToHashConverter.convertToHash(manufacturer.getId()))).withSelfRel());
 	}
 }
