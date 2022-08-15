@@ -10,4 +10,5 @@ Found why there was a compilation error because of lombok not working: pom.xml -
 
 -   Revoir l'utilité de fournir l'id + name des entités DTO, pour le moment seul l'ID est pris en compte.
 -   Revoir la réponse de chaque endpoints et celle des delete
--   Créer des méthodes check dans chaque service pour raccourcir et éviter la redondance de create et update
+-   ~~Créer des méthodes check dans chaque service pour raccourcir et éviter la redondance de create et update~~
+-   Ajouter une Salt venant d'une variable d'environnement pour le hashids

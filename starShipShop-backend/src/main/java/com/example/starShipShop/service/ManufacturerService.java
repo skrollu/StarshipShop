@@ -52,19 +52,14 @@ public class ManufacturerService {
 	}
 
 	public ManufacturerDto createManufacturer(final ManufacturerRequestInput mri) {
-		Assert.notNull(mri.getName(), String.format("Name cannot be null."));
-		Assert.hasText(mri.getName(), String.format("Name cannot be empty."));
+		this.checkManufacturerRequestInput(mri);
 		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.fromManufaturerRequestInput(mri)));
 	}
 
 	public ManufacturerDto updateManufacturer(final Long id, ManufacturerRequestInput mri) {
 		Assert.notNull(id, String.format("id cannot be null."));
-		Assert.notNull(mri.getName(), String.format("Name cannot be null."));
-		Assert.hasText(mri.getName(), String.format("Name cannot be empty."));
-		manufacturerRepository	.findById(id)
-								.orElseThrow(
-										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
-												+ IdToHashConverter.convertToHash(id)));
+		this.checkManufacturerRequestInput(mri);
+		this.checkManufacturerExist(id);
 		Manufacturer manufacturer = mapper.fromManufaturerRequestInput(mri);
 		manufacturer.setId(id);
 		return mapper.toManufacturerDto(manufacturerRepository.save(manufacturer));
@@ -72,12 +67,27 @@ public class ManufacturerService {
 
 	public void deleteManufacturer(final Long id) {
 		Assert.notNull(id, String.format("id cannot be null."));
-		Manufacturer manufacturerToDelete = manufacturerRepository	.findById(id)
-																	.orElseThrow(() -> new ResourceNotFoundException(
-																			"Manufacturer doesn't exist with this id: "
-																					+ IdToHashConverter.convertToHash(
-																							id)));
+		Manufacturer manufacturerToDelete = this.checkManufacturerExist(id);
 		manufacturerRepository.delete(manufacturerToDelete);
 	}
 
+	public void checkManufacturerRequestInput(ManufacturerRequestInput mri) {
+		Assert.notNull(mri, String.format("Manufacturer cannot be null."));
+		Assert.notNull(mri.getName(), String.format("Name of Manufacturer cannot be null."));
+		Assert.hasText(mri.getName(), String.format("Name of Manufacturer cannot be empty."));
+	}
+	
+	public void checkManufacturerDto(ManufacturerDto dto) {
+		Assert.notNull(dto, String.format("Manufacturer cannot be null."));
+		Assert.notNull(dto.getId(), String.format("Id of Manufacturer cannot be null."));
+		Assert.notNull(dto.getName(), String.format("Name of Manufacturer cannot be null."));
+		Assert.hasText(dto.getName(), String.format("Name of Manufacturer cannot be empty."));
+	}
+
+	public Manufacturer checkManufacturerExist(Long id) {
+		return manufacturerRepository	.findById(id)
+								.orElseThrow(
+										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
+												+ IdToHashConverter.convertToHash(id)));
+	}
 }

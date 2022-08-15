@@ -2,6 +2,7 @@ package com.example.starshipShop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.starshipShop.assembler.StarshipAssembler;
 import com.example.starshipShop.dto.StarshipDto;
 import com.example.starshipShop.dto.StarshipRequestInput;
-import com.example.starshipShop.jpa.Starship;
 import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.StarshipService;
 

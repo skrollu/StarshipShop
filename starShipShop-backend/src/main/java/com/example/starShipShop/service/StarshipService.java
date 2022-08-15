@@ -58,114 +58,46 @@ public class StarshipService {
 	}
 
 	public StarshipDto createStarship(final StarshipRequestInput sri) {
+		this.checkStarshipRequestInput(sri);
 		// Check Manufacturer
-		Assert.notNull(sri.getName(), String.format("Starship's name cannot be null."));
-		Assert.hasText(sri.getName(), String.format("Starship's name cannot be empty."));
-		Assert.notNull(sri.getManufacturer(), String.format("Manufacturer cannot be null."));
-		Assert.notNull(sri	.getManufacturer()
-							.getId(),
-				String.format("Manufacturer's id cannot be null."));
-		Assert.hasText(sri	.getManufacturer()
-							.getName(),
-				String.format("Manufacturer's name cannot be empty."));
-		this.manufacturerService.getManufacturerById(sri.getManufacturer()
-														.getId())
-								.orElseThrow(() -> new ResourceNotFoundException(
-										"The given Manufacturer of Starship doesn't exist with this id: "
-												+ IdToHashConverter.convertToHash(
-														sri	.getManufacturer()
-															.getId())));
+		this.manufacturerService.checkManufacturerDto(sri.getManufacturer());
+		this.manufacturerService.checkManufacturerExist(sri.getManufacturer().getId());
 
 		// Check HyperdriveSystem
-		Assert.notNull(sri.getName(), String.format("HyperdriveSystem name cannot be null."));
-		Assert.hasText(sri.getName(), String.format("HyperdriveSystem name cannot be empty."));
-		Assert.notNull(sri.getHyperdriveSystem(), String.format("HyperdriveSystem cannot be null."));
-		Assert.notNull(sri	.getHyperdriveSystem()
-							.getId(),
-				String.format("HyperdriveSystem's id cannot be null."));
-		Assert.hasText(sri	.getHyperdriveSystem()
-							.getName(),
-				String.format("HyperdriveSystem's name cannot be empty."));
+		if(sri.getHyperdriveSystem() != null) {
+			this.hyperdriveSystemService.checkHyperdriveSystemDto(sri.getHyperdriveSystem());
+			this.hyperdriveSystemService.checkHyperdriveSystemExist(sri.getHyperdriveSystem().getId());
+		}
 
-		this.hyperdriveSystemService.getHyperdriveSystemById(sri.getHyperdriveSystem()
-																.getId())
-									.orElseThrow(() -> new ResourceNotFoundException(
-											"The given HyperdriveSystem of Starship doesn't exist with this id: "
-													+ IdToHashConverter.convertToHash(
-															sri	.getHyperdriveSystem()
-																.getId())));
-
-		// Check Weapon
-		if (!sri.getWeapons()
-				.isEmpty()) {
+		// Check Weapons
+		if (!sri.getWeapons().isEmpty()) {
 			sri	.getWeapons()
 				.forEach(w -> {
-					Assert.notNull(w, "Weapon cannot be null.");
-					Assert.notNull(w.getId(), "Weapon's cannot be null.");
-					Assert.notNull(w.getName(), "Weapon's name cannot be null.");
-					Assert.notNull(w.getName(), "Weapon's name cannot be empty.");
-					this.weaponService	.getWeaponById(w.getId())
-										.orElseThrow(() -> new ResourceNotFoundException(
-												"The given Weapon of Starship doesn't exist with this id: "
-														+ IdToHashConverter.convertToHash(
-																w.getId())));
+					this.weaponService.checkWeaponDto(w);
+					this.weaponService.checkWeaponExist(w.getId());
 				});
 		}
 
 		return mapper.toStarshipDto(starshipRepository.save(mapper.fromStarshipRequestInput(sri)));
 	}
+
 	public StarshipDto updateStarship(final Long id, final StarshipRequestInput sri) {
 		// Check Manufacturer
-		Assert.notNull(sri.getName(), String.format("Starship's name cannot be null."));
-		Assert.hasText(sri.getName(), String.format("Starship's name cannot be empty."));
-		Assert.notNull(sri.getManufacturer(), String.format("Manufacturer cannot be null."));
-		Assert.notNull(sri	.getManufacturer()
-							.getId(),
-				String.format("Manufacturer's id cannot be null."));
-		Assert.hasText(sri	.getManufacturer()
-							.getName(),
-				String.format("Manufacturer's name cannot be empty."));
-		this.manufacturerService.getManufacturerById(sri.getManufacturer()
-														.getId())
-								.orElseThrow(() -> new ResourceNotFoundException(
-										"The given Manufacturer of Starship doesn't exist with this id: "
-												+ IdToHashConverter.convertToHash(
-														sri	.getManufacturer()
-															.getId())));
+		this.manufacturerService.checkManufacturerDto(sri.getManufacturer());
+		this.manufacturerService.checkManufacturerExist(sri.getManufacturer().getId());
 
 		// Check HyperdriveSystem
-		Assert.notNull(sri.getName(), String.format("HyperdriveSystem name cannot be null."));
-		Assert.hasText(sri.getName(), String.format("HyperdriveSystem name cannot be empty."));
-		Assert.notNull(sri.getHyperdriveSystem(), String.format("HyperdriveSystem cannot be null."));
-		Assert.notNull(sri	.getHyperdriveSystem()
-							.getId(),
-				String.format("HyperdriveSystem's id cannot be null."));
-		Assert.hasText(sri	.getHyperdriveSystem()
-							.getName(),
-				String.format("HyperdriveSystem's name cannot be empty."));
+		if(sri.getHyperdriveSystem() != null) {
+			this.hyperdriveSystemService.checkHyperdriveSystemDto(sri.getHyperdriveSystem());
+			this.hyperdriveSystemService.checkHyperdriveSystemExist(sri.getHyperdriveSystem().getId());
+		}
 
-		this.hyperdriveSystemService.getHyperdriveSystemById(sri.getHyperdriveSystem()
-																.getId())
-									.orElseThrow(() -> new ResourceNotFoundException(
-											"The given HyperdriveSystem of Starship doesn't exist with this id: "
-													+ IdToHashConverter.convertToHash(
-															sri	.getHyperdriveSystem()
-																.getId())));
-
-		// Check Weapon
-		if (!sri.getWeapons()
-				.isEmpty()) {
+		// Check Weapons
+		if (!sri.getWeapons().isEmpty()) {
 			sri	.getWeapons()
 				.forEach(w -> {
-					Assert.notNull(w, "Weapon cannot be null.");
-					Assert.notNull(w.getId(), "Weapon's cannot be null.");
-					Assert.notNull(w.getName(), "Weapon's name cannot be null.");
-					Assert.notNull(w.getName(), "Weapon's name cannot be empty.");
-					this.weaponService	.getWeaponById(w.getId())
-										.orElseThrow(() -> new ResourceNotFoundException(
-												"The given Weapon of Starship doesn't exist with this id: "
-														+ IdToHashConverter.convertToHash(
-																w.getId())));
+					this.weaponService.checkWeaponDto(w);
+					this.weaponService.checkWeaponExist(w.getId());
 				});
 		}
 
@@ -176,10 +108,27 @@ public class StarshipService {
 
 	public void deleteStarship(final Long id) {
         Assert.notNull(id, String.format("id cannot be null."));
-		Starship starshipToDelete = this.geStarshipById(id)
-										.orElseThrow(() -> new ResourceNotFoundException(
-												"Starship doesn't exist with this id " + IdToHashConverter.convertToHash(
-																							id)));
+		Starship starshipToDelete = this.checkStarshipExist(id);
 		starshipRepository.delete(starshipToDelete);
+	}
+
+	public void checkStarshipRequestInput(StarshipRequestInput sri) {
+		Assert.notNull(sri, String.format("Starship cannot be null."));
+		Assert.notNull(sri.getName(), String.format("Name of Starship cannot be null."));
+		Assert.hasText(sri.getName(), String.format("Name of Starship cannot be empty."));
+	}
+
+	public void checkStarshipDto(StarshipDto dto) {
+		Assert.notNull(dto, String.format("Starship cannot be null."));
+		Assert.notNull(dto.getId(), String.format("Id of Starship cannot be null."));
+		Assert.notNull(dto.getName(), String.format("Name of Starship cannot be null."));
+		Assert.hasText(dto.getName(), String.format("Name of Starship cannot be empty."));
+	}
+	
+	public Starship checkStarshipExist(Long id) {
+		return starshipRepository.findById(id)
+								.orElseThrow(
+										() -> new ResourceNotFoundException("Starship doesn't exist with this id: "
+												+ IdToHashConverter.convertToHash(id)));
 	}
 }

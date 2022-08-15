@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.dto.WeaponDto;
 import com.example.starshipShop.dto.WeaponRequestInput;
 import com.example.starshipShop.exception.ResourceNotFoundException;
@@ -53,56 +52,49 @@ public class WeaponService {
 	}
 
 	public WeaponDto createWeapon(final WeaponRequestInput wri) {
-		Assert.notNull(wri.getName(), String.format("Weapon name cannot be null."));
-		Assert.hasText(wri.getName(), String.format("Weapon name cannot be empty."));
-		Assert.notNull(wri.getManufacturer(), String.format("Manufacturer cannot be null."));
-		Assert.notNull(wri	.getManufacturer()
-							.getId(),
-				String.format("Manufacturer's id cannot be null."));
-		Assert.hasText(wri	.getManufacturer()
-							.getName(),
-							String.format("Manufacturer's name cannot be empty."));
-
-		this.manufacturerService	.getManufacturerById(wri	.getManufacturer()
-																					.getId())
-														.orElseThrow(() -> new ResourceNotFoundException(
-																"The given Manufacturer doesn't exist with this id: "
-																		+ IdToHashConverter.convertToHash(
-																				wri	.getManufacturer()
-																					.getId())));
-		
+		this.checkWeaponRequestInput(wri);
+		// Check Manufacturer
+		this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
+		this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
 		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wri)));
 	}
 
-		public WeaponDto updateWeapon(final Long id, final WeaponRequestInput wri) {
-		Assert.notNull(wri.getName(), String.format("Weapon name cannot be null."));
-		Assert.hasText(wri.getName(), String.format("Weapon name cannot be empty."));
-		Assert.notNull(wri.getManufacturer(), String.format("Manufacturer cannot be null."));
-		Assert.notNull(wri	.getManufacturer()
-							.getId(),
-				String.format("Manufacturer's id cannot be null."));
-		Assert.hasText(wri	.getManufacturer()
-							.getName(),
-				String.format("Manufacturer's name cannot be empty."));
+	public WeaponDto updateWeapon(final Long id, final WeaponRequestInput wri) {
+		Assert.notNull(id, String.format("id cannot be null."));		
+		this.checkWeaponRequestInput(wri);
+		this.checkWeaponExist(id);
+		// Check Manufacturer
+		this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
+		this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
 
-		this.manufacturerService	.getManufacturerById(wri	.getManufacturer()
-																					.getId())
-														.orElseThrow(() -> new ResourceNotFoundException(
-																"The given Manufacturer doesn't exist with this id: "
-																		+ IdToHashConverter.convertToHash(
-																				wri	.getManufacturer()
-																					.getId())));
 		Weapon w = mapper.fromWeaponRequestInput(wri);
 		w.setId(id);
 		return mapper.toWeaponDto(weaponRepository.save(w));
 	}
 
 	public void deleteWeapon(final Long id) {
-					Assert.notNull(id, String.format("id cannot be null."));
-		Weapon weaponToDelete = this.getWeaponById(id)
-									.orElseThrow(() -> new ResourceNotFoundException(
-											"Weapon doesn't exist with this id " + IdToHashConverter.convertToHash(
-																							id)));
+		Assert.notNull(id, String.format("id cannot be null."));
+		Weapon weaponToDelete = this.checkWeaponExist(id);
 		weaponRepository.delete(weaponToDelete);
+	}
+
+	public void checkWeaponRequestInput(WeaponRequestInput wri) {
+		Assert.notNull(wri, String.format("Weapon cannot be null."));
+		Assert.notNull(wri.getName(), String.format("Name of Weapon cannot be null."));
+		Assert.hasText(wri.getName(), String.format("Name of Weapon cannot be empty."));
+	}
+
+	public void checkWeaponDto(WeaponDto dto) {
+		Assert.notNull(dto, String.format("Weapon cannot be null."));
+		Assert.notNull(dto.getId(), String.format("Id of Weapon cannot be null."));
+		Assert.notNull(dto.getName(), String.format("Name of Weapon cannot be null."));
+		Assert.hasText(dto.getName(), String.format("Name of Weapon cannot be empty."));
+	}
+	
+	public Weapon checkWeaponExist(Long id) {
+		return weaponRepository	.findById(id)
+								.orElseThrow(
+										() -> new ResourceNotFoundException("Weapon doesn't exist with this id: "
+												+ IdToHashConverter.convertToHash(id)));
 	}
 }
