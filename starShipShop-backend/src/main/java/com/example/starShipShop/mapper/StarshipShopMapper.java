@@ -8,6 +8,7 @@ import com.example.starshipShop.dto.HyperdriveSystemRequestInput;
 import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.dto.ManufacturerRequestInput;
 import com.example.starshipShop.dto.StarshipDto;
+import com.example.starshipShop.dto.StarshipRequestInput;
 import com.example.starshipShop.dto.WeaponDto;
 import com.example.starshipShop.dto.WeaponRequestInput;
 import com.example.starshipShop.jpa.HyperdriveSystem;
@@ -49,6 +50,8 @@ public interface StarshipShopMapper {
 
 	WeaponDto toWeaponDto(Weapon weapon);
 
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "starships", ignore = true)
 	Weapon fromWeaponRequestInput(WeaponRequestInput hsri);
 
 	WeaponRequestInput toWeaponRequestInput(Weapon weapon);
@@ -56,4 +59,9 @@ public interface StarshipShopMapper {
 	Starship toStarship(StarshipDto dto);
 
 	StarshipDto toStarshipDto(Starship starship);
+
+	@Mapping(target = "id", ignore = true)
+	Starship fromStarshipRequestInput(StarshipRequestInput sri);
+
+	StarshipRequestInput toStarshipRequestInput(Starship starship);
 }

@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.springframework.hateoas.server.core.Relation;
 
+import com.example.starshipShop.mapper.converter.HashToIdConverter;
+import com.example.starshipShop.mapper.converter.IdToHashConverter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +18,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Relation(collectionRelation = "starships", itemRelation = "starship")
 public class StarshipDto {
-	private long id;
+	
+	@JsonSerialize(converter = IdToHashConverter.class)
+	@JsonDeserialize(converter = HashToIdConverter.class)
+	private Long id;
 	private String name;
 	private String engines;
 	private double height;

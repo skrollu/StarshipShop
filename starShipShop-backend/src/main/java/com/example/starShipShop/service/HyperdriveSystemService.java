@@ -64,11 +64,11 @@ public class HyperdriveSystemService {
 							.getName(),
 				String.format("Manufacturer's name cannot be empty."));
 		
-		ManufacturerDto manufacturerDto = this.manufacturerService	.getManufacturerDtoById(hsri.getManufacturer()
+		this.manufacturerService	.getManufacturerById(hsri.getManufacturer()
 																								.getId())
 																	.orElseThrow(() -> new ResourceNotFoundException(
 																			"The given Manufacturer doesn't exist with this id: " + IdToHashConverter.convertToHash(hsri.getManufacturer().getId())));
-		hsri.setManufacturer(manufacturerDto);
+		
 		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(mapper.fromHyperdriveSystemRequestInput(hsri)));
 	}
 
@@ -82,7 +82,7 @@ public class HyperdriveSystemService {
 		Assert.hasText(hsri	.getManufacturer()
 							.getName(),
 				String.format("Manufacturer's name cannot be empty."));
-		this.manufacturerService.getManufacturerDtoById(hsri	.getManufacturer()
+		this.manufacturerService.getManufacturerById(hsri	.getManufacturer()
 															.getId())
 								.orElseThrow(() -> new ResourceNotFoundException(
 																			"The given Manufacturer doesn't exist with this id: " + IdToHashConverter.convertToHash(hsri.getManufacturer().getId())));

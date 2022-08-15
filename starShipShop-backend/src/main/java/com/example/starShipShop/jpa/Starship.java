@@ -69,7 +69,10 @@ public class Starship {
 	@JsonManagedReference
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "starships_weapons", joinColumns = {
-			@JoinColumn(name = "id_starship", nullable = false, foreignKey = @ForeignKey(name = "FK_starship")) }, inverseJoinColumns = {
-					@JoinColumn(name = "id_weapon", nullable = false, foreignKey = @ForeignKey(name = "FK_weapon")) })
+			@JoinColumn(name = "id_starship", nullable = false, foreignKey = @ForeignKey(name = "FK_starship")) 
+		},
+		inverseJoinColumns = {
+			@JoinColumn(name = "id_weapon", nullable = false, foreignKey = @ForeignKey(name = "FK_weapon"))
+		})
 	private List<Weapon> weapons;
 }

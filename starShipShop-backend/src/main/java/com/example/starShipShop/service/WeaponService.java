@@ -33,8 +33,7 @@ public class WeaponService {
 	private final StarshipShopMapper mapper;
 
 	public List<Weapon> getWeapons() {
-		List<Weapon> list = weaponRepository.findAll();
-		return list;
+		return weaponRepository.findAll();
 	}
 
 	public List<WeaponDto> getWeaponsDto() {
@@ -62,16 +61,16 @@ public class WeaponService {
 				String.format("Manufacturer's id cannot be null."));
 		Assert.hasText(wri	.getManufacturer()
 							.getName(),
-				String.format("Manufacturer's name cannot be empty."));
+							String.format("Manufacturer's name cannot be empty."));
 
-		ManufacturerDto mDto = this.manufacturerService	.getManufacturerDtoById(wri	.getManufacturer()
+		this.manufacturerService	.getManufacturerById(wri	.getManufacturer()
 																					.getId())
 														.orElseThrow(() -> new ResourceNotFoundException(
 																"The given Manufacturer doesn't exist with this id: "
 																		+ IdToHashConverter.convertToHash(
 																				wri	.getManufacturer()
 																					.getId())));
-		wri.setManufacturer(mDto);
+		
 		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wri)));
 	}
 
@@ -86,17 +85,16 @@ public class WeaponService {
 							.getName(),
 				String.format("Manufacturer's name cannot be empty."));
 
-		ManufacturerDto mDto = this.manufacturerService	.getManufacturerDtoById(wri	.getManufacturer()
+		this.manufacturerService	.getManufacturerById(wri	.getManufacturer()
 																					.getId())
 														.orElseThrow(() -> new ResourceNotFoundException(
 																"The given Manufacturer doesn't exist with this id: "
 																		+ IdToHashConverter.convertToHash(
 																				wri	.getManufacturer()
 																					.getId())));
-																							Weapon w = mapper.fromWeaponRequestInput(wri);
-
+		Weapon w = mapper.fromWeaponRequestInput(wri);
 		w.setId(id);
-		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wri)));
+		return mapper.toWeaponDto(weaponRepository.save(w));
 	}
 
 	public void deleteWeapon(final Long id) {
