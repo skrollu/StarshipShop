@@ -2,13 +2,10 @@ package com.example.starshipShop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -21,24 +18,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.starshipShop.assembler.WeaponAssembler;
 import com.example.starshipShop.dto.WeaponDto;
 import com.example.starshipShop.dto.WeaponRequestInput;
 import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.WeaponService;
+import lombok.RequiredArgsConstructor;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/weapons")
 public class WeaponController {
 
-	@Autowired
-	private WeaponService weaponService;
-	@Autowired
-	private WeaponAssembler assembler;
+	private final WeaponService weaponService;
+
+	private final WeaponAssembler assembler;
+
+	private final HashToIdConverter hashToIdConverter;
 
 	@GetMapping
 	public CollectionModel<EntityModel<WeaponDto>> getWeapons() {
@@ -51,7 +47,7 @@ public class WeaponController {
 
 	@GetMapping("/{id}")
 	public EntityModel<WeaponDto> getWeaponById(@PathVariable String id) {
-		WeaponDto weapon = weaponService.getWeaponsDtoById(HashToIdConverter.convertToId(id))
+		WeaponDto weapon = weaponService.getWeaponsDtoById(hashToIdConverter.convert(id))
 										.get();
 		EntityModel<WeaponDto> result = this.assembler.toModel(weapon);
 		return result;
@@ -68,7 +64,7 @@ public class WeaponController {
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<WeaponDto>> updateWeapon(@PathVariable String id,
 			@RequestBody WeaponRequestInput wri) {
-		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.updateWeapon(HashToIdConverter.convertToId(id), wri));
+		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.updateWeapon(hashToIdConverter.convert(id), wri));
 		return ResponseEntity 
 								.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 													.toUri()) 
@@ -77,7 +73,7 @@ public class WeaponController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteWeapon(@PathVariable String id) {
-		this.weaponService.deleteWeapon(HashToIdConverter.convertToId(id));
+		this.weaponService.deleteWeapon(hashToIdConverter.convert(id));
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);

@@ -10,15 +10,20 @@ import org.springframework.stereotype.Component;
 import com.example.starshipShop.controller.WeaponController;
 import com.example.starshipShop.dto.WeaponDto;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
+import lombok.RequiredArgsConstructor;
 
+
+@RequiredArgsConstructor
 @Component
 public class WeaponAssembler implements RepresentationModelAssembler<WeaponDto, EntityModel<WeaponDto>> {
 
+	private final IdToHashConverter idToHashConverter;
+	
 	@Override
 	public EntityModel<WeaponDto> toModel(WeaponDto weapon) {
 		return EntityModel.of(weapon,
 				linkTo(methodOn(WeaponController.class).getWeaponById(
-						IdToHashConverter.convertToHash(weapon.getId()))).withSelfRel(),
+						idToHashConverter.convert(weapon.getId()))).withSelfRel(),
 				// linkTo(methodOn(WeaponController.class).updateHyperdriveSystem(hyperdriveSystem.getId(),
 				// HyperdriveSystemMapper.mapToDto(hyperdriveSystem))).withRel("update"),
 				linkTo(methodOn(WeaponController.class).getWeapons()).withRel("weapons"));
@@ -26,6 +31,6 @@ public class WeaponAssembler implements RepresentationModelAssembler<WeaponDto, 
 
 	public EntityModel<WeaponDto> toModelWithSelfLink(WeaponDto weapon) {
 		return EntityModel.of(weapon, linkTo(methodOn(WeaponController.class).getWeaponById(
-				IdToHashConverter.convertToHash(weapon.getId()))).withSelfRel());
+				idToHashConverter.convert(weapon.getId()))).withSelfRel());
 	}
 }

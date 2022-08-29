@@ -3,7 +3,6 @@ package com.example.starshipShop.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import com.example.starshipShop.dto.HyperdriveSystemDto;
@@ -13,20 +12,19 @@ import com.example.starshipShop.jpa.HyperdriveSystem;
 import com.example.starshipShop.mapper.StarshipShopMapper;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.example.starshipShop.repository.HyperdriveSystemRepository;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@RequiredArgsConstructor
 @Service
 public class HyperdriveSystemService {
 	
-	@Autowired
-	private ManufacturerService manufacturerService;
+	private final ManufacturerService manufacturerService;
 	
-	@Autowired
-	private HyperdriveSystemRepository hyperdriveSystemRepository;
+	private final HyperdriveSystemRepository hyperdriveSystemRepository;
 	
-	@Autowired
 	private final StarshipShopMapper mapper;
+
+	private final IdToHashConverter idToHashConverter;
 	
 	public List<HyperdriveSystem> getHyperdriveSystems() {
 		return hyperdriveSystemRepository.findAll();
@@ -92,6 +90,6 @@ public class HyperdriveSystemService {
 		return hyperdriveSystemRepository	.findById(id)
 		.orElseThrow(
 		() -> new ResourceNotFoundException("HyperdriveSystem doesn't exist with this id: "
-		+ IdToHashConverter.convertToHash(id)));
+		+ idToHashConverter.convert(id)));
 	}
 }
