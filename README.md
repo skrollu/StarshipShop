@@ -1,15 +1,22 @@
 # Starship shop S3
 
-On souhaite créer un projet e-commerce de vaisseau Star wars en ligne.
-En utilisant les technologies react(type script)/SpringBoot.
+# Run application
+
+    mvn clean install -DskipTests -Pdev OR mvn clean install -DskipTests
+    mvn spring-boot:run
+
+# Description
+
+We want to create a Star Wars starships e-commerce project.
+Using react(type script)/SpringBoot technologies
 
 ### Feature 0
 
-Imaginer un modèle relationnel et créer les entités JPA corespondantes.
+Imagine a relationnal model and create minimal JPA entities.
 
 ### Feature 1
 
--   Créer une api qui permet les actions suivantes:
+-   Create a simple CRUD API.
 
 #### Manufacturer api/v1/manufacturers
 
@@ -117,28 +124,23 @@ Imaginer un modèle relationnel et créer les entités JPA corespondantes.
         weapon: [WeaponDTO]
     }
 
--   Tester les endpoints.
+-   Test endpoints.
 
 ### Feature 2
 
--   Inclure un système d'open API et d'hyper media driven
--   Tester
+-   Include Open API and Hyper media driven fetatures
+-   Test
 
 ### Feature 3
 
--   Sécurisé l'api avec JWT.
--   Tester
+-   Secure the API
+-   Test
 
 ### Feature 4
 
--   Trouver une solution pour intégrer des images pour les starships
--   améliorer les modèle (engines, name, short name, etc...)
+-   Add pictures for Starships
+-   Improve the model (engines, name, short name, etc...)
 
 ### Feature 5
 
--   Créer une interface simple afin de d'utiliser les différents endpoints
-
-### Feature 6
-
--   Protéger les endpoints en intégrant Spring Security
--   Utiliser la nouvelle api protégée sur l'interface
+-   Create a Front end

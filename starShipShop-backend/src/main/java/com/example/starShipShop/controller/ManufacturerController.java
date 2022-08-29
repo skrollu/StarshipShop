@@ -2,13 +2,11 @@ package com.example.starshipShop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -21,24 +19,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.starshipShop.assembler.ManufacturerAssembler;
 import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.dto.ManufacturerRequestInput;
 import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.ManufacturerService;
+import lombok.RequiredArgsConstructor;
 
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/manufacturers")
 public class ManufacturerController {
 
-	@Autowired
-	private ManufacturerService manufacturerService;
-	@Autowired
-	private ManufacturerAssembler assembler;
+	private final ManufacturerService manufacturerService;
+
+	private final ManufacturerAssembler assembler;
+	
+	private final HashToIdConverter hashToIdConverter;
 
 	@GetMapping
 	public CollectionModel<EntityModel<ManufacturerDto>> getManufacturers() {
@@ -52,7 +50,7 @@ public class ManufacturerController {
 
 	@GetMapping("/{id}")
 	public EntityModel<ManufacturerDto> getManufacturerById(@PathVariable String id) {
-		ManufacturerDto manufacturer = manufacturerService	.getManufacturerDtoById(HashToIdConverter.convertToId(id))
+		ManufacturerDto manufacturer = manufacturerService	.getManufacturerDtoById(hashToIdConverter.convert(id))
 															.get();
 		return this.assembler.toModel(manufacturer);
 	}
@@ -69,7 +67,7 @@ public class ManufacturerController {
 	public ResponseEntity<EntityModel<ManufacturerDto>> updateManufacturer(@PathVariable String id,
 			@RequestBody ManufacturerRequestInput mri) {
 		EntityModel<ManufacturerDto> response = assembler.toModel(
-				this.manufacturerService.updateManufacturer(HashToIdConverter.convertToId(id), mri));
+				this.manufacturerService.updateManufacturer(hashToIdConverter.convert(id), mri));
 		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
 													.toUri())
 								.body(response);
@@ -77,7 +75,7 @@ public class ManufacturerController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteManufacturer(@PathVariable String id) {
-		this.manufacturerService.deleteManufacturer(HashToIdConverter.convertToId(id));
+		this.manufacturerService.deleteManufacturer(hashToIdConverter.convert(id));
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);

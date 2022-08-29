@@ -3,11 +3,9 @@ package com.example.starshipShop.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.dto.ManufacturerRequestInput;
 import com.example.starshipShop.exception.ResourceNotFoundException;
@@ -15,20 +13,18 @@ import com.example.starshipShop.jpa.Manufacturer;
 import com.example.starshipShop.mapper.StarshipShopMapper;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.example.starshipShop.repository.ManufacturerRepository;
+import lombok.RequiredArgsConstructor;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@AllArgsConstructor
-@Data
+@RequiredArgsConstructor
 @Service
 public class ManufacturerService {
 
-	@Autowired
+
 	private final ManufacturerRepository manufacturerRepository;
 
-	@Autowired
 	private final StarshipShopMapper mapper;
+
+	private final IdToHashConverter idToHashConverter;
 
 	public List<Manufacturer> getManufacturers() {
 		return manufacturerRepository.findAll();
@@ -88,6 +84,6 @@ public class ManufacturerService {
 		return manufacturerRepository	.findById(id)
 								.orElseThrow(
 										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
-												+ IdToHashConverter.convertToHash(id)));
+												+ idToHashConverter.convert(id)));
 	}
 }

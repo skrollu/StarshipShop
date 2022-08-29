@@ -10,15 +10,19 @@ import org.springframework.stereotype.Component;
 import com.example.starshipShop.controller.ManufacturerController;
 import com.example.starshipShop.dto.ManufacturerDto;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Component
 public class ManufacturerAssembler
 		implements RepresentationModelAssembler<ManufacturerDto, EntityModel<ManufacturerDto>> {
 
+	private final IdToHashConverter idToHashConverter;
+	
 	@Override
 	public EntityModel<ManufacturerDto> toModel(ManufacturerDto manufacturer) {
 		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
-				IdToHashConverter.convertToHash(manufacturer.getId()))).withSelfRel(),
+				idToHashConverter.convert(manufacturer.getId()))).withSelfRel(),
 //				linkTo(methodOn(ManufacturerController.class).createManufacturer(manufacturer)).withRel("create"),
 //				linkTo(methodOn(ManufacturerController.class).updateManufacturer(manufacturer.getId(),
 //						manufacturer)).withRel("update"),
@@ -29,6 +33,6 @@ public class ManufacturerAssembler
 
 	public EntityModel<ManufacturerDto> toModelWithSelfLink(ManufacturerDto manufacturer) {
 		return EntityModel.of(manufacturer, linkTo(methodOn(ManufacturerController.class).getManufacturerById(
-				IdToHashConverter.convertToHash(manufacturer.getId()))).withSelfRel());
+				idToHashConverter.convert(manufacturer.getId()))).withSelfRel());
 	}
 }
