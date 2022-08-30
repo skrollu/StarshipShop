@@ -23,7 +23,7 @@ jobs:
                   distribution: "temurin"
                   cache: maven
             - name: Step 3 - Build with Maven
-              run: mvn package -Pdev --file starShipShop-backend/pom.xml
+              run: mvn -B package -Pdev --file starShipShop-backend/pom.xml
     test:
         runs-on: ubuntu-latest
         steps:
@@ -36,4 +36,4 @@ jobs:
                   distribution: "temurin"
                   cache: maven
             - name: Step 1 - Run tests with Maven
-              run: mvn test --file starShipShop-backend/pom.xml
+              run: mvn -B test --file starShipShop-backend/pom.xml
