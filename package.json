@@ -15,6 +15,7 @@
 	"homepage": "https://github.com/skrollu/StarshipShop#readme",
 	"scripts": {
 		"backend-dev-start": "cd starshipShop-backend && mvn spring-boot:run -Pdev",
-		"backend-dev-install": "cd starshipShop-backend && mvn clean install -DskipTests -Pdev"
+		"backend-dev-package": "cd starshipShop-backend && mvn clean package -DskipTests -Pdev",
+		"backend-test": "npm run backend-dev-package && mvn test"
 	}
 }
