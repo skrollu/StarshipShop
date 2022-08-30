@@ -2,13 +2,10 @@ package com.example.starshipShop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -21,25 +18,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.starshipShop.assembler.StarshipAssembler;
 import com.example.starshipShop.dto.StarshipDto;
 import com.example.starshipShop.dto.StarshipRequestInput;
 import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.service.StarshipService;
+import lombok.RequiredArgsConstructor;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/starships")
 public class StarshipController {
 
-	@Autowired
-	private StarshipService starshipService;
-
-	@Autowired
-	private StarshipAssembler assembler;
+	private final StarshipService starshipService;
+	private final StarshipAssembler assembler;
+	private final HashToIdConverter hashToIdConverter;
 
 	@GetMapping
 	public CollectionModel<EntityModel<StarshipDto>> getStarships() {
@@ -53,7 +46,7 @@ public class StarshipController {
 	@GetMapping("/{id}")
 	public EntityModel<StarshipDto> getStarshipById(@PathVariable String id) {
 
-		StarshipDto starship = starshipService	.getStarshipDtoById(HashToIdConverter.convertToId(id))
+		StarshipDto starship = starshipService	.getStarshipDtoById(hashToIdConverter.convert(id))
 											.get();
 		EntityModel<StarshipDto> result = this.assembler.toModel(starship);
 		return result;
@@ -72,7 +65,7 @@ public class StarshipController {
 			@RequestBody StarshipRequestInput sri) {
 
 		EntityModel<StarshipDto> entityModel = assembler.toModel(
-				this.starshipService.updateStarship(HashToIdConverter.convertToId(id), sri));
+				this.starshipService.updateStarship(hashToIdConverter.convert(id), sri));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 								.toUri()) 
@@ -81,7 +74,7 @@ public class StarshipController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteStarship(@PathVariable String id) {
-		this.starshipService.deleteStarship(HashToIdConverter.convertToId(id));
+		this.starshipService.deleteStarship(hashToIdConverter.convert(id));
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);

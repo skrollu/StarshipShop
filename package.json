@@ -1,0 +1,20 @@
+{
+	"name": "starshipshop",
+	"version": "0.0.1-SNAPSHOT",
+	"description": "A Star wars starships e-commerce project",
+	"main": "",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/skrollu/StarshipShop.git"
+	},
+	"author": "Skrollu",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/skrollu/StarshipShop/issues"
+	},
+	"homepage": "https://github.com/skrollu/StarshipShop#readme",
+	"scripts": {
+		"backend-dev-start": "cd starshipShop-backend && mvn spring-boot:run -Pdev",
+		"backend-dev-install": "cd starshipShop-backend && mvn clean install -DskipTests -Pdev"
+	}
+}

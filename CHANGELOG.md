@@ -2,6 +2,7 @@
 
 -   Only ask for id for DTO entity name is useless and can result in bugs... only the id is used today
 -   Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
+-   Test endpoints without dev profile
 
 ### 08-29-2022:
 

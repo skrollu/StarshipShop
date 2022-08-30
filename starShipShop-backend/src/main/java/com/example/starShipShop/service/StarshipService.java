@@ -3,11 +3,8 @@ package com.example.starshipShop.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import com.example.starshipShop.dto.StarshipDto;
 import com.example.starshipShop.dto.StarshipRequestInput;
 import com.example.starshipShop.exception.ResourceNotFoundException;
@@ -15,27 +12,23 @@ import com.example.starshipShop.jpa.Starship;
 import com.example.starshipShop.mapper.StarshipShopMapper;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.example.starshipShop.repository.StarshipRepository;
+import lombok.RequiredArgsConstructor;
 
-import lombok.Data;
-
-@Data
+@RequiredArgsConstructor
 @Service
 public class StarshipService {
 
-	@Autowired
-	private ManufacturerService manufacturerService;
+	private final ManufacturerService manufacturerService;
 
-	@Autowired
-	private HyperdriveSystemService hyperdriveSystemService;
+	private final HyperdriveSystemService hyperdriveSystemService;
 
-	@Autowired
-	private WeaponService weaponService;
+	private final WeaponService weaponService;
+	
+	private final StarshipRepository starshipRepository;
 
-	@Autowired
 	private final StarshipShopMapper mapper;
 
-	@Autowired
-	private StarshipRepository starshipRepository;
+	private final IdToHashConverter idToHashConverter;
 
 	public List<Starship> getStarships() {
 		return starshipRepository.findAll();
@@ -129,6 +122,6 @@ public class StarshipService {
 		return starshipRepository.findById(id)
 								.orElseThrow(
 										() -> new ResourceNotFoundException("Starship doesn't exist with this id: "
-												+ IdToHashConverter.convertToHash(id)));
+												+ idToHashConverter.convert(id)));
 	}
 }

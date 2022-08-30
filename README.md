@@ -2,7 +2,14 @@
 
 # Run application
 
-    mvn clean install -DskipTests -Pdev OR mvn clean install -DskipTests
+    DEV mode:
+
+    mvn clean install -DskipTests -Pdev
+    mvn spring-boot:run -Pdev
+
+    DEFAULT mode:
+
+    mvn clean install -DskipTests
     mvn spring-boot:run
 
 # Description
@@ -30,7 +37,7 @@ Imagine a relationnal model and create minimal JPA entities.
 
     ManufacturerRequestInput:
     {
-        name: string
+        *name: string
     }
 
     ManufacturerDTO: {
@@ -54,8 +61,8 @@ Imagine a relationnal model and create minimal JPA entities.
 
     HyperdriveSystemRequestInput:
     {
-        name: string,
-        manufacturer: ManufacturerDTO
+        *name: string,
+        *manufacturer: ManufacturerDTO
     }
 
     HyperdriveSystemDTO: {
@@ -76,8 +83,8 @@ Imagine a relationnal model and create minimal JPA entities.
 
     WeaponRequestInput:
     {
-        name: string,
-        manufacturer: ManufacturerDTO
+        *name: string,
+        *manufacturer: ManufacturerDTO
     }
 
     WeaponDTO: {
@@ -98,14 +105,14 @@ Imagine a relationnal model and create minimal JPA entities.
 
     StarshipRequestInput:
     {
-        name: string,
+        *name: string,
         engines:  string,
         height: number,
         width: number,
         lenght: number,
         weight: number,
         description; string,
-        manufacturer: ManufacturerDTO,
+        *manufacturer: ManufacturerDTO,
         hyperdriveSystem: HyperdriveSystemDTO,
         weapon: [WeaponDTO]
     }
