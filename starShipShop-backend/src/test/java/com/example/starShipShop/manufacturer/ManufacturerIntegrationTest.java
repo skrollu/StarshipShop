@@ -3,6 +3,7 @@ package com.example.starShipShop.manufacturer;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,9 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.example.starshipShop.dto.ManufacturerDto;
-import com.example.starshipShop.requestDto.ManufacturerRequestDTO;
+import com.example.starshipShop.dto.ManufacturerRequestInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -36,185 +36,191 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ManufacturerIntegrationTest {
-
+	
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
-			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
-
+	MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+	
 	public static final String BASE_URL = "/api/v1/manufacturers";
-
+	
 	@Autowired
 	private MockMvc mockMvc;
-
-	// TODO Change the hashids salt to have static test
+	
 	@Test
 	@DisplayName("GET all manufacturers works throught all layers")
 	void getManufacturersWorksThroughAllLayers() throws Exception {
 		this.mockMvc.perform(get(BASE_URL))
-					.andDo(print())
-					.andExpect(status().isOk())
-					.andExpect(content().string(containsString("TestManufacturer")))
-					.andExpect(jsonPath("$._embedded.manufacturers[0]").exists())
-					.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href").exists())
-					.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href",
-							is(Matchers.containsString(BASE_URL + "/" + "3R45bLd8"))))
-					.andExpect(jsonPath("$._links.manufacturers.href").value(Matchers.containsString(BASE_URL)));
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(content().string(containsString("TestManufacturer1")))
+		.andExpect(jsonPath("$._embedded.manufacturers[0]").exists())
+		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href").exists())
+		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href",
+		is(Matchers.containsString(BASE_URL + "/" + "W5pvAw0r"))))
+		.andExpect(jsonPath("$._links.manufacturers.href").value(Matchers.containsString(BASE_URL)));
 	}
-
 	@Test
+	@DisplayName("GET one manufacturer works throught all layers")
 	void getManufacturerByIdWorksThroughAllLayers() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "/{id}", "pAGJNGay"))
-					.andDo(print())
-					.andExpect(jsonPath("$.name").exists())
-					.andExpect(jsonPath("$.name", is("TestManufacturer")))
-					.andExpect(jsonPath("$.id").exists())
-					.andExpect(jsonPath("$.id", not("test")))
-					.andExpect(jsonPath("$.id", is("pAGJNGay")))
-					.andExpect(jsonPath("$._links.self.href", is(Matchers.containsString(BASE_URL + "/" + "pAGJNGay"))))
-					.andExpect(status().isOk());
+		this.mockMvc.perform(get(BASE_URL + "/{id}", "W5pvAw0r"))
+		.andDo(print())
+		.andExpect(jsonPath("$.name").exists())
+		.andExpect(jsonPath("$.name", is("TestManufacturer1")))
+		.andExpect(jsonPath("$.id").exists())
+		.andExpect(jsonPath("$.id", not("test")))
+		.andExpect(jsonPath("$.id", is("W5pvAw0r")))
+		.andExpect(jsonPath("$._links.self.href", is(Matchers.containsString(BASE_URL + "/" + "W5pvAw0r"))))
+		.andExpect(status().isOk());
 	}
-
+	
 	@Test
+	@DisplayName("POST manufacturer works throught all layers")
 	public void createManufacturerWorksThroughAllLayers() throws Exception {
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
-		requestObj.setName("Renault");
-
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("Renault");
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
+		
 		mockMvc	.perform(post(BASE_URL)	.contentType(APPLICATION_JSON_UTF8)
-										.content(requestJson))
-				.andExpect(jsonPath("$.name").value("Renault"))
-				.andExpect(jsonPath("$.id").exists())
-//				.andExpect(jsonPath("$.id").value("PR4WXLep"))
-				.andExpect(status().isOk());
+		.content(requestJson))
+		.andExpect(jsonPath("$.name").value("Renault"))
+		.andExpect(jsonPath("$.id").exists())
+		.andExpect(status().isCreated());
 	}
-
+	
 	@Test
+	@DisplayName("POST manufacturer with empty name throw Illegal Argument Exception")
 	public void createManufacturerWithEmptyNameThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
-		requestObj.setName("");
-
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("");
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
+		
 		mockMvc	.perform(post(BASE_URL)	.contentType(APPLICATION_JSON_UTF8)
-										.content(requestJson))
-				.andExpect(content().string(containsString("Name cannot be empty.")))
-				.andExpect(status().isBadRequest());
+		.content(requestJson))
+		.andExpect(content().string(containsString("Name of Manufacturer cannot be empty.")))
+		.andExpect(status().isBadRequest());
 	}
-
+	
 	@Test
+	@DisplayName("POST manufacturer with null name throw Illegal Argument Exception")
 	public void createManufacturerWithNullNameThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
-
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
+		
 		mockMvc	.perform(post(BASE_URL)	.contentType(APPLICATION_JSON_UTF8)
-										.content(requestJson))
-				.andExpect(content().string(containsString("Name cannot be null.")))
-				.andExpect(status().isBadRequest());
+		.content(requestJson))
+		.andExpect(content().string(containsString("Name of Manufacturer cannot be null.")))
+		.andExpect(status().isBadRequest());
 	}
-
+	
 	@Test
+	@DisplayName("PUT manufacturer works throught all layers")
 	public void updateManufacturerWorksThroughAllLayers() throws Exception {
 		final String name = "Peugeot";
-
-		ManufacturerDto requestObj = new ManufacturerDto();
+		
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
 		requestObj.setName(name);
-
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
-		mockMvc	.perform(put(BASE_URL + "/3R45bLd8").contentType(APPLICATION_JSON_UTF8)
-													.content(requestJson))
-				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.id").value("3R45bLd8"))
-				.andExpect(jsonPath("$.name").value(name))
-				.andExpect(status().isOk());
+		
+		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		.content(requestJson))
+		.andExpect(jsonPath("$.id").exists())
+		.andExpect(jsonPath("$.id").value("W5pvAw0r"))
+		.andExpect(jsonPath("$.name").value(name))
+		.andExpect(status().isCreated());
 	}
-
+	
 	@Test
+	@DisplayName("PUT manufacturer with empty name throw Illegal Argument Exception")
 	public void updateManufacturerWithEmptyNameThrowIllegalArgumentException() throws Exception {
 		final String name = "";
-
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
+		
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
 		requestObj.setName(name);
-
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
-		mockMvc	.perform(put(BASE_URL + "/3R45bLd8").contentType(APPLICATION_JSON_UTF8)
-													.content(requestJson))
-				.andExpect(content().string(containsString("Name cannot be empty.")))
-				.andExpect(status().isBadRequest());
+		
+		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		.content(requestJson))
+		.andExpect(content().string(containsString("Name of Manufacturer cannot be empty.")))
+		.andExpect(status().isBadRequest());
 	}
-
+	
 	@Test
+	@DisplayName("PUT manufacturer with null name throw Illegal Argument Exception")
 	public void updateManufacturerWithNullNameThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
-
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
-		mockMvc	.perform(put(BASE_URL + "/3R45bLd8").contentType(APPLICATION_JSON_UTF8)
-													.content(requestJson))
-				.andExpect(content().string(containsString("Name cannot be null.")))
-				.andExpect(status().isBadRequest());
+		
+		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		.content(requestJson))
+		.andExpect(content().string(containsString("Name of Manufacturer cannot be null.")))
+		.andExpect(status().isBadRequest());
 	}
-
+	
 	@Test
+	@DisplayName("PUT manufacturer with wrong id throw Resource not found exception by the HashToIdConverter")
 	public void updateManufacturerThrowResourceNotFoundException() throws Exception {
 		final String name = "Peugeot";
-
-		ManufacturerRequestDTO requestObj = new ManufacturerRequestDTO();
+		
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
 		requestObj.setName(name);
-
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer()
-								.withDefaultPrettyPrinter();
+		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
-
-		mockMvc	.perform(put(BASE_URL + "/1000").contentType(APPLICATION_JSON_UTF8)
-												.content(requestJson))
-				.andExpect(content().string(containsString("Cannot find resource with the given id:")))
-				.andExpect(content().string(containsString("1000")))
-				.andExpect(status().isNotFound());
+		
+		mockMvc	.perform(put(BASE_URL + "/wrongId").contentType(APPLICATION_JSON_UTF8)
+		.content(requestJson))
+		.andExpect(content().string(containsString("Cannot find convert hash to id with the given id: " + "wrongId")))
+		.andExpect(content().string(containsString("wrongId")))
+		.andExpect(status().isNotFound());
 	}
-
+	
+	
 	@Test
+	@DisplayName("DELETE manufacturer works throught all layers")
 	public void deleteManufacturerWorksThroughAllLayers() throws Exception {
-		mockMvc	.perform(delete(BASE_URL + "/{id}", "PR4WXLep").contentType(APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.deleted").exists())
-				.andExpect(jsonPath("$.deleted").value(true))
-				.andExpect(status().isOk());
+		// Id of a not joined Manufacturer to avoid nested errors or errors caused by delete before other tests ended.
+		mockMvc	.perform(delete(BASE_URL + "/{id}", "qZpyYpYM").contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.deleted").exists())
+		.andExpect(jsonPath("$.deleted").value(true))
+		.andExpect(status().isOk());
 	}
-
+	
 	@Test
+	@DisplayName("DELETE manufacturer with wrong id throw Resource not found exception by the HashToIdConverter")
 	public void deleteManufacturerThrowResourceNotFoundException() throws Exception {
-		mockMvc	.perform(delete(BASE_URL + "/{id}", "11111").contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().string(containsString("Cannot find resource with the given id:")))
-				.andExpect(content().string(containsString("11111")))
-				.andExpect(status().isNotFound());
+		mockMvc	.perform(delete(BASE_URL + "/{id}", "wrongId").contentType(APPLICATION_JSON_UTF8))
+		.andExpect(content().string(containsString("Cannot find convert hash to id with the given id: " + "wrongId")))
+		.andExpect(content().string(containsString("wrongId")))
+		.andExpect(status().isNotFound());
 	}
-
 }

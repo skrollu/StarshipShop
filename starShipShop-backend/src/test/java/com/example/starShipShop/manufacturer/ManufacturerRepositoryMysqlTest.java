@@ -33,7 +33,7 @@ public class ManufacturerRepositoryMysqlTest {
 	@Autowired
 	private ManufacturerRepository manufacturerRepository;
 
-	@Test
+/* 	@Test
 	void shouldGetManufacturersFromDb() throws Exception {
 		List<Manufacturer> manufacturers = manufacturerRepository.findAll();
 		assertEquals(2, manufacturers.size());
@@ -74,5 +74,5 @@ public class ManufacturerRepositoryMysqlTest {
 		assertNotNull(result);
 		assertEquals(result.getId(), 3L);
 		assertEquals(result.getName(), manufacturerName);
-	}
+	} */
 }

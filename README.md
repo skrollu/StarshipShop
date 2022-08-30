@@ -4,12 +4,12 @@
 
     DEV mode:
 
-    mvn clean install -DskipTests -Pdev
+    mvn clean package -DskipTests -Pdev
     mvn spring-boot:run -Pdev
 
     DEFAULT mode:
 
-    mvn clean install -DskipTests
+    mvn clean package -DskipTests
     mvn spring-boot:run
 
 # Description
