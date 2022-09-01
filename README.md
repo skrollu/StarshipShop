@@ -1,3 +1,5 @@
+![workflow](https://github.com/skrollu/StarshipShop/actions/workflows/maven.yml/badge.svg)
+
 # Starship shop S3
 
 # Run application
