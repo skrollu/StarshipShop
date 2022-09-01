@@ -27,6 +27,11 @@ jobs:
     test:
         runs-on: ubuntu-latest
 
+        env:
+            DB_DATABASE: starship_shop_test
+            DB_USER: root
+            DB_PASSWORD: root
+
         steps:
             - name: Step 1 - Checkout branch
               uses: actions/checkout@v3
@@ -36,5 +41,11 @@ jobs:
                   java-version: "11"
                   distribution: "temurin"
                   cache: maven
-            - name: Step 3 - Run tests with Maven
+            # MySQL 5.7 is pre-installed on Ubuntu 18.04 containers (and MySQL 8 on 20 and latest) No Service section is needed
+            # Github official announcement: https://github.blog/changelog/2020-02-21-github-actions-breaking-change-ubuntu-virtual-environments-will-no-longer-start-the-mysql-service-automatically/
+            - name: Step 3 - Set up MySQL
+              run: |
+                  sudo /etc/init.d/mysql start
+                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+            - name: Step 4 - Run tests with Maven
               run: mvn -B test --file backend/pom.xml
