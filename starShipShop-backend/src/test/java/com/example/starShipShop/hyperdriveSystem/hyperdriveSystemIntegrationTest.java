@@ -1,4 +1,4 @@
-package com.example.starShipShop.hyperdriveSystem;
+package com.example.starshipShop.hyperdriveSystem;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

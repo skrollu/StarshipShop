@@ -20,5 +20,4 @@ public class StarshipRequestInput {
 	private ManufacturerDto manufacturer;
 	private HyperdriveSystemDto hyperdriveSystem;
 	private List<WeaponDto> weapons;
-
 }

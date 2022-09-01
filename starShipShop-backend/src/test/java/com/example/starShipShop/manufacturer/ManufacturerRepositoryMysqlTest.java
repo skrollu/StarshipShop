@@ -1,4 +1,4 @@
-package com.example.starShipShop.manufacturer;
+package com.example.starshipShop.manufacturer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

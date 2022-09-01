@@ -1,4 +1,4 @@
-package com.example.starShipShop.manufacturer;
+package com.example.starshipShop.manufacturer;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
