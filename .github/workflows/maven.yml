@@ -30,7 +30,7 @@ jobs:
         env:
             DB_DATABASE: starship_shop_test
             DB_USER: root
-            DB_PASSWORD: root
+            DB_PASSWORD:
 
         steps:
             - name: Step 1 - Checkout branch
