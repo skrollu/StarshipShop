@@ -30,7 +30,6 @@ jobs:
         env:
             DB_DATABASE: starship_shop_test
             DB_USER: root
-            DB_PASSWORD:
 
         steps:
             - name: Step 1 - Checkout branch
@@ -46,6 +45,6 @@ jobs:
             - name: Step 3 - Set up MySQL
               run: |
                   sudo /etc/init.d/mysql start
-                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p
             - name: Step 4 - Run tests with Maven
               run: mvn -B test --file backend/pom.xml
