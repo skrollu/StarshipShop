@@ -51,7 +51,7 @@ public class ManufacturerIntegrationTest {
 		this.mockMvc.perform(get(BASE_URL))
 		.andDo(print())
 		.andExpect(status().isOk())
-		.andExpect(content().string(containsString("TestManufacturer1")))
+		.andExpect(content().string(containsString("Manufacturer1")))
 		.andExpect(jsonPath("$._embedded.manufacturers[0]").exists())
 		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href").exists())
 		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href",
@@ -64,7 +64,7 @@ public class ManufacturerIntegrationTest {
 		this.mockMvc.perform(get(BASE_URL + "/{id}", "W5pvAw0r"))
 		.andDo(print())
 		.andExpect(jsonPath("$.name").exists())
-		.andExpect(jsonPath("$.name", is("TestManufacturer1")))
+		.andExpect(jsonPath("$.name", is("Manufacturer1")))
 		.andExpect(jsonPath("$.id").exists())
 		.andExpect(jsonPath("$.id", not("test")))
 		.andExpect(jsonPath("$.id", is("W5pvAw0r")))

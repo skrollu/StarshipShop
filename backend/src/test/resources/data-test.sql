@@ -1,20 +1,20 @@
 insert into manufacturer (name) values 
-('TestManufacturer1'),
-('TestManufacturer2'),
-('TestManufacturer3'),
-('TestManufacturer4'),
-('TestManufacturer5'),
-('TestManufacturerNotJoined')
+('Manufacturer1'),
+('Manufacturer2'),
+('Manufacturer3'),
+('Manufacturer4'),
+('Manufacturer5'),
+('ManufacturerNotJoined')
 ;
 
 insert into hyperdrive_system (name, id_manufacturer) values 
-('TestManufacturerHyperdrive1', 1),
-('TestManufacturerHyperdrive2', 2)
+('Hyperdrive1', 1),
+('Hyperdrive2', 2)
 ;
 
 insert into starship (name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
-('Starship1', 'Koensayr R200 Ion Jet Engines', 7, 30, 61, 2.52, 'Known as a rebel bomber ship', 1, 1),
-('Starship2', 'Novaldex J-77 Event Horizon', 0, 0, 9.1, 0, 'Known as a rebel star fighter', 2, 2)
+('Starship1', 'engine1', 1, 2, 3, 4.5, 'description1', 1, 1),
+('Starship2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
 ;
 
 insert into weapon (name, id_manufacturer) values 

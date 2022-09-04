@@ -41,7 +41,7 @@ public class ManufacturerRepositoryMysqlTest {
 	@Test
 	@DisplayName("Get a manufacturer by id")
 	void shouldGetManufacturerByIdFromDb() throws Exception {
-		final String expectedName = "TestManufacturer1";
+		final String expectedName = "Manufacturer1";
 		Manufacturer manufacturer = manufacturerRepository.getById(1L);
 		assertNotNull(manufacturer);
 		assertEquals(manufacturer.getId(), 1L);
@@ -52,7 +52,7 @@ public class ManufacturerRepositoryMysqlTest {
 	@DisplayName("Find all manufacturers and retrieve one by name in the obtained list")
 	void shouldGetManufacturerByNameFromDb() throws Exception {
 		List<Manufacturer> manufacturers = manufacturerRepository.findAll();
-		final String expected = "TestManufacturer1";
+		final String expected = "Manufacturer1";
 		Manufacturer manufacturer = manufacturers	.stream()
 		.filter(m -> m	.getName()
 		.equals(expected))
