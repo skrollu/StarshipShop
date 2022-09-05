@@ -1,20 +1,20 @@
 insert into manufacturer (name) values 
-('Manufacturer1'),
-('Manufacturer2'),
-('Manufacturer3'),
-('Manufacturer4'),
+('ManufacturerToGet1'),
+('ManufacturerToGet2'),
+('ManufacturerToUpdate3'),
+('ManufacturerToUpdate4'),
 ('Manufacturer5'),
-('ManufacturerNotJoined')
+('ManufacturerNotNested')
 ;
 
 insert into hyperdrive_system (name, id_manufacturer) values 
-('Hyperdrive1', 1),
-('Hyperdrive2', 2)
+('HyperdriveToGet1', 1),
+('HyperdriveToUpdate2', 2)
 ;
 
 insert into starship (name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
-('Starship1', 'engine1', 1, 2, 3, 4.5, 'description1', 1, 1),
-('Starship2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
+('StarshipToGet1', 'engine1', 1, 2, 3, 4.5, 'description1', 1, 1),
+('StarshipToGet2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
 ;
 
 insert into weapon (name, id_manufacturer) values 
@@ -32,3 +32,11 @@ values
 (2,4),
 (2,5)
 ;
+
+-- id list with testHashIdsSalt
+-- 1 W5pvAw0r
+-- 2 Kdp5qpxj
+-- 3 mbLbXp35
+-- 4 ?
+-- 5 ?
+-- 6 qZpyYpYM

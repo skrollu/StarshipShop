@@ -51,7 +51,7 @@ public class ManufacturerIntegrationTest {
 		this.mockMvc.perform(get(BASE_URL))
 		.andDo(print())
 		.andExpect(status().isOk())
-		.andExpect(content().string(containsString("Manufacturer1")))
+		.andExpect(content().string(containsString("ManufacturerToGet1")))
 		.andExpect(jsonPath("$._embedded.manufacturers[0]").exists())
 		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href").exists())
 		.andExpect(jsonPath("$._embedded.manufacturers[0]._links.self.href",
@@ -64,7 +64,7 @@ public class ManufacturerIntegrationTest {
 		this.mockMvc.perform(get(BASE_URL + "/{id}", "W5pvAw0r"))
 		.andDo(print())
 		.andExpect(jsonPath("$.name").exists())
-		.andExpect(jsonPath("$.name", is("Manufacturer1")))
+		.andExpect(jsonPath("$.name", is("ManufacturerToGet1")))
 		.andExpect(jsonPath("$.id").exists())
 		.andExpect(jsonPath("$.id", not("test")))
 		.andExpect(jsonPath("$.id", is("W5pvAw0r")))
@@ -75,7 +75,7 @@ public class ManufacturerIntegrationTest {
 	@Test
 	@DisplayName("POST manufacturer works throught all layers")
 	public void createManufacturerWorksThroughAllLayers() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("Renault");
+		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("ManufacturerCreated");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -85,7 +85,7 @@ public class ManufacturerIntegrationTest {
 		
 		mockMvc	.perform(post(BASE_URL)	.contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
-		.andExpect(jsonPath("$.name").value("Renault"))
+		.andExpect(jsonPath("$.name").value("ManufacturerCreated"))
 		.andExpect(jsonPath("$.id").exists())
 		.andExpect(status().isCreated());
 	}
@@ -127,7 +127,7 @@ public class ManufacturerIntegrationTest {
 	@Test
 	@DisplayName("PUT manufacturer works throught all layers")
 	public void updateManufacturerWorksThroughAllLayers() throws Exception {
-		final String name = "Peugeot";
+		final String name = "ManufacturerToUpdate3";
 		
 		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
 		requestObj.setName(name);
@@ -138,10 +138,10 @@ public class ManufacturerIntegrationTest {
 		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 		
-		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		mockMvc	.perform(put(BASE_URL + "/mbLbXp35").contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
 		.andExpect(jsonPath("$.id").exists())
-		.andExpect(jsonPath("$.id").value("W5pvAw0r"))
+		.andExpect(jsonPath("$.id").value("mbLbXp35"))
 		.andExpect(jsonPath("$.name").value(name))
 		.andExpect(status().isCreated());
 	}
@@ -160,7 +160,7 @@ public class ManufacturerIntegrationTest {
 		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 		
-		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		mockMvc	.perform(put(BASE_URL + "/mbLbXp35").contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
 		.andExpect(content().string(containsString("Name of Manufacturer cannot be empty.")))
 		.andExpect(status().isBadRequest());
@@ -177,7 +177,7 @@ public class ManufacturerIntegrationTest {
 		.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 		
-		mockMvc	.perform(put(BASE_URL + "/W5pvAw0r").contentType(APPLICATION_JSON_UTF8)
+		mockMvc	.perform(put(BASE_URL + "/mbLbXp35").contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
 		.andExpect(content().string(containsString("Name of Manufacturer cannot be null.")))
 		.andExpect(status().isBadRequest());
@@ -186,7 +186,7 @@ public class ManufacturerIntegrationTest {
 	@Test
 	@DisplayName("PUT manufacturer with wrong id throw Resource not found exception by the HashToIdConverter")
 	public void updateManufacturerThrowResourceNotFoundException() throws Exception {
-		final String name = "Peugeot";
+		final String name = "ManufacturerToUpdate3";
 		
 		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
 		requestObj.setName(name);

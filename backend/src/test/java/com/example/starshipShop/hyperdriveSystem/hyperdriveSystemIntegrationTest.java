@@ -39,8 +39,8 @@ public class HyperdriveSystemIntegrationTest {
 		this.mockMvc.perform(get(BASE_URL))
 		.andDo(log())
 		.andExpect(status().isOk())
-		.andExpect(content().string(containsString("Hyperdrive1")))
-		.andExpect(content().string(containsString("Hyperdrive2")))
+		.andExpect(content().string(containsString("HyperdriveToGet1")))
+		.andExpect(content().string(containsString("HyperdriveToUpdate2")))
 		.andExpect(jsonPath("$._embedded.hyperdriveSystems[0]").exists())
 		.andExpect(jsonPath("$._embedded.hyperdriveSystems[0]._links.self.href").exists())
 		.andExpect(jsonPath("$._links.self.href").value(Matchers.endsWith(BASE_URL)));
