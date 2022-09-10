@@ -14,6 +14,26 @@
     mvn clean package -DskipTests
     mvn spring-boot:run
 
+# Run tests and report on Sonarqube
+
+Use the official docker sonarqube image to launch a server container on the default 9000 port.
+
+```bash
+docker run --rm --name sonarqube -p 9000:9000 -v sonarqube_data:/opt/sonarqube/data -v sonarqube_extensions:/opt/sonarqube/extensions -v sonarqube_logs:/opt/sonarqube/logs sonarqube
+```
+
+### Authentication
+
+Go to http://localhost:9000 and login with default id: admin and password: admin.
+
+By default, SonarQube forces user authentication. You can disable forced user authentication, and allow anonymous users to browse projects and run analyses in your instance. To do this, log in as a system administrator, go to **Administration** > **Configuration** > **General Settings** > **Security**, and disable the Force user authentication property.
+
+The **sonar-maven-plugin** execute the SonarQube analysis via a regular Maven. So here we execute the sonar:sonar goal in the verify maven phase to post the report on sonarqube default url (http://localhost:9000).
+
+```bash
+mvn clean verify
+```
+
 # Description
 
 We want to create a Star Wars starships e-commerce project.
