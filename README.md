@@ -2,23 +2,63 @@
 
 # Starship shop S3
 
+This project describe a starships management api. Originaly created to improve my skills different features will appear by time. See the to learn more about it: [description](#description).
+
+### Used tehcnologies:
+
+-   Springboot
+    -   Hibernate
+    -   Lombok
+    -   Mapstruct
+    -   Hashids
+    -   Junit
+    -   Jacoco
+-   Sonarqube (See how to configure Sonarqube [here](#run-tests-and-report-on-sonarqube))
+-   Mysql (See how to configure MySQL [here](#run-application-with-a-mysql-server-on-a-docker-container).)
+
 # Run application
 
-    DEV mode:
+This project is using a MySQL database which need to be install. Personnaly I use WAMP.
+But below I made a simple config to [run a MySQL server on a docker container](#run-application-with-a-mysql-server-on-a-docker-container).
+
+> DEV mode:
 
     mvn clean package -DskipTests -Pdev
     mvn spring-boot:run -Pdev
 
-    DEFAULT mode:
+> DEFAULT mode:
 
     mvn clean package -DskipTests
     mvn spring-boot:run
+
+## Run applicationwith a MySQL server on a docker container
+
+    docker volume create mysql-volume
+    docker run -it --rm --name mysql -p3306:3306 -v mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=starship_shop mysql:8
+
+> Wait for this kind of log (it can take some minutes... so using a volume recommanded for next connection): _2022-09-11T10:42:07.458801Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock_ Which means MySQL Server is now fully available and you can connect throught the container.
+
+    docker exec -it mysql bash
+    mysql -u root -p
+
+> Enter password: root
+> Now to permit our project to connect externally to the docker container or if you want to connect to this database with Database manager you need to change the host value to '%' for the root user or any user you want to create.
+
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
+    FLUSH PRIVILEGES;
+
+> Our container is now available for external connections and the project is now runnable too. The database is created with running container command but if you want to test the project you'll need a starship_shop_test db as bellow:
+
+    create database starship_shop_test;
 
 # Run tests and report on Sonarqube
 
 Use the official docker sonarqube image to launch a server container on the default 9000 port.
 
 ```bash
+docker volume create sonarqube_data
+docker volume create sonarqube_extensions
+docker volume create sonarqube_logs
 docker run --rm --name sonarqube -p 9000:9000 -v sonarqube_data:/opt/sonarqube/data -v sonarqube_extensions:/opt/sonarqube/extensions -v sonarqube_logs:/opt/sonarqube/logs sonarqube
 ```
 
