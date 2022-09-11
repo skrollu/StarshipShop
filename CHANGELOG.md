@@ -6,7 +6,6 @@
 -   Remove print in tests
 -   Document mysql use dev and test mode with docker image
 -   see sonar fix recommandation
--   improve report of jacoco
 
 ### 09-10-2020:
 
