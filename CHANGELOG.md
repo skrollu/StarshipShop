@@ -4,8 +4,11 @@
 -   Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
 -   Replace Sysout by slf4j
 -   Remove print in tests
--   Document mysql use dev and test mode with docker image
 -   see sonar fix recommandation
+
+### 09-11-2020:
+
+-   Improve Jacoco reports and complete the MySQL docker guide in README.md
 
 ### 09-10-2020:
 
