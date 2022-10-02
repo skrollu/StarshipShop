@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
+import lombok.extern.slf4j.Slf4j;
 
 @JsonComponent
+@Slf4j
 public class IdToHashConverter extends StdConverter<Long, String> {
 
 	@Value("${app.hashids.salt}")
@@ -14,11 +16,9 @@ public class IdToHashConverter extends StdConverter<Long, String> {
 
 	@Override
 	public String convert(Long id) {
-		// TODO remove sysout
-		System.out.println("HASH SALT: " + HASHIDS_SALT_KEY);
 		Hashids hashids = new Hashids(HASHIDS_SALT_KEY, 8);
 		String hash = hashids.encode(id);
-		System.out.println("Id " + id + " To Hash " + hash);
+		log.debug("Id " + id + " To Hash " + hash);
 		return hash;	
 	}
 }

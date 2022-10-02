@@ -1,10 +1,10 @@
 ## TODO:
 
--   Only ask for id for DTO entity name is useless and can result in bugs... only the id is used today
--   Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
--   Replace Sysout by slf4j
--   Remove print in tests
--   see sonar fix recommandation
+-   [ ] Only ask for id for DTO entity name is useless and can result in bugs... only the id is used today
+-   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
+-   [x] Replace Sysout by slf4j
+-   [ ] Remove print in tests
+-   [ ] see sonar fix recommandation
 
 ### 09-11-2020:
 

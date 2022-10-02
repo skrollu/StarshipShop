@@ -6,8 +6,10 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import com.example.starshipShop.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.util.StdConverter;
+import lombok.extern.slf4j.Slf4j;
 
 @JsonComponent
+@Slf4j
 public class HashToIdConverter extends StdConverter<String, Long> {
 
 	@Value("${app.hashids.salt}")
@@ -15,14 +17,12 @@ public class HashToIdConverter extends StdConverter<String, Long> {
 
 	@Override
 	public Long convert(String hash) {
-		// TODO remove sysout
-		System.out.println("HASH SALT: " + HASHIDS_SALT_KEY);
 		Hashids hashids = new Hashids(HASHIDS_SALT_KEY, 8);
 		long[] numbers = hashids.decode(hash);
 		if (numbers.length == 0) {
 			throw new ResourceNotFoundException("Cannot find convert hash to id with the given id: " + hash);
 		}
-		System.out.println("Hash " + hash + " To Id " + numbers[0]);
+		log.debug("Hash " + hash + " To Id " + numbers[0]);
 		return numbers[0];
 	}
 }
