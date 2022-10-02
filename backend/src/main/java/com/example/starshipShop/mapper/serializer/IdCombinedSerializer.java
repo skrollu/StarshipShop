@@ -6,12 +6,10 @@ import com.example.starshipShop.mapper.converter.HashToIdConverter;
 import com.example.starshipShop.mapper.converter.IdToHashConverter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -23,18 +21,18 @@ public class IdCombinedSerializer {
   
   public class IdSerializer 
   extends JsonSerializer<Long> {
-  
-  @Override
-  public void serialize(Long id, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-    jsonGenerator.writeObject(idToHashConverter.convert(id));
+    
+    @Override
+    public void serialize(Long id, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+      jsonGenerator.writeObject(idToHashConverter.convert(id));
+    }
   }
-}
-
-public class IdDeserializer extends JsonDeserializer<Long> {
   
-  @Override
-  public Long deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-    return hashToIdConverter.convert(jsonParser.getValueAsString());
+  public class IdDeserializer extends JsonDeserializer<Long> {
+    
+    @Override
+    public Long deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+      return hashToIdConverter.convert(jsonParser.getValueAsString());
+    }
   }
-}
 }

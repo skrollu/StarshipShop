@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
@@ -34,48 +35,51 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/manufacturers")
 public class ManufacturerController {
-
+	
 	private final ManufacturerService manufacturerService;
-
+	
 	private final ManufacturerAssembler assembler;
 	
 	private final HashToIdConverter hashToIdConverter;
-
+	
 	@GetMapping
 	public CollectionModel<EntityModel<ManufacturerDto>> getManufacturers() {
 		List<EntityModel<ManufacturerDto>> result = manufacturerService	.getManufacturersDto()
-																		.stream()
-																		.map(assembler::toModelWithSelfLink)
-																		.collect(Collectors.toList());
+		.stream()
+		.map(assembler::toModelWithSelfLink)
+		.collect(Collectors.toList());
 		return CollectionModel.of(result,
-				linkTo(methodOn(ManufacturerController.class).getManufacturers()).withRel("manufacturers"));
+		linkTo(methodOn(ManufacturerController.class).getManufacturers()).withRel("manufacturers"));
 	}
-
+	
 	@GetMapping("/{id}")
 	public EntityModel<ManufacturerDto> getManufacturerById(@PathVariable String id) {
-		ManufacturerDto manufacturer = manufacturerService	.getManufacturerDtoById(hashToIdConverter.convert(id))
-															.get();
-		return this.assembler.toModel(manufacturer);
+		Optional<ManufacturerDto> manufacturer = manufacturerService.getManufacturerDtoById(hashToIdConverter.convert(id));
+		if(manufacturer.isPresent()){
+			return this.assembler.toModel(manufacturer.get());
+		} else {
+			throw new NullPointerException();
+		}
 	}
-
+	
 	@PostMapping
 	public ResponseEntity<EntityModel<ManufacturerDto>> createManufacturer(@RequestBody ManufacturerRequestInput mri) {
 		EntityModel<ManufacturerDto> entityModel = this.assembler.toModel(this.manufacturerService.createManufacturer(mri));
-			return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-													.toUri())
-								.body(entityModel);
+		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+		.toUri())
+		.body(entityModel);
 	}
-
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<ManufacturerDto>> updateManufacturer(@PathVariable String id,
-			@RequestBody ManufacturerRequestInput mri) {
+	@RequestBody ManufacturerRequestInput mri) {
 		EntityModel<ManufacturerDto> response = assembler.toModel(
-				this.manufacturerService.updateManufacturer(hashToIdConverter.convert(id), mri));
+		this.manufacturerService.updateManufacturer(hashToIdConverter.convert(id), mri));
 		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
-													.toUri())
-								.body(response);
+		.toUri())
+		.body(response);
 	}
-
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteManufacturer(@PathVariable String id) {
 		this.manufacturerService.deleteManufacturer(hashToIdConverter.convert(id));

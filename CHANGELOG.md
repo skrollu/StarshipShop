@@ -1,10 +1,16 @@
 ## TODO:
 
--   [ ] Only ask for id for DTO entity name is useless and can result in bugs... only the id is used today
+-   [ ] Only ask for id for DTO, entity name is useless and can result in bugs... only the id is used today
 -   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
 -   [x] Replace Sysout by slf4j
--   [ ] Remove print in tests
--   [ ] see sonar fix recommandation
+-   [ ] see sonar fix recommandation and go up to 50% of code coverage to be able to push code
+-   [ ] Install SonarLint
+
+### 10-02-2020:
+
+-   Config jacoco reports for sonarqube
+-   Improve code coverage using sonarqube
+-   Fix some code smells and bugs (sonarqube)
 
 ### 09-11-2020:
 

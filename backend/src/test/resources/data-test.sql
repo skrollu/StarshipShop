@@ -4,7 +4,7 @@ insert into manufacturer (name) values
 ('ManufacturerToUpdate3'),
 ('ManufacturerToUpdate4'),
 ('Manufacturer5'),
-('ManufacturerNotNested')
+('ManufacturerNotNested6')
 ;
 
 insert into hyperdrive_system (name, id_manufacturer) values 
@@ -14,15 +14,18 @@ insert into hyperdrive_system (name, id_manufacturer) values
 
 insert into starship (name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
 ('StarshipToGet1', 'engine1', 1, 2, 3, 4.5, 'description1', 1, 1),
-('StarshipToGet2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
+('StarshipToGet2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2),
+('StarshipToUpdate1', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2),
+('StarshipToDelete1', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
 ;
 
 insert into weapon (name, id_manufacturer) values 
-('Weapon1', 1),
-('Weapon2', 1),
-('Weapon3', 1),
+('WeaponToGet1', 1),
+('WeaponToGet2', 1),
+('WeaponToGet3', 1),
 ('Weapon4', 2),
-('Weapon5', 2);
+('Weapon5', 2)
+;
 
 insert into starships_weapons (id_starship, id_weapon) 
 values 
@@ -37,6 +40,6 @@ values
 -- 1 W5pvAw0r
 -- 2 Kdp5qpxj
 -- 3 mbLbXp35
--- 4 ?
+-- 4 GELQkpdQ
 -- 5 ?
 -- 6 qZpyYpYM

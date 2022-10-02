@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
@@ -33,49 +34,50 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/starships")
 public class StarshipController {
-
+	
 	private final StarshipService starshipService;
 	private final StarshipAssembler assembler;
 	private final HashToIdConverter hashToIdConverter;
-
+	
 	@GetMapping
 	public CollectionModel<EntityModel<StarshipDto>> getStarships() {
 		List<EntityModel<StarshipDto>> result = starshipService.getStarshipsDto()
-															.stream()
-															.map(assembler::toModelWithSelfLink)
-															.collect(Collectors.toList());
+		.stream()
+		.map(assembler::toModelWithSelfLink)
+		.collect(Collectors.toList());
 		return CollectionModel.of(result, linkTo(methodOn(StarshipController.class).getStarships()).withSelfRel());
 	}
-
+	
 	@GetMapping("/{id}")
 	public EntityModel<StarshipDto> getStarshipById(@PathVariable String id) {
-
-		StarshipDto starship = starshipService	.getStarshipDtoById(hashToIdConverter.convert(id))
-											.get();
-		EntityModel<StarshipDto> result = this.assembler.toModel(starship);
-		return result;
+		Optional<StarshipDto> starship = starshipService	.getStarshipDtoById(hashToIdConverter.convert(id));
+		if(starship.isPresent()){
+			return this.assembler.toModel(starship.get());
+		} else {
+			throw new NullPointerException();
+		}
 	}
-
+	
 	@PostMapping
 	public ResponseEntity<EntityModel<StarshipDto>> createStarship(@RequestBody StarshipRequestInput sri) {
 		EntityModel<StarshipDto> entityModel = assembler.toModel(this.starshipService.createStarship(sri));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-													.toUri()) 
-								.body(entityModel);
+		.toUri()) 
+		.body(entityModel);
 	}
-
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<StarshipDto>> updateStarship(@PathVariable String id,
-			@RequestBody StarshipRequestInput sri) {
-
+	@RequestBody StarshipRequestInput sri) {
+		
 		EntityModel<StarshipDto> entityModel = assembler.toModel(
-				this.starshipService.updateStarship(hashToIdConverter.convert(id), sri));
-
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-								.toUri()) 
-								.body(entityModel);
+		this.starshipService.updateStarship(hashToIdConverter.convert(id), sri));
+		
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+		.toUri()) 
+		.body(entityModel);
 	}
-
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteStarship(@PathVariable String id) {
 		this.starshipService.deleteStarship(hashToIdConverter.convert(id));
