@@ -149,7 +149,7 @@ public class StarshipIntegrationTest {
     @DisplayName("PUT a starship json body works throught all layers, it removes a weapon and update some other data")
     void updateStarshipWorksThroughAllLayers() throws Exception {        
         
-        String json = "{\r\n\"name\":\"StarshipUpdated\",\r\n\"engines\":\"engineUpdated\",\r\n\"height\": 0.1,\r\n\"width\": 2.3,\r\n\"lenght\": 4.5,\r\n\"weight\": 6.7,\r\n\"description\": \"description\",\r\n\"manufacturer\": {\r\n\"id\": \"Kdp5qpxj\",\r\n\"name\": \"ManufacturerToGet2\"\r\n},\r\n\"hyperdriveSystem\": {\r\n\"id\":\"Kdp5qpxj\",\r\n\"name\": \"HyperdriveToGet1\",\r\n\"manufacturer\": {\r\n\"id\": \"Kdp5qpxj\",\r\n\"name\": \"ManufacturerToGet1\"\r\n}\r\n},\r\n\"weapons\": [\r\n{\r\n\"id\": \"W5pvAw0r\",\r\n\"name\": \"WeaponToGet1\",\r\n\"manufacturer\": {\r\n\"id\": \"W5pvAw0r\",\r\n\"name\": \"ManufacturerToGet1\"\r\n}\r\n}\r\n}\r\n]\r\n}";
+        String json = "{\r\n\"name\":\"StarshipUpdated\",\r\n\"engines\":\"engineUpdated\",\r\n\"height\": 0.1,\r\n\"width\": 2.3,\r\n\"lenght\": 4.5,\r\n\"weight\": 6.7,\r\n\"description\": \"description\",\r\n\"manufacturer\": {\r\n\"id\": \"Kdp5qpxj\",\r\n\"name\": \"ManufacturerToGet2\"\r\n},\r\n\"hyperdriveSystem\": {\r\n\"id\":\"Kdp5qpxj\",\r\n\"name\": \"HyperdriveToGet1\",\r\n\"manufacturer\": {\r\n\"id\": \"Kdp5qpxj\",\r\n\"name\": \"ManufacturerToGet2\"\r\n}\r\n},\r\n\"weapons\": [\r\n{\r\n\"id\": \"W5pvAw0r\",\r\n\"name\": \"WeaponToGet1\",\r\n\"manufacturer\": {\r\n\"id\": \"W5pvAw0r\",\r\n\"name\": \"ManufacturerToGet1\"\r\n}\r\n}\r\n]\r\n}";
 
         mockMvc	.perform(put(BASE_URL + "/" + "mbLbXp35")	.contentType(APPLICATION_JSON_UTF8)
         .content(json))
@@ -172,17 +172,12 @@ public class StarshipIntegrationTest {
         .andExpect(jsonPath("$.hyperdriveSystem.manufacturer.id", is("Kdp5qpxj")))
         .andExpect(jsonPath("$.hyperdriveSystem.manufacturer.name", is("ManufacturerToGet2")))
         .andExpect(jsonPath("$.weapons").exists())
-        .andExpect(jsonPath("$.weapons", hasSize(2)))
+        .andExpect(jsonPath("$.weapons", hasSize(1)))
         .andExpect(jsonPath("$.weapons[0].id", is("W5pvAw0r")))
         .andExpect(jsonPath("$.weapons[0].name", is("WeaponToGet1")))
         .andExpect(jsonPath("$.weapons[0].manufacturer").exists())
         .andExpect(jsonPath("$.weapons[0].manufacturer.id", is("W5pvAw0r")))
         .andExpect(jsonPath("$.weapons[0].manufacturer.name", is("ManufacturerToGet1")))
-        .andExpect(jsonPath("$.weapons[1].id", is("Kdp5qpxj")))
-        .andExpect(jsonPath("$.weapons[1].name", is("WeaponToGet2")))
-        .andExpect(jsonPath("$.weapons[1].manufacturer").exists())
-        .andExpect(jsonPath("$.weapons[1].manufacturer.id", is("W5pvAw0r")))
-        .andExpect(jsonPath("$.weapons[1].manufacturer.name", is("ManufacturerToGet1")))
         .andExpect(jsonPath("$._links.self.href", is(Matchers.endsWith(BASE_URL + "/" + "mbLbXp35"))))
         .andExpect(jsonPath("$._links.starships.href").value(Matchers.endsWith(BASE_URL)));
     }

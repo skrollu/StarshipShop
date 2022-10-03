@@ -15,8 +15,8 @@ insert into hyperdrive_system (name, id_manufacturer) values
 insert into starship (name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
 ('StarshipToGet1', 'engine1', 1, 2, 3, 4.5, 'description1', 1, 1),
 ('StarshipToGet2', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2),
-('StarshipToUpdate1', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2),
-('StarshipToDelete1', 'engine2', 1, 2, 3, 4.5, 'description2', 2, 2)
+('StarshipToUpdate1', 'engine3', 1, 2, 3, 4.5, 'description2', 2, 2),
+('StarshipToDelete1', 'engine4', 1, 2, 3, 4.5, 'description2', 2, 2)
 ;
 
 insert into weapon (name, id_manufacturer) values 
