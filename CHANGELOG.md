@@ -4,19 +4,23 @@
 -   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
 -   [x] Replace Sysout by slf4j
 -   [ ] see sonar fix recommandation and go up to 50% of code coverage to be able to push code
--   [ ] Install SonarLint
+-   [x] Install SonarLint
 
-### 10-02-2020:
+### 10-08-2022
+
+-   Install and configure Sonarlint
+
+### 10-02-2022:
 
 -   Config jacoco reports for sonarqube
 -   Improve code coverage using sonarqube
 -   Fix some code smells and bugs (sonarqube)
 
-### 09-11-2020:
+### 09-11-2022:
 
 -   Improve Jacoco reports and complete the MySQL docker guide in README.md
 
-### 09-10-2020:
+### 09-10-2022:
 
 -   Document test with report with jacoco and Sonarqube
 

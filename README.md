@@ -78,6 +78,18 @@ docker run --rm --name sonarqube -p 9000:9000 -v sonarqube_data:/opt/sonarqube/d
 ### Authentication
 
 Go to http://localhost:9000 and login with default id: admin and password: admin.
+First connection will ask you to change your password.
+
+If you are using SonarLint plugin go to your **Profile** > **Security** > **Generate Tokens**
+chose a name for it:
+
+> Name: global
+
+> Type: Global Analysis Token
+
+> Expiration: No expiration
+
+Copy this token the sonarlint connection form: _see sonar lint documentation_ of your IDE.
 
 By default, SonarQube forces user authentication. You can disable forced user authentication, and allow anonymous users to browse projects and run analyses in your instance. To do this, log in as a system administrator, go to **Administration** > **Configuration** > **General Settings** > **Security**, and disable the Force user authentication property.
 
