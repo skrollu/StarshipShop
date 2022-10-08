@@ -9,7 +9,9 @@ insert into manufacturer (name) values
 
 insert into hyperdrive_system (name, id_manufacturer) values 
 ('HyperdriveToGet1', 1),
-('HyperdriveToUpdate2', 2)
+('HyperdriveToGet2', 2),
+('HyperdriveToUpdate3', 2),
+('HyperdriveToDelete4', 2)
 ;
 
 insert into starship (name, engines, height, width, lenght, weight, description, id_hyperdrive_system, id_manufacturer) values 
@@ -23,8 +25,9 @@ insert into weapon (name, id_manufacturer) values
 ('WeaponToGet1', 1),
 ('WeaponToGet2', 1),
 ('WeaponToGet3', 1),
-('Weapon4', 2),
-('Weapon5', 2)
+('WeaponToUpdate4', 2),
+('Weapon5', 2),
+('WeaponToDelete6', 2)
 ;
 
 insert into starships_weapons (id_starship, id_weapon) 

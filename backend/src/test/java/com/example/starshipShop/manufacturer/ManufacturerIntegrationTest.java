@@ -3,7 +3,6 @@ package com.example.starshipShop.manufacturer;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,13 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.nio.charset.Charset;
-
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +34,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ManufacturerIntegrationTest {
 	
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -46,6 +46,7 @@ public class ManufacturerIntegrationTest {
 	private MockMvc mockMvc;
 	
 	@Test
+	@Order(1)
 	@DisplayName("GET all manufacturers works throught all layers")
 	void getManufacturersWorksThroughAllLayers() throws Exception {
 		this.mockMvc.perform(get(BASE_URL))
@@ -199,8 +200,9 @@ public class ManufacturerIntegrationTest {
 		
 		mockMvc	.perform(put(BASE_URL + "/wrongId").contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
-		.andExpect(content().string(containsString("Cannot find convert hash to id with the given id: " + "wrongId")))
-		.andExpect(content().string(containsString("wrongId")))
+		.andExpect(content().string(Matchers.startsWith("ADVICE")))
+		.andExpect(content().string(containsString("Cannot convert hash to id with the given hash:")))
+		.andExpect(content().string(Matchers.endsWith("wrongId")))
 		.andExpect(status().isNotFound());
 	}
 	
@@ -219,8 +221,9 @@ public class ManufacturerIntegrationTest {
 	@DisplayName("DELETE manufacturer with wrong id throw Resource not found exception by the HashToIdConverter")
 	public void deleteManufacturerThrowResourceNotFoundException() throws Exception {
 		mockMvc	.perform(delete(BASE_URL + "/{id}", "wrongId").contentType(APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("Cannot find convert hash to id with the given id: " + "wrongId")))
-		.andExpect(content().string(containsString("wrongId")))
+		.andExpect(content().string(Matchers.startsWith("ADVICE")))
+		.andExpect(content().string(containsString("Cannot convert hash to id with the given hash:")))
+		.andExpect(content().string(Matchers.endsWith("wrongId")))
 		.andExpect(status().isNotFound());
 	}
 }
