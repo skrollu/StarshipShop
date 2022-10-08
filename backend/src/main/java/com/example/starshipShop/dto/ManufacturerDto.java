@@ -18,7 +18,6 @@ import lombok.NonNull;
 @Data
 @Builder
 @Relation(collectionRelation = "manufacturers", itemRelation = "manufacturer")
-@NonNull
 public class ManufacturerDto {
 	
 	@JsonSerialize(using = IdSerializer.class)

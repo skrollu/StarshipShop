@@ -56,8 +56,10 @@ public class StarshipService {
 	public StarshipDto createStarship(final StarshipRequestInput sri) {
 		this.checkStarshipRequestInput(sri);
 		// Check Manufacturer
-		this.manufacturerService.checkManufacturerDto(sri.getManufacturer());
-		this.manufacturerService.checkManufacturerExist(sri.getManufacturer().getId());
+		if(sri.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(sri.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(sri.getManufacturer().getId());
+		}
 
 		// Check HyperdriveSystem
 		if(sri.getHyperdriveSystem() != null) {
@@ -66,7 +68,7 @@ public class StarshipService {
 		}
 
 		// Check Weapons
-		if (!sri.getWeapons().isEmpty()) {
+		if (sri.getWeapons() != null && !sri.getWeapons().isEmpty()) {
 			sri	.getWeapons()
 				.forEach(w -> {
 					this.weaponService.checkWeaponDto(w);

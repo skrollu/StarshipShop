@@ -121,12 +121,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 		<artifactId>jacoco-maven-plugin</artifactId>
 		<version>${jacoco-maven-plugin.version}</version>
 	</dependency>
-	
-	<dependency>
-		<groupId>org.jacoco</groupId>
-		<artifactId>jacoco-maven-plugin</artifactId>
-		<version>${jacoco-maven-plugin.version}</version>
-	</dependency>
 </dependencies>
 
 <build>

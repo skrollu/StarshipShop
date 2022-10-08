@@ -52,8 +52,10 @@ public class HyperdriveSystemService {
 	public HyperdriveSystemDto createHyperdriveSystem(final HyperdriveSystemRequestInput hsri) {
 		this.checkHyperdriveSystemRequestInput(hsri);
 		// Check Manufacturer
-		this.manufacturerService.checkManufacturerDto(hsri.getManufacturer());
-		this.manufacturerService.checkManufacturerExist(hsri.getManufacturer().getId());
+		if(hsri.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(hsri.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(hsri.getManufacturer().getId());
+		}
 		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(mapper.fromHyperdriveSystemRequestInput(hsri)));
 	}
 	
@@ -62,9 +64,10 @@ public class HyperdriveSystemService {
 		this.checkHyperdriveSystemRequestInput(hsri);
 		this.checkHyperdriveSystemExist(id);
 		// Check Manufacturer
-		this.manufacturerService.checkManufacturerDto(hsri.getManufacturer());
-		this.manufacturerService.checkManufacturerExist(hsri.getManufacturer().getId());
-		
+		if(hsri.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(hsri.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(hsri.getManufacturer().getId());
+		}
 		HyperdriveSystem hs = mapper.fromHyperdriveSystemRequestInput(hsri);
 		hs.setId(id);
 		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(hs));

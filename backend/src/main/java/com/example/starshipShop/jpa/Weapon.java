@@ -38,7 +38,7 @@ public class Weapon {
 
 	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_manufacturer", nullable = false, foreignKey = @ForeignKey(name = "FK_manufacturer_weapon"))
+	@JoinColumn(name = "id_manufacturer", nullable = true, foreignKey = @ForeignKey(name = "FK_manufacturer_weapon"))
 	private Manufacturer manufacturer;
 
 	@JsonBackReference

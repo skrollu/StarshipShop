@@ -52,8 +52,11 @@ public class WeaponService {
 	public WeaponDto createWeapon(final WeaponRequestInput wri) {
 		this.checkWeaponRequestInput(wri);
 		// Check Manufacturer
-		this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
-		this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		if(wri.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		}
+		
 		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wri)));
 	}
 
@@ -61,9 +64,12 @@ public class WeaponService {
 		Assert.notNull(id, String.format("id cannot be null."));		
 		this.checkWeaponRequestInput(wri);
 		this.checkWeaponExist(id);
+
 		// Check Manufacturer
-		this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
-		this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		if(wri.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		}
 
 		Weapon w = mapper.fromWeaponRequestInput(wri);
 		w.setId(id);

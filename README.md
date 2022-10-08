@@ -149,7 +149,7 @@ Imagine a relationnal model and create minimal JPA entities.
     HyperdriveSystemRequestInput:
     {
         *name: string,
-        *manufacturer: ManufacturerDTO
+        manufacturer: ManufacturerDTO
     }
 
     HyperdriveSystemDTO: {
@@ -171,7 +171,7 @@ Imagine a relationnal model and create minimal JPA entities.
     WeaponRequestInput:
     {
         *name: string,
-        *manufacturer: ManufacturerDTO
+        manufacturer: ManufacturerDTO
     }
 
     WeaponDTO: {
@@ -199,7 +199,7 @@ Imagine a relationnal model and create minimal JPA entities.
         lenght: number,
         weight: number,
         description; string,
-        *manufacturer: ManufacturerDTO,
+        manufacturer: ManufacturerDTO,
         hyperdriveSystem: HyperdriveSystemDTO,
         weapon: [WeaponDTO]
     }
