@@ -1,9 +1,9 @@
-package com.example.starshipShop.mapper.serializer;
+package com.example.starshipShop.service.mapper.serializer;
 
 import java.io.IOException;
 import org.springframework.stereotype.Component;
-import com.example.starshipShop.mapper.converter.HashToIdConverter;
-import com.example.starshipShop.mapper.converter.IdToHashConverter;
+import com.example.starshipShop.service.mapper.converter.HashToIdConverter;
+import com.example.starshipShop.service.mapper.converter.IdToHashConverter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

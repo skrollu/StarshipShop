@@ -1,4 +1,4 @@
-package com.example.starshipShop.assembler;
+package com.example.starshipShop.controller.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -7,7 +7,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 import com.example.starshipShop.controller.HyperdriveSystemController;
 import com.example.starshipShop.dto.HyperdriveSystemDto;
-import com.example.starshipShop.mapper.converter.IdToHashConverter;
+import com.example.starshipShop.service.mapper.converter.IdToHashConverter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

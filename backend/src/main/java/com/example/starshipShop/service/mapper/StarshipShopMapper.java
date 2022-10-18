@@ -1,8 +1,7 @@
-package com.example.starshipShop.mapper;
+package com.example.starshipShop.service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
 import com.example.starshipShop.dto.HyperdriveSystemDto;
 import com.example.starshipShop.dto.HyperdriveSystemRequestInput;
 import com.example.starshipShop.dto.ManufacturerDto;
@@ -11,10 +10,10 @@ import com.example.starshipShop.dto.StarshipDto;
 import com.example.starshipShop.dto.StarshipRequestInput;
 import com.example.starshipShop.dto.WeaponDto;
 import com.example.starshipShop.dto.WeaponRequestInput;
-import com.example.starshipShop.jpa.HyperdriveSystem;
-import com.example.starshipShop.jpa.Manufacturer;
-import com.example.starshipShop.jpa.Starship;
-import com.example.starshipShop.jpa.Weapon;
+import com.example.starshipShop.repository.jpa.HyperdriveSystem;
+import com.example.starshipShop.repository.jpa.Manufacturer;
+import com.example.starshipShop.repository.jpa.Starship;
+import com.example.starshipShop.repository.jpa.Weapon;
 
 @Mapper(componentModel = "spring")
 public interface StarshipShopMapper {
