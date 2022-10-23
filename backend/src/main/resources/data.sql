@@ -29,3 +29,9 @@ values
 (2,4),
 (2,5)
 ;
+
+-- bcrypt(password) = $2y$10$XnNNdjWaPcF7ekAVxhYJP.j3nhcLaVLN3xfvAvMqaiJ2z/wx7Coiy
+insert into account(username, password, roles) values
+('user', '$2y$10$XnNNdjWaPcF7ekAVxhYJP.j3nhcLaVLN3xfvAvMqaiJ2z/wx7Coiy', 'ROLE_USER'),
+('admin', '$2y$10$XnNNdjWaPcF7ekAVxhYJP.j3nhcLaVLN3xfvAvMqaiJ2z/wx7Coiy', 'ROLE_USER,ROLE_ADMIN')
+;
