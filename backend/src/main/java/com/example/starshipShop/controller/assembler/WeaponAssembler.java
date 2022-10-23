@@ -6,7 +6,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 import com.example.starshipShop.controller.WeaponController;
-import com.example.starshipShop.dto.WeaponDto;
+import com.example.starshipShop.domain.WeaponDto;
 import com.example.starshipShop.service.mapper.converter.IdToHashConverter;
 import lombok.RequiredArgsConstructor;
 

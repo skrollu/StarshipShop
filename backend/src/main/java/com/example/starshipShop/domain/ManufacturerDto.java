@@ -1,4 +1,4 @@
-package com.example.starshipShop.dto;
+package com.example.starshipShop.domain;
 
 import org.springframework.hateoas.server.core.Relation;
 import com.example.starshipShop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;

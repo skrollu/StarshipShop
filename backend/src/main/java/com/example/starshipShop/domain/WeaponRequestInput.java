@@ -1,4 +1,4 @@
-package com.example.starshipShop.dto;
+package com.example.starshipShop.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
