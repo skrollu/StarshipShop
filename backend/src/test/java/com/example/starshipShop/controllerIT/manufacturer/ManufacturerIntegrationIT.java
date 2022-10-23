@@ -1,4 +1,4 @@
-package com.example.starshipShop.manufacturer;
+package com.example.starshipShop.controllerIT.manufacturer;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import com.example.starshipShop.dto.ManufacturerRequestInput;
+import com.example.starshipShop.domain.ManufacturerRequestInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ManufacturerIntegrationTest {
+public class ManufacturerIntegrationIT {
 	
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
 	MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));

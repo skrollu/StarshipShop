@@ -1,4 +1,4 @@
-package com.example.starshipShop.hyperdriveSystem;
+package com.example.starshipShop.controllerIT.hyperdriveSystem;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;

@@ -1,4 +1,4 @@
-package com.example.starshipShop.manufacturer;
+package com.example.starshipShop.controllerIT.manufacturer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,20 +14,20 @@ import com.example.starshipShop.repository.ManufacturerRepository;
 import com.example.starshipShop.repository.jpa.Manufacturer;
 
 /**
- *  @author Skrollu 
- * 
- * Test some repository operations on a MySQL Database.
- * Same test class as {@link ManufacturerRepositoryH2Test} 
- */
+* @author Skrollu
+*
+*         Test some repository operations on an H2 in memory Database. Same
+*         test class as {@link ManufacturerRepositoryMysqlIT}
+*/
 @DataJpaTest
-@ActiveProfiles("test-mysql")
+@ActiveProfiles("test-h2")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DisplayName("Simple Manufacturer repository with a MySQL database")
-public class ManufacturerRepositoryMysqlTest {
+@DisplayName("Simple Manufacturer repository with an H2 in memory database")
+public class ManufacturerRepositoryH2IT {
 
 	@Autowired
 	private ManufacturerRepository manufacturerRepository;
-		
+	
 	@Test
 	@DisplayName("Find all manufacturers and check the size of the list")
 	void shouldGetAllManufacturersFromDb() throws Exception {
