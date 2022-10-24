@@ -1,3 +1,8 @@
+### 10-23-2022
+
+-   Refactored test packages.
+-   Implement simple security for test endpoints manged with a JPA entity.
+
 ### 10-18-2022
 
 -   Remove unused files and move some packages.
