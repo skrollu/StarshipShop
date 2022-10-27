@@ -1,4 +1,4 @@
-package com.example.starshipShop.config;
+package com.example.starshipShop.config.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +36,6 @@ public class SecurityConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.starshipShop.controllerIT.hyperdriveSystem;
+package com.example.starshipShop.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class HyperdriveSystemIntegrationTest {
+public class HyperdriveSystemIT {
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
 	MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	

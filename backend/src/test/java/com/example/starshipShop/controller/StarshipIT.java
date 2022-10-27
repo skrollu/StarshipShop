@@ -1,4 +1,4 @@
-package com.example.starshipShop.controllerIT.starship;
+package com.example.starshipShop.controller;
 
 
 import static org.hamcrest.CoreMatchers.is;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StarshipIntegrationTest {
+public class StarshipIT {
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
     MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
     

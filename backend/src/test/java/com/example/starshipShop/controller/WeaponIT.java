@@ -1,4 +1,4 @@
-package com.example.starshipShop.controllerIT.weapon;
+package com.example.starshipShop.controller;
 
 
 import static org.hamcrest.CoreMatchers.is;

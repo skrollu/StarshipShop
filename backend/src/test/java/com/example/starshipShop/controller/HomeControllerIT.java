@@ -1,0 +1,122 @@
+package com.example.starshipShop.controller;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import java.nio.charset.Charset;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+
+@ActiveProfiles("test-h2")
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class HomeControllerIT {
+    public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
+    MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+    
+    public static final String BASE_URL = "/";
+   
+   @Autowired
+	private MockMvc mockMvc;
+    
+    @Test
+	@DisplayName("GET home message")
+	void getHomeMessage_shouldReturnWelcomeMessage() throws Exception {
+		this.mockMvc.perform(get(BASE_URL))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, home !")));
+	}
+	
+	@Test
+	@DisplayName("GET user message authenticated as User should return user message")
+	void getUserMessage_whenAuthenticatedAsUser_shouldWorks() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "user").with(httpBasic("user","password")))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, user !")));
+	}
+
+	@Test
+	@DisplayName("GET admin message authenticated as admin should return admin message")
+	void getAdminMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("admin","password")))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, admin !")));
+	}
+
+	@Test
+	@DisplayName("GET writer message authenticated as user should response 403: Forbidden message")
+	void getWriterMessage_whenAuthenticatedAsUser_shouldResponse403Message() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("user","password")))
+		.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@DisplayName("GET writer message authenticated as admin should works")
+	void getWriterMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("admin","password")))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, writer !")));
+	}
+
+	@Test
+	@DisplayName("GET reader message authenticated as admin should works")
+	void getReaderMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("admin","password")))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, reader !")));
+	}
+
+	@Test
+	@DisplayName("GET reader message authenticated as user should works")
+	void getReaderMessage_whenAuthenticatedAsUser_shouldWorks() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("user","password")))
+		.andExpect(status().isOk())
+		.andExpect(content().string(is("Welcome, reader !")));
+	}
+
+	@Test
+	@DisplayName("GET admin message authenticated as User should response 403: Forbidden message")
+	void getAdminMessage_whenAuthenticatedAsUser_shouldResponse403Message() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("user","password")))
+		.andExpect(status().isForbidden());
+		// .andExpect(content().string(containsString("Forbidden")));
+	}
+
+    @Test
+	@DisplayName("GET user message unauthenticatedly should response 401: Unauthorized message")
+	void getUserMessage_shouldResponse401Message() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "user"))
+		.andExpect(status().isUnauthorized());
+		// .andExpect(content().string(containsString("Unauthorized")));
+	}
+
+    @Test
+	@DisplayName("GET admin message unauthenticatedly should response 401: Unauthorized message")
+	void getAdminMessage_shouldResponse401Message() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "admin"))
+		.andExpect(status().isUnauthorized());
+		// .andExpect(content().string(containsString("Unauthorized")));
+	}
+
+
+}
