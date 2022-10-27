@@ -1,12 +1,16 @@
 package com.example.starshipShop.repository.model;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.example.starshipShop.config.security.SecurityUserRole;
 import com.example.starshipShop.repository.jpa.Account;
-
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+@Data
 public class SecurityUserDetails implements UserDetails {
 
     private Account account;
@@ -27,11 +31,16 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(account
-                .getRoles()
-                .split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        String[] roles = account.getRoles().split(",");
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (String r : roles) {
+            r = r.trim();
+            SecurityUserRole securityUserRole = Enum.valueOf(SecurityUserRole.class, r);
+            if(securityUserRole != null)  {
+                authorities.addAll(securityUserRole.getGrantedAuthorities());
+            }
+        }
+        return authorities;
     }
 
     @Override

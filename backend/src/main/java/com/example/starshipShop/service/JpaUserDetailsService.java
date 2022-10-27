@@ -6,16 +6,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.example.starshipShop.repository.AccountRepository;
 import com.example.starshipShop.repository.model.SecurityUserDetails;
-
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
     
     private final AccountRepository accountRepository;
-
-    public JpaUserDetailsService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
          return accountRepository

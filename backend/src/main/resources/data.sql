@@ -31,7 +31,7 @@ values
 ;
 
 -- bcrypt(password) = $2y$10$XnNNdjWaPcF7ekAVxhYJP.j3nhcLaVLN3xfvAvMqaiJ2z/wx7Coiy
-insert into account(username, password, roles) values
-('user', '$2a$10$TJgIontcOI.1DXGDiWovW.lGaVV/YB5uPyZfiLvznEDso/jE.PrvK', 'ROLE_USER'),
-('admin', '$2a$10$ePNwLTp8rWkz4HNswW13U.chvOh0Mmpw0XXe6EyqhPgKgcPubfdl.', 'ROLE_USER,ROLE_ADMIN')
-;
+-- insert into account(username, password, roles) values
+-- ('user', '$2a$10$3xhZl7AalnLHzSenU8i1y.anhs7JEUPyPm2kzGtQ4bT2ExF5k2aQW', 'USER'),
+-- ('admin', '$2a$10$arMWicLUnoeiq/TJWbMFqe5j2XD3qfaxufdYsjCO3KOhvIbm1.Opi', 'USER, ADMIN')
+-- ;

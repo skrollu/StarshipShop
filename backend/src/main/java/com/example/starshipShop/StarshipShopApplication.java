@@ -21,11 +21,11 @@ public class StarshipShopApplication {
 		}
 	}
 
-	// @Bean
-	// CommandLineRunner commandLineRunner(AccountRepository accountRepository, PasswordEncoder encoder) {
-	// 	return args -> {
-	// 		accountRepository.save(new Account(1L, "user", encoder.encode("password"), "ROLE_USER"));
-	// 		accountRepository.save(new Account(2L, "admin", encoder.encode("password"), "ROLE_USER,ROLE_ADMIN"));
-	// 	};
-	// }
+	@Bean
+	CommandLineRunner commandLineRunner(AccountRepository accountRepository, PasswordEncoder encoder) {
+		return args -> {
+			accountRepository.save(new Account(1L, "user", encoder.encode("password"), "USER"));
+			accountRepository.save(new Account(2L, "admin", encoder.encode("password"), "USER, ADMIN"));
+		};
+	}
 }
