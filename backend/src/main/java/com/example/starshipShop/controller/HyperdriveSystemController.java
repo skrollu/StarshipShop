@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ public class HyperdriveSystemController {
 	
 	private final HashToIdConverter hashToIdConverter;
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping
 	public CollectionModel<EntityModel<HyperdriveSystemDto>> getHyperdriveSystems() {
 		List<EntityModel<HyperdriveSystemDto>> result = hyperdriveSystemService	.getHyperdriveSystemsDto()
@@ -47,6 +49,7 @@ public class HyperdriveSystemController {
 		linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystems()).withSelfRel());
 	}
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping("/{id}")
 	public EntityModel<HyperdriveSystemDto> getHyperdriveSystemById(@PathVariable String id) throws NullPointerException{
 		Optional<HyperdriveSystemDto> optHS = hyperdriveSystemService	.getHyperdriveSystemDtoById(hashToIdConverter.convert(id));
@@ -57,6 +60,7 @@ public class HyperdriveSystemController {
 		}
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
 	public ResponseEntity<EntityModel<HyperdriveSystemDto>> createHyperdriveSystem(
 	@RequestBody HyperdriveSystemRequestInput hsri) {
@@ -67,6 +71,7 @@ public class HyperdriveSystemController {
 		.body(entityModel);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<HyperdriveSystemDto>> updateHyperdriveSystem(@PathVariable String id,
 	@RequestBody HyperdriveSystemRequestInput hsri) {
@@ -77,6 +82,7 @@ public class HyperdriveSystemController {
 		.body(response);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteHyperdriveSystem(@PathVariable String id) {
 		this.hyperdriveSystemService.deleteHyperdriveSystem(hashToIdConverter.convert(id));

@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class ManufacturerController {
 	
 	private final HashToIdConverter hashToIdConverter;
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping
 	public CollectionModel<EntityModel<ManufacturerDto>> getManufacturers() {
 		List<EntityModel<ManufacturerDto>> result = manufacturerService	.getManufacturersDto()
@@ -48,6 +50,7 @@ public class ManufacturerController {
 		linkTo(methodOn(ManufacturerController.class).getManufacturers()).withRel("manufacturers"));
 	}
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping("/{id}")
 	public EntityModel<ManufacturerDto> getManufacturerById(@PathVariable String id) {
 		Optional<ManufacturerDto> manufacturer = manufacturerService.getManufacturerDtoById(hashToIdConverter.convert(id));
@@ -58,6 +61,7 @@ public class ManufacturerController {
 		}
 	}
 	
+    @PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
 	public ResponseEntity<EntityModel<ManufacturerDto>> createManufacturer(@RequestBody ManufacturerRequestInput mri) {
 		EntityModel<ManufacturerDto> entityModel = this.assembler.toModel(this.manufacturerService.createManufacturer(mri));
@@ -66,6 +70,7 @@ public class ManufacturerController {
 		.body(entityModel);
 	}
 	
+    @PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<ManufacturerDto>> updateManufacturer(@PathVariable String id,
 	@RequestBody ManufacturerRequestInput mri) {
@@ -76,6 +81,7 @@ public class ManufacturerController {
 		.body(response);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteManufacturer(@PathVariable String id) {
 		this.manufacturerService.deleteManufacturer(hashToIdConverter.convert(id));

@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class StarshipController {
 	private final StarshipAssembler assembler;
 	private final HashToIdConverter hashToIdConverter;
 	
+    @PreAuthorize("permitAll()")
 	@GetMapping
 	public CollectionModel<EntityModel<StarshipDto>> getStarships() {
 		List<EntityModel<StarshipDto>> result = starshipService.getStarshipsDto()
@@ -44,6 +46,7 @@ public class StarshipController {
 		return CollectionModel.of(result, linkTo(methodOn(StarshipController.class).getStarships()).withSelfRel());
 	}
 	
+    @PreAuthorize("permitAll()")
 	@GetMapping("/{id}")
 	public EntityModel<StarshipDto> getStarshipById(@PathVariable String id) {
 		Optional<StarshipDto> starship = starshipService	.getStarshipDtoById(hashToIdConverter.convert(id));
@@ -54,6 +57,7 @@ public class StarshipController {
 		}
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
 	public ResponseEntity<EntityModel<StarshipDto>> createStarship(@RequestBody StarshipRequestInput sri) {
 		EntityModel<StarshipDto> entityModel = assembler.toModel(this.starshipService.createStarship(sri));
@@ -62,6 +66,7 @@ public class StarshipController {
 		.body(entityModel);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<StarshipDto>> updateStarship(@PathVariable String id,
 	@RequestBody StarshipRequestInput sri) {
@@ -74,6 +79,7 @@ public class StarshipController {
 		.body(entityModel);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteStarship(@PathVariable String id) {
 		this.starshipService.deleteStarship(hashToIdConverter.convert(id));

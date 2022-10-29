@@ -1,14 +1,16 @@
-package com.example.starshipShop.controller;
+package com.example.starshipShop.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import com.example.starshipShop.repository.ManufacturerRepository;
 import com.example.starshipShop.repository.jpa.Manufacturer;
@@ -19,8 +21,10 @@ import com.example.starshipShop.repository.jpa.Manufacturer;
  * Test some repository operations on a MySQL Database.
  * Same test class as {@link ManufacturerRepositoryH2IT} 
  */
-@DataJpaTest
+@Disabled
 @ActiveProfiles("test-mysql")
+@SpringBootTest
+// @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DisplayName("Simple Manufacturer repository with a MySQL database")
 public class ManufacturerRepositoryMysqlIT {
@@ -39,7 +43,7 @@ public class ManufacturerRepositoryMysqlIT {
 	@DisplayName("Get a manufacturer by id")
 	void shouldGetManufacturerByIdFromDb() throws Exception {
 		final String expectedName = "ManufacturerToGet1";
-		Manufacturer manufacturer = manufacturerRepository.getById(1L);
+		Manufacturer manufacturer = manufacturerRepository.getReferenceById(1L);
 		assertNotNull(manufacturer);
 		assertEquals(manufacturer.getId(), 1L);
 		assertEquals(manufacturer.getName(), expectedName);

@@ -39,6 +39,7 @@ public class HomeControllerIT {
    @Autowired
 	private MockMvc mockMvc;
     
+	// HOME
     @Test
 	@DisplayName("GET home message")
 	void getHomeMessage_shouldReturnWelcomeMessage() throws Exception {
@@ -47,6 +48,7 @@ public class HomeControllerIT {
 		.andExpect(content().string(is("Welcome, home !")));
 	}
 	
+	// USER
 	@Test
 	@DisplayName("GET user message authenticated as User should return user message")
 	void getUserMessage_whenAuthenticatedAsUser_shouldWorks() throws Exception {
@@ -56,6 +58,14 @@ public class HomeControllerIT {
 	}
 
 	@Test
+	@DisplayName("GET user message when not authenticated should response 401")
+	void getUserMessage_whenNotAuthenticated_shouldResponse401() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "user"))
+		.andExpect(status().isUnauthorized());
+	}
+
+	// ADMIN
+	@Test
 	@DisplayName("GET admin message authenticated as admin should return admin message")
 	void getAdminMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
 		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("admin","password")))
@@ -64,8 +74,23 @@ public class HomeControllerIT {
 	}
 
 	@Test
+	@DisplayName("GET admin message authenticated as user should response 403")
+	void getAdminMessage_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("user","password")))
+		.andExpect(status().isForbidden());
+	}
+
+    @Test
+	@DisplayName("GET admin message when not authenticated should response 401: Unauthorized message")
+	void getAdminMessage_whenNotAuthenticated_shouldResponse401Message() throws Exception {
+		this.mockMvc.perform(get(BASE_URL + "admin"))
+		.andExpect(status().isUnauthorized());
+	}
+
+	// Writer
+	@Test
 	@DisplayName("GET writer message authenticated as user should response 403: Forbidden message")
-	void getWriterMessage_whenAuthenticatedAsUser_shouldResponse403Message() throws Exception {
+	void getWriterMessage_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
 		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("user","password")))
 		.andExpect(status().isForbidden());
 	}
@@ -78,6 +103,7 @@ public class HomeControllerIT {
 		.andExpect(content().string(is("Welcome, writer !")));
 	}
 
+	// Reader
 	@Test
 	@DisplayName("GET reader message authenticated as admin should works")
 	void getReaderMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
@@ -93,30 +119,4 @@ public class HomeControllerIT {
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, reader !")));
 	}
-
-	@Test
-	@DisplayName("GET admin message authenticated as User should response 403: Forbidden message")
-	void getAdminMessage_whenAuthenticatedAsUser_shouldResponse403Message() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("user","password")))
-		.andExpect(status().isForbidden());
-		// .andExpect(content().string(containsString("Forbidden")));
-	}
-
-    @Test
-	@DisplayName("GET user message unauthenticatedly should response 401: Unauthorized message")
-	void getUserMessage_shouldResponse401Message() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "user"))
-		.andExpect(status().isUnauthorized());
-		// .andExpect(content().string(containsString("Unauthorized")));
-	}
-
-    @Test
-	@DisplayName("GET admin message unauthenticatedly should response 401: Unauthorized message")
-	void getAdminMessage_shouldResponse401Message() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "admin"))
-		.andExpect(status().isUnauthorized());
-		// .andExpect(content().string(containsString("Unauthorized")));
-	}
-
-
 }

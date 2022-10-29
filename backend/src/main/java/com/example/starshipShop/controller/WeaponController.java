@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ public class WeaponController {
 	
 	private final HashToIdConverter hashToIdConverter;
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping
 	public CollectionModel<EntityModel<WeaponDto>> getWeapons() {
 		List<EntityModel<WeaponDto>> result = weaponService	.getWeaponsDto()
@@ -46,6 +48,7 @@ public class WeaponController {
 		return CollectionModel.of(result, linkTo(methodOn(WeaponController.class).getWeapons()).withSelfRel());
 	}
 	
+	@PreAuthorize("permitAll()")
 	@GetMapping("/{id}")
 	public EntityModel<WeaponDto> getWeaponById(@PathVariable String id) {
 		Optional<WeaponDto> weapon = weaponService.getWeaponsDtoById(hashToIdConverter.convert(id));
@@ -56,6 +59,7 @@ public class WeaponController {
 		}
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
 	public ResponseEntity<EntityModel<WeaponDto>> createWeapon(@RequestBody WeaponRequestInput wri) {
 		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.createWeapon(wri));
@@ -64,6 +68,7 @@ public class WeaponController {
 		.body(entityModel);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<WeaponDto>> updateWeapon(@PathVariable String id,
 	@RequestBody WeaponRequestInput wri) {
@@ -74,6 +79,7 @@ public class WeaponController {
 		.body(entityModel);
 	}
 	
+	@PreAuthorize("hasAuthority('starship:write')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteWeapon(@PathVariable String id) {
 		this.weaponService.deleteWeapon(hashToIdConverter.convert(id));

@@ -5,5 +5,5 @@
 -   [x] Replace Sysout by slf4j
 -   [x] see sonar fix recommandation and go up to 50% of code coverage to be able to push code
 -   [x] Install SonarLint
--   [ ] Had permission system over Authorities.
--   [ ] Secure existing endpoints
+-   [x] Had permission system over Authorities.
+-   [x] Secure existing endpoints
