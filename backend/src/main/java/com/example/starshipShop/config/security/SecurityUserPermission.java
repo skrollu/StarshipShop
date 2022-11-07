@@ -1,4 +1,4 @@
-package com.example.starshipShop.config.security;
+package com.example.starshipshop.config.security;
 
 import lombok.Getter;
 import lombok.ToString;

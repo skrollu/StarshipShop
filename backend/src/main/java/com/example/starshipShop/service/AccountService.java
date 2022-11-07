@@ -1,11 +1,11 @@
-package com.example.starshipShop.service;
+package com.example.starshipshop.service;
 
 import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import com.example.starshipShop.domain.AccountDto;
-import com.example.starshipShop.repository.model.SecurityUserDetails;
-import com.example.starshipShop.service.mapper.AccountMapper;
+import com.example.starshipshop.domain.AccountDto;
+import com.example.starshipshop.repository.model.SecurityUserDetails;
+import com.example.starshipshop.service.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.example.starshipShop.controller;
+package com.example.starshipshop.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;

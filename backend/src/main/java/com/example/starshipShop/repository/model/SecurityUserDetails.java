@@ -1,4 +1,4 @@
-package com.example.starshipShop.repository.model;
+package com.example.starshipshop.repository.model;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,8 +6,8 @@ import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.example.starshipShop.config.security.SecurityUserRole;
-import com.example.starshipShop.repository.jpa.user.Account;
+import com.example.starshipshop.config.security.SecurityUserRole;
+import com.example.starshipshop.repository.jpa.user.Account;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.example.starshipShop.service.mapper.converter;
+package com.example.starshipshop.service.mapper.converter;
 
 import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Value;

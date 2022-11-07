@@ -1,4 +1,4 @@
-package com.example.starshipShop.repository.jpa.user;
+package com.example.starshipshop.repository.jpa.user;
 
 import java.util.List;
 import javax.persistence.Column;

@@ -1,4 +1,4 @@
-package com.example.starshipShop.service.mapper.converter;
+package com.example.starshipshop.service.mapper.converter;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import com.example.starshipShop.exception.ResourceNotFoundException;
+import com.example.starshipshop.exception.ResourceNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class HashToIdConverterTest {

@@ -1,17 +1,17 @@
-package com.example.starshipShop.service;
+package com.example.starshipshop.service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import com.example.starshipShop.domain.WeaponDto;
-import com.example.starshipShop.domain.WeaponRequestInput;
-import com.example.starshipShop.exception.ResourceNotFoundException;
-import com.example.starshipShop.repository.WeaponRepository;
-import com.example.starshipShop.repository.jpa.Weapon;
-import com.example.starshipShop.service.mapper.StarshipShopMapper;
-import com.example.starshipShop.service.mapper.converter.IdToHashConverter;
+import com.example.starshipshop.domain.WeaponDto;
+import com.example.starshipshop.domain.WeaponRequestInput;
+import com.example.starshipshop.exception.ResourceNotFoundException;
+import com.example.starshipshop.repository.WeaponRepository;
+import com.example.starshipshop.repository.jpa.Weapon;
+import com.example.starshipshop.service.mapper.StarshipShopMapper;
+import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

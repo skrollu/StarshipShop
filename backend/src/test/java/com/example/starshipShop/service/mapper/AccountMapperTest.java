@@ -1,4 +1,4 @@
-package com.example.starshipShop.service.mapper;
+package com.example.starshipshop.service.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
@@ -9,16 +9,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import com.example.starshipShop.domain.AccountDto;
-import com.example.starshipShop.domain.AddressDto;
-import com.example.starshipShop.domain.EmailDto;
-import com.example.starshipShop.domain.SimpleUserDto;
-import com.example.starshipShop.domain.TelephoneDto;
-import com.example.starshipShop.repository.jpa.user.Account;
-import com.example.starshipShop.repository.jpa.user.Address;
-import com.example.starshipShop.repository.jpa.user.Email;
-import com.example.starshipShop.repository.jpa.user.Telephone;
-import com.example.starshipShop.repository.jpa.user.User;
+import com.example.starshipshop.domain.AccountDto;
+import com.example.starshipshop.domain.AddressDto;
+import com.example.starshipshop.domain.EmailDto;
+import com.example.starshipshop.domain.SimpleUserDto;
+import com.example.starshipshop.domain.TelephoneDto;
+import com.example.starshipshop.repository.jpa.user.Account;
+import com.example.starshipshop.repository.jpa.user.Address;
+import com.example.starshipshop.repository.jpa.user.Email;
+import com.example.starshipshop.repository.jpa.user.Telephone;
+import com.example.starshipshop.repository.jpa.user.User;
 
 public class AccountMapperTest {
 

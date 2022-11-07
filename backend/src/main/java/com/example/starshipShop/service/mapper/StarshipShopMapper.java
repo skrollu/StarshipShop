@@ -1,19 +1,19 @@
-package com.example.starshipShop.service.mapper;
+package com.example.starshipshop.service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import com.example.starshipShop.domain.HyperdriveSystemDto;
-import com.example.starshipShop.domain.HyperdriveSystemRequestInput;
-import com.example.starshipShop.domain.ManufacturerDto;
-import com.example.starshipShop.domain.ManufacturerRequestInput;
-import com.example.starshipShop.domain.StarshipDto;
-import com.example.starshipShop.domain.StarshipRequestInput;
-import com.example.starshipShop.domain.WeaponDto;
-import com.example.starshipShop.domain.WeaponRequestInput;
-import com.example.starshipShop.repository.jpa.HyperdriveSystem;
-import com.example.starshipShop.repository.jpa.Manufacturer;
-import com.example.starshipShop.repository.jpa.Starship;
-import com.example.starshipShop.repository.jpa.Weapon;
+import com.example.starshipshop.domain.HyperdriveSystemDto;
+import com.example.starshipshop.domain.HyperdriveSystemRequestInput;
+import com.example.starshipshop.domain.ManufacturerDto;
+import com.example.starshipshop.domain.ManufacturerRequestInput;
+import com.example.starshipshop.domain.StarshipDto;
+import com.example.starshipshop.domain.StarshipRequestInput;
+import com.example.starshipshop.domain.WeaponDto;
+import com.example.starshipshop.domain.WeaponRequestInput;
+import com.example.starshipshop.repository.jpa.HyperdriveSystem;
+import com.example.starshipshop.repository.jpa.Manufacturer;
+import com.example.starshipshop.repository.jpa.Starship;
+import com.example.starshipshop.repository.jpa.Weapon;
 
 @Mapper(componentModel = "spring")
 public interface StarshipShopMapper {

@@ -1,4 +1,4 @@
-package com.example.starshipShop.controller;
+package com.example.starshipshop.controller;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 

@@ -1,4 +1,4 @@
-package com.example.starshipShop.domain;
+package com.example.starshipshop.domain;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

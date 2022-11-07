@@ -1,4 +1,4 @@
-package com.example.starshipShop.service.mapper.converter;
+package com.example.starshipshop.service.mapper.converter;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;

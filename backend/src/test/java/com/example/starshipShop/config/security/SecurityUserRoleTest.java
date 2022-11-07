@@ -1,10 +1,10 @@
-package com.example.starshipShop.config.security;
+package com.example.starshipshop.config.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import com.example.starshipShop.config.security.SecurityUserRole;
+import com.example.starshipshop.config.security.SecurityUserRole;
 
 public class SecurityUserRoleTest {
     

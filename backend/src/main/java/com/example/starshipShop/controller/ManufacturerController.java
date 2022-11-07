@@ -1,4 +1,4 @@
-package com.example.starshipShop.controller;
+package com.example.starshipshop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.starshipShop.controller.assembler.ManufacturerAssembler;
-import com.example.starshipShop.domain.ManufacturerDto;
-import com.example.starshipShop.domain.ManufacturerRequestInput;
-import com.example.starshipShop.service.ManufacturerService;
-import com.example.starshipShop.service.mapper.converter.HashToIdConverter;
+import com.example.starshipshop.controller.assembler.ManufacturerAssembler;
+import com.example.starshipshop.domain.ManufacturerDto;
+import com.example.starshipshop.domain.ManufacturerRequestInput;
+import com.example.starshipshop.service.ManufacturerService;
+import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 import lombok.RequiredArgsConstructor;
 
 

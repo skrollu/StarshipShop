@@ -1,4 +1,4 @@
-package com.example.starshipShop.repository;
+package com.example.starshipshop.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import com.example.starshipShop.repository.ManufacturerRepository;
-import com.example.starshipShop.repository.jpa.Manufacturer;
+import com.example.starshipshop.repository.ManufacturerRepository;
+import com.example.starshipshop.repository.jpa.Manufacturer;
 
 /**
  *  @author Skrollu 

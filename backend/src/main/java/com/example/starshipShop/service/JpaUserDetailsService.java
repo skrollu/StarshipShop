@@ -1,11 +1,11 @@
-package com.example.starshipShop.service;
+package com.example.starshipshop.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.example.starshipShop.repository.AccountRepository;
-import com.example.starshipShop.repository.model.SecurityUserDetails;
+import com.example.starshipshop.repository.AccountRepository;
+import com.example.starshipshop.repository.model.SecurityUserDetails;
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service

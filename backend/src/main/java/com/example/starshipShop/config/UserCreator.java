@@ -1,10 +1,10 @@
-package com.example.starshipShop.config;
+package com.example.starshipshop.config;
 
 import javax.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import com.example.starshipShop.repository.AccountRepository;
-import com.example.starshipShop.repository.jpa.user.Account;
+import com.example.starshipshop.repository.AccountRepository;
+import com.example.starshipshop.repository.jpa.user.Account;
 import lombok.RequiredArgsConstructor;
 
 @Component

@@ -1,13 +1,13 @@
-package com.example.starshipShop.controller.assembler;
+package com.example.starshipshop.controller.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
-import com.example.starshipShop.controller.ManufacturerController;
-import com.example.starshipShop.domain.ManufacturerDto;
-import com.example.starshipShop.service.mapper.converter.IdToHashConverter;
+import com.example.starshipshop.controller.ManufacturerController;
+import com.example.starshipshop.domain.ManufacturerDto;
+import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.example.starshipShop.service;
+package com.example.starshipshop.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -18,10 +18,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.example.starshipShop.repository.AccountRepository;
-import com.example.starshipShop.repository.jpa.user.Account;
-import com.example.starshipShop.repository.model.SecurityUserDetails;
-import com.example.starshipShop.service.JpaUserDetailsService;
+import com.example.starshipshop.repository.AccountRepository;
+import com.example.starshipshop.repository.jpa.user.Account;
+import com.example.starshipshop.repository.model.SecurityUserDetails;
+import com.example.starshipshop.service.JpaUserDetailsService;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
