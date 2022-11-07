@@ -1,4 +1,5 @@
 ![workflow](https://github.com/skrollu/StarshipShop/actions/workflows/maven.yml/badge.svg)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=skrollu_StarshipShop)
 
 # Starship shop S3
 
