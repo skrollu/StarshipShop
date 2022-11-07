@@ -20,8 +20,8 @@ import com.example.starshipShop.repository.jpa.Manufacturer;
 *         Test some repository operations on an H2 in memory Database. Same
 *         test class as {@link ManufacturerRepositoryMysqlIT}
 */
-@Disabled
-@ActiveProfiles("test-h2")
+@Disabled("H2 database cannot work: user and more table names are not allowed")
+@ActiveProfiles("h2-mysql")
 @SpringBootTest
 // @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

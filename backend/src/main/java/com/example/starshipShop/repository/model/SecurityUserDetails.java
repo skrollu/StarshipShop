@@ -7,9 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.example.starshipShop.config.security.SecurityUserRole;
-import com.example.starshipShop.repository.jpa.Account;
+import com.example.starshipShop.repository.jpa.user.Account;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
 @Data
 public class SecurityUserDetails implements UserDetails {
 
@@ -36,7 +37,7 @@ public class SecurityUserDetails implements UserDetails {
         for (String r : roles) {
             r = r.trim();
             SecurityUserRole securityUserRole = Enum.valueOf(SecurityUserRole.class, r);
-            if(securityUserRole != null)  {
+            if (securityUserRole != null) {
                 authorities.addAll(securityUserRole.getGrantedAuthorities());
             }
         }

@@ -46,3 +46,22 @@ values
 -- 4 GELQkpdQ
 -- 5 ?
 -- 6 qZpyYpYM
+
+insert into user (pseudo, id_account)
+values
+('john', 1)
+;
+
+insert into email(email, id_user) 
+values
+('mail@mail.com', 1)
+;
+
+insert into telephone(telephone_number, id_user)
+values
+('0123456789', 1)
+;
+
+INSERT INTO address
+(address, city, country, planet, state, zip_code, id_user)
+VALUES( '23 Baker Court', 'Brooklyn', 'USA', 'Earth', 'NY', 11224, 1);

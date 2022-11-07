@@ -1,3 +1,14 @@
+### 07-11-2022
+
+-   Setup a sonarcloud analyze in the github workflow because docker desktop and so sonarqube, doesn't work anymore...
+
+### 04-11-2022
+
+-   Pass every Integration tests in Mysql database to be more accurate with the "prod" environnment and because of some table names error in H2.
+-   Create Mappers for user information in AccountMapper.
+-   Test them
+-   Create a myAccount endpoint and test it
+
 ### 10-23-2022
 
 -   Refactored test packages.

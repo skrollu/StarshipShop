@@ -29,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import lombok.extern.slf4j.Slf4j;
 
-@ActiveProfiles("test-h2")
+@ActiveProfiles("test-mysql")
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
