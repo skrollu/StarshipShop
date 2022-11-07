@@ -46,26 +46,30 @@ public class AccountControllerIT {
     @Test
     @Tag("GET /myAccount")
     @DisplayName("GET My account information when authenticated should return my info")
-    void getMyAccountInformation_whenAthenticatedAsUser_shouldReturnMyInfo() throws Exception {
+    void getMyAccountInformation_whenAuthenticatedAsUser_shouldReturnMyInfo() throws Exception {
         this.mockMvc
         .perform(get(BASE_URL + "myAccount").with(httpBasic(USER_USERNAME, USER_PASSWORD)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.username", is("user")))
         .andExpect(jsonPath("$.users").isNotEmpty());
     }
-
+    
     @Test
     @Tag("GET /myAccount")
     @DisplayName("GET My account information when not authenticated should return 401")
-    void getMyAccountInformation_whenNotAthenticated_shouldReturn401() throws Exception {
+    void getMyAccountInformation_whenNotAuthenticated_shouldReturn401() throws Exception {
         this.mockMvc
-                .perform(get(BASE_URL + "myAccount")).andExpect(status().isBadRequest());
+        .perform(get(BASE_URL + "myAccount")).andExpect(status().isBadRequest());
     }
     
     @Test
     @Tag("GET /myAccount")
     @DisplayName("GET My account information when authenticated as admin should return my info")
-    void getMyAccountInformation_whenAthenticatedAsAdmin_shouldReturnMyInfo() throws Exception {
-        this.mockMvc.perform(get(BASE_URL + "myAccount")).andExpect(status().isUnauthorized());
+    void getMyAccountInformation_whenAuthenticatedAsAdmin_shouldReturnMyInfo() throws Exception {
+        this.mockMvc.perform(get(BASE_URL + "myAccount").with(httpBasic(
+                ADMIN_USERNAME, ADMIN_PASSWORD)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("admin")))
+                .andExpect(jsonPath("$.users").isEmpty());
     }
 }
