@@ -33,7 +33,7 @@ public class HyperdriveSystemService {
 	public List<HyperdriveSystemDto> getHyperdriveSystemsDto() {
 		return this	.getHyperdriveSystems()
 		.stream()
-		.map(h -> mapper.toHyperdriveSystemDto(h))
+		.map(mapper::toHyperdriveSystemDto)
 		.collect(Collectors.toList());
 	}
 	
@@ -43,7 +43,7 @@ public class HyperdriveSystemService {
 	
 	public Optional<HyperdriveSystemDto> getHyperdriveSystemDtoById(final Long id) {
 		return this	.getHyperdriveSystemById(id)
-		.map(h -> mapper.toHyperdriveSystemDto(h));
+		.map(mapper::toHyperdriveSystemDto);
 	}
 	
 	public HyperdriveSystemDto createHyperdriveSystem(final HyperdriveSystemRequestInput hsri) {

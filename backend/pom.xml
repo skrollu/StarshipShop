@@ -10,7 +10,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 	<relativePath /> <!-- lookup parent from repository -->
 </parent>
 <groupId>com.example</groupId>
-<artifactId>starshipShop</artifactId>
+<artifactId>starshipshop</artifactId>
 <version>0.0.1-SNAPSHOT</version>
 <name>starshipShop</name>
 <description>Demo project for Spring Boot</description>

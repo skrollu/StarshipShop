@@ -33,7 +33,7 @@ public class WeaponService {
 	public List<WeaponDto> getWeaponsDto() {
 		return this	.getWeapons()
 					.stream()
-					.map(w -> mapper.toWeaponDto(w))
+					.map(mapper::toWeaponDto)
 					.collect(Collectors.toList());
 	}
 
@@ -43,7 +43,7 @@ public class WeaponService {
 
 	public Optional<WeaponDto> getWeaponsDtoById(final Long id) {
 		return this	.getWeaponById(id)
-					.map(w -> mapper.toWeaponDto(w));
+					.map(mapper::toWeaponDto);
 	}
 
 	public WeaponDto createWeapon(final WeaponRequestInput wri) {
