@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.AddressDto;
 import com.example.starshipshop.domain.EmailDto;
+import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
 import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.domain.TelephoneDto;
 import com.example.starshipshop.repository.jpa.user.Account;
@@ -86,6 +87,20 @@ public class AccountMapperTest {
         assertEquals("user", dto.getUsername());
         assertEquals(true, dto.getUsers() != null);
         assertEquals(true, dto.getUsers().isEmpty());
+    }
+
+    @Test
+    @Tag("Account mapping")
+    @DisplayName("Given a Register New Account Request Input when mapped it should return a Account")
+    void givenARegisterNewAccountRequestInput_whenMapped_shouldReturnAnAccount() {
+        RegisterNewAccountRequestInput input = RegisterNewAccountRequestInput.builder()
+        .username("user@mail.com").password("password")
+        .matchingPassword("password").build();
+
+        Account account = accountMapper.fromRegisterNewAccountRequestInput(input);
+
+        assertEquals("user@mail.com", account.getUsername());
+        assertEquals("password", account.getPassword());
     }
 
     @Test

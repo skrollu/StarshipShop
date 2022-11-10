@@ -16,9 +16,11 @@ public class UserCreator {
 
     @PostConstruct
     public void init() {
+        // TODO Temporal solution
+        accountRepository.deleteAll();
         Account account =
-        Account.builder().username("user").password(encoder.encode("password")).roles("USER").build();
+        Account.builder().username("user@mail.com").password(encoder.encode("password")).roles("USER").build();
         accountRepository.save(account);
-        accountRepository.save(Account.builder().username("admin").password(encoder.encode("password")).roles("USER, ADMIN").build());
+        accountRepository.save(Account.builder().username("admin@mail.com").password(encoder.encode("password")).roles("USER, ADMIN").build());
     }
 }

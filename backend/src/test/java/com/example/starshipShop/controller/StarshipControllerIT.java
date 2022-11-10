@@ -40,9 +40,9 @@ public class StarshipControllerIT {
     MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
     
     private static final String BASE_URL = "/api/v1/starships";
-    private static final String USER_USERNAME = "user";
+    private static final String USER_USERNAME = "user@mail.com";
     private static final String USER_PASSWORD = "password";
-    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_USERNAME = "admin@mail.com";
     private static final String ADMIN_PASSWORD = "password";
     
     @Autowired

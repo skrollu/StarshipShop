@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.AddressDto;
 import com.example.starshipshop.domain.EmailDto;
+import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
 import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.domain.TelephoneDto;
 import com.example.starshipshop.repository.jpa.user.Account;
@@ -23,6 +24,10 @@ public interface AccountMapper {
     Account toAccount(AccountDto dto);
 
     AccountDto toAccountDto(Account account);
+    
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    Account fromRegisterNewAccountRequestInput(RegisterNewAccountRequestInput input);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "account", ignore = true)

@@ -52,7 +52,7 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET user message authenticated as User should return user message")
 	void getUserMessage_whenAuthenticatedAsUser_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "user").with(httpBasic("user","password")))
+		this.mockMvc.perform(get(BASE_URL + "user").with(httpBasic("user@mail.com","password")))
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, user !")));
 	}
@@ -68,7 +68,7 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET admin message authenticated as admin should return admin message")
 	void getAdminMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("admin","password")))
+		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("admin@mail.com","password")))
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, admin !")));
 	}
@@ -76,7 +76,7 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET admin message authenticated as user should response 403")
 	void getAdminMessage_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("user","password")))
+		this.mockMvc.perform(get(BASE_URL + "admin").with(httpBasic("user@mail.com","password")))
 		.andExpect(status().isForbidden());
 	}
 
@@ -91,14 +91,14 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET writer message authenticated as user should response 403: Forbidden message")
 	void getWriterMessage_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("user","password")))
+		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("user@mail.com","password")))
 		.andExpect(status().isForbidden());
 	}
 
 	@Test
 	@DisplayName("GET writer message authenticated as admin should works")
 	void getWriterMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("admin","password")))
+		this.mockMvc.perform(get(BASE_URL + "write").with(httpBasic("admin@mail.com","password")))
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, writer !")));
 	}
@@ -107,7 +107,7 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET reader message authenticated as admin should works")
 	void getReaderMessage_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("admin","password")))
+		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("admin@mail.com","password")))
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, reader !")));
 	}
@@ -115,7 +115,7 @@ public class HomeControllerIT {
 	@Test
 	@DisplayName("GET reader message authenticated as user should works")
 	void getReaderMessage_whenAuthenticatedAsUser_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("user","password")))
+		this.mockMvc.perform(get(BASE_URL + "read").with(httpBasic("user@mail.com","password")))
 		.andExpect(status().isOk())
 		.andExpect(content().string(is("Welcome, reader !")));
 	}

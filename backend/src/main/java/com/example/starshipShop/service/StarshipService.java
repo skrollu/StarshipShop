@@ -37,7 +37,7 @@ public class StarshipService {
 	public List<StarshipDto> getStarshipsDto() {
 		return this	.getStarships()
 					.stream()
-					.map(s -> mapper.toStarshipDto(s))
+					.map(mapper::toStarshipDto)
 					.collect(Collectors.toList());
 	}
 
@@ -47,7 +47,7 @@ public class StarshipService {
 
 	public Optional<StarshipDto> getStarshipDtoById(final Long id) {
 		return this	.geStarshipById(id)
-					.map(w -> mapper.toStarshipDto(w));
+					.map(mapper::toStarshipDto);
 	}
 
 	public StarshipDto createStarship(final StarshipRequestInput sri) {

@@ -1,3 +1,12 @@
+### 10-11-2022
+
+-   Manage errors response simply
+-   acount username will be changed too username
+
+### 09-11-2022
+
+-   Implement a fully tested register endpoint using red-green-refactor method.
+
 ### 07-11-2022
 
 -   Setup a sonarcloud analyze in the github workflow because docker desktop and so sonarqube, doesn't work anymore...
