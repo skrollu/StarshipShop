@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@ToString
 public enum SecurityUserPermission {
     STARSHIP_READ("starship:read"),
     STARSHIP_WRITE("starship:write");

@@ -35,7 +35,7 @@ public class ManufacturerService {
 	public List<ManufacturerDto> getManufacturersDto() {
 		return this	.getManufacturers()
 					.stream()
-					.map(m -> mapper.toManufacturerDto(m))
+					.map(mapper::toManufacturerDto)
 					.collect(Collectors.toList());
 	}
 
@@ -46,7 +46,7 @@ public class ManufacturerService {
 
 	public Optional<ManufacturerDto> getManufacturerDtoById(final Long id) {
 		return this	.getManufacturerById(id)
-					.map(m -> mapper.toManufacturerDto(m));
+					.map(mapper::toManufacturerDto);
 	}
 
 	public ManufacturerDto createManufacturer(final ManufacturerRequestInput mri) {
