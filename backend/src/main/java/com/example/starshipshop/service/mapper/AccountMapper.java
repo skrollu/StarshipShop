@@ -1,8 +1,8 @@
 package com.example.starshipshop.service.mapper;
 
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.AddressDto;
 import com.example.starshipshop.domain.EmailDto;
