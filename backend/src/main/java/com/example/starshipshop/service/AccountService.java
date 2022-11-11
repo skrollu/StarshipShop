@@ -1,6 +1,7 @@
 package com.example.starshipshop.service;
 
 import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
 import com.example.starshipshop.config.security.SecurityUserRole;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
@@ -17,6 +19,7 @@ import com.example.starshipshop.repository.AccountRepository;
 import com.example.starshipshop.repository.jpa.user.Account;
 import com.example.starshipshop.repository.model.SecurityUserDetails;
 import com.example.starshipshop.service.mapper.AccountMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -2,26 +2,24 @@ package com.example.starshipshop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.Optional;
+
 import org.springframework.hateoas.EntityModel;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
-import com.example.starshipshop.exception.ResourceNotFoundAdvice;
 import com.example.starshipshop.exception.ResourceNotFoundException;
-import com.example.starshipshop.repository.model.SecurityUserDetails;
 import com.example.starshipshop.service.AccountService;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Controller

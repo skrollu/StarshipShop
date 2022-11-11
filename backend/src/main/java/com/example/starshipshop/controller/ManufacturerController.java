@@ -2,11 +2,13 @@ package com.example.starshipshop.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -20,11 +22,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.example.starshipshop.controller.assembler.ManufacturerAssembler;
 import com.example.starshipshop.domain.ManufacturerDto;
 import com.example.starshipshop.domain.ManufacturerRequestInput;
 import com.example.starshipshop.service.ManufacturerService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
+
 import lombok.RequiredArgsConstructor;
 
 
