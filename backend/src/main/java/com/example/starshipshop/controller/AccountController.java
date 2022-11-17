@@ -32,12 +32,12 @@ public class AccountController {
     private final AccountService accountService;
     
     @GetMapping(value = "/myAccount")
-    public EntityModel<AccountDto> getMyAccount(Authentication authentication) throws ResourceNotFoundException {
+    public ResponseEntity<EntityModel<AccountDto>> getMyAccount(Authentication authentication) throws ResourceNotFoundException {
         Optional<AccountDto> result = this.accountService.getAccount(authentication);
         if(result.isPresent()) {
-            return EntityModel.of(result.get(),
+            return ResponseEntity.ok(EntityModel.of(result.get(),
             linkTo(methodOn(AccountController.class).getMyAccount(authentication))
-            .withSelfRel());
+            .withSelfRel()));
         }
         else {
             throw new ResourceNotFoundException("Account information not found");
@@ -45,8 +45,8 @@ public class AccountController {
     }
     
     @PostMapping(value = "/register")
-    public AccountDto registerNewAccount(@RequestBody RegisterNewAccountRequestInput rnari) {
-        return this.accountService.registerNewAccount(rnari);
+    public ResponseEntity<AccountDto> registerNewAccount(@RequestBody @Valid RegisterNewAccountRequestInput rnari) {
+        return  ResponseEntity.ok(this.accountService.registerNewAccount(rnari));
     }
     
     @PostMapping(value = "/emailExists")

@@ -3,6 +3,8 @@
 -   [ ] Only ask for id for DTO, entity name is useless and can result in bugs... only the id is used today
 -   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
 -   [ ] Improve validation of data in controller.
+-   [ ] Improve Advice response.
+-   [ ] Improve HATEOAS response.
 -   [x] Change package name on github
 -   [x] Add jacoco analyze in sonarcloud like before
 -   [x] AccountService register must return SecurityUserDetail and need to be fully tested.
