@@ -56,7 +56,7 @@ public class AccountService implements UserDetailsService {
             throw new NonMatchingPasswordException();
         }
         
-        if (emailExists(rnari.getUsername())) {
+        if (checkEmailExists(rnari.getUsername())) {
             throw new AccountUsernameAlreadyExistException(
             "There is an account with that email address: " + rnari.getUsername());
         }
@@ -71,7 +71,7 @@ public class AccountService implements UserDetailsService {
         return this.accountMapper.toAccountDto(result);
     }
     
-    public boolean emailExists(String email) {
+    public boolean checkEmailExists(String email) {
         Optional<Account> optAccount = accountRepository.findByUsername(email);
         return optAccount.isPresent() && optAccount.get() != null;
     }

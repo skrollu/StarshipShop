@@ -1,6 +1,7 @@
 package com.example.starshipshop.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -110,6 +111,34 @@ public class AccountControllerIT {
         .andExpect(status().isBadRequest())
         .andExpect(content().string(
         "ADVICE: There is an account with that email address: user@mail.com"));
+        
+    }
+    
+    // Check Email is available
+    @Test
+    @Tag("POST /emailExists")
+    @DisplayName("register without matchingPassword should return an error")
+    void checkIfEmailExists_shouldWorks() throws Exception {
+        String json =
+        "{\r\n\"email\":\"test@mail.com\"\r\n}";
+        
+        this.mockMvc
+        .perform(post(BASE_URL + "/" + "emailExists").contentType(APPLICATION_JSON_UTF8)
+        .content(json))
+        .andExpect(status().isOk()).andExpect(jsonPath("$.exist", is(false)));
+        
+    }
+    
+    @Test
+    @Tag("POST /emailExists")
+    @DisplayName("emailExists when Email has wrong format should not works")
+    void checkIfEmailExists_withWrongFormat_shouldNotWorks() throws Exception {
+        String json = "{\r\n\"email\":\"wrongFormat\"\r\n}";
+        
+        this.mockMvc.perform(post(BASE_URL + "/" + "emailExists").contentType(APPLICATION_JSON_UTF8)
+        .content(json))
+        .andExpect(status().isBadRequest())
+        .andReturn().getResponse().getContentAsString().contains("ADVICE: Validation failed");
         
     }
 }

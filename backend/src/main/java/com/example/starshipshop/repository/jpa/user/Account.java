@@ -10,7 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +30,10 @@ public class Account {
     @Column(name = "id_account", updatable = false, columnDefinition = "BIGINT")
     private Long id;
     @Column(name = "username", nullable = false)
+    @Email
     private String username;
     @Column(name = "password", nullable = false)
+    @Size(min = 8)
     private String password;
     @Column(name = "roles", nullable = false)
     private String roles;

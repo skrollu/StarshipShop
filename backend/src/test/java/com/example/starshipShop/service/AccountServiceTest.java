@@ -195,7 +195,7 @@ public class AccountServiceTest {
     void emailExists_shouldWorks() {
         final String email = "admin@mail.com";
         when(accountRepository.findByUsername(email)).thenReturn(Optional.of(admin));
-        boolean emailExist = accountService.emailExists(email);
+        boolean emailExist = accountService.checkEmailExists(email);
         assertEquals(true, emailExist);
     }
     
@@ -205,11 +205,20 @@ public class AccountServiceTest {
     void emailExists_shouldNotWorks() {
         final String email = "admin@mail.com";
         when(accountRepository.findByUsername(email)).thenReturn(Optional.empty());
-        boolean emailExist = accountService.emailExists(email);
+        boolean emailExist = accountService.checkEmailExists(email);
         assertEquals(false, emailExist);
     }
     
-    
+    @Test
+    @Tag("Email exists")
+    @DisplayName("Email exists when email hasn't the correct format should not works")
+    void emailExists_whenEmailHasNotTheCorrectFormat_shouldNotWorks() {
+        final String email = "wrongFormatEmail";
+        
+        boolean emailExist = accountService.checkEmailExists(email);
+        assertEquals(false, emailExist);
+    }
+
     @Test
     @Tag("RegisterNewAccount")
     @DisplayName("Register should works")    
