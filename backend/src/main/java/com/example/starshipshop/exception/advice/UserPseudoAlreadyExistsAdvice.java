@@ -1,18 +1,19 @@
-package com.example.starshipshop.exception;
+package com.example.starshipshop.exception.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.example.starshipshop.exception.UserPseudoAlreadyExistsException;
 
 @ControllerAdvice
-public class NonMatchingPasswordAdvice {
-	
+public class UserPseudoAlreadyExistsAdvice {
+
 	@ResponseBody
-	@ExceptionHandler(NonMatchingPasswordException.class)
+	@ExceptionHandler(UserPseudoAlreadyExistsException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	String nonMatchingPasswordHandler(NonMatchingPasswordException ex) {
+	String resourceNotFoundHandler(UserPseudoAlreadyExistsException ex) {
 		return "ADVICE: " + ex.getMessage();
 	}
 }

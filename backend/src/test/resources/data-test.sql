@@ -54,12 +54,12 @@ values
 
 insert into email(email, id_user) 
 values
-('mail@mail.com', 1)
+('john@mail.com', 1)
 ;
 
 insert into telephone(telephone_number, id_user)
 values
-('0123456789', 1)
+('9876543210', 1)
 ;
 
 INSERT INTO address

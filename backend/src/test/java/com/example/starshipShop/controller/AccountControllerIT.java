@@ -80,7 +80,7 @@ public class AccountControllerIT {
         .perform(
         post(BASE_URL + "/" +"register").contentType(APPLICATION_JSON_UTF8).content(json))
         
-        .andExpect(status().isOk())
+        .andExpect(status().isCreated())
         .andExpect(jsonPath("$.username", is("newUser@mail.com")))
         .andExpect(jsonPath("$.users").isEmpty());
     }
@@ -139,6 +139,6 @@ public class AccountControllerIT {
         .content(json))
         .andExpect(status().isBadRequest())
         .andReturn().getResponse().getContentAsString().contains("ADVICE: Validation failed");
-        
     }
+    
 }

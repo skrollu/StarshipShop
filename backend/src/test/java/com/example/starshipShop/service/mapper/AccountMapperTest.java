@@ -108,7 +108,7 @@ public class AccountMapperTest {
     @DisplayName("Given a User with when mapped it should return a SimpleUserDto")
     void givenAUser_whenMapped_shouldReturnACompleteSimpleUserDto() {
 
-        SimpleUserDto dto = accountMapper.toUserDto(user);
+        SimpleUserDto dto = accountMapper.toSimpleUserDto(user);
 
         assertEquals("john", dto.getPseudo());
         assertEquals(true, dto.getAddresses() != null);
@@ -127,7 +127,7 @@ public class AccountMapperTest {
         user.setEmails(null);
         user.setTelephones(null);
 
-        SimpleUserDto dto = accountMapper.toUserDto(user);
+        SimpleUserDto dto = accountMapper.toSimpleUserDto(user);
 
         assertEquals("john", dto.getPseudo());
         assertEquals(true, dto.getAddresses() == null);
@@ -143,7 +143,7 @@ public class AccountMapperTest {
         user.setEmails(new HashSet());
         user.setTelephones(new HashSet());
 
-        SimpleUserDto dto = accountMapper.toUserDto(user);
+        SimpleUserDto dto = accountMapper.toSimpleUserDto(user);
 
         assertEquals("john", dto.getPseudo());
         assertEquals(true, dto.getAddresses() != null);

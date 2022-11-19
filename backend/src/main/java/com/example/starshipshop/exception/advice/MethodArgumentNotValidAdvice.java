@@ -1,4 +1,4 @@
-package com.example.starshipshop.exception;
+package com.example.starshipshop.exception.advice;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

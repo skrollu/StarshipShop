@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +29,7 @@ public class Email {
     @Column(name = "id_email", updatable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @javax.validation.constraints.Email
     @Column(name = "email", nullable = false)
     private String email;
 

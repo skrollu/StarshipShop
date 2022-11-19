@@ -28,9 +28,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
+import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.exception.AccountUsernameAlreadyExistException;
 import com.example.starshipshop.exception.NonMatchingPasswordException;
 import com.example.starshipshop.repository.AccountRepository;
+import com.example.starshipshop.repository.UserRepository;
 import com.example.starshipshop.repository.jpa.user.Account;
 import com.example.starshipshop.repository.model.SecurityUserDetails;
 import com.example.starshipshop.service.mapper.AccountMapper;
@@ -39,6 +41,8 @@ import com.example.starshipshop.service.mapper.AccountMapper;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
     
+    @MockBean
+    private UserRepository userRepository;
     @MockBean
     private AccountRepository accountRepository;
     @MockBean
@@ -52,7 +56,7 @@ public class AccountServiceTest {
     
     @BeforeEach
     public void setupAccountRepository() {
-        accountService = new AccountService(accountRepository, accountMapper, encoder);
+        accountService = new AccountService(accountRepository, userRepository, accountMapper, encoder);
         user = new Account(1L, "user@mail.com", "password", "USER", null);
         admin = new Account(1L, "admin@mail.com", "password", "ADMIN, USER", null);
     }
@@ -112,9 +116,8 @@ public class AccountServiceTest {
         UserDetails userDetails = accountService.loadUserByUsername(username);
         
         verify(accountRepository, times(1)).findByUsername(username);
-        assertEquals(true,
-        userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
-        );
+        assertEquals(4, userDetails.getAuthorities().size());
+        assertEquals(true, userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
         assertEquals(
         true, userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))
         );
@@ -145,35 +148,8 @@ public class AccountServiceTest {
         verify(accountRepository, times(1)).findByUsername(username);
     }
     
-    // @Nested
-    // @Tag("Get account information")
-    // @WithMockUser(username = "admin", password = "password", authorities = {"ADMIN", "USER"})
-    // class GetAccountInformationTest {
-    // @Mock
-    // private Authentication authentication;
-    // @BeforeEach
-    // protected void setUp() throws Exception {
-    // SecurityContextHolder.getContext().setAuthentication(
-    // new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-    // }
-    // @Disabled("Did not found the way to unit test it properly, cast error is thrown when using
-    // @withMockUser springboot.User is different of the custom SecurityUserDetails")
-    // @Test
-    // @Tag("Get account information")
-    // @DisplayName("Get account information with Authentication should works")
-    // void getAccount_withAuthentication_shouldWorks() {
-    // when(accountMapper.toAccountDto(user)).thenReturn(new AccountDto("admin", null));
-    // // when(authentication.getPrincipal()).thenReturn(new SecurityUserDetails(new Account(null,
-    // "admin", null, null, null)));
-
-    // Optional<AccountDto> optAccount = accountService.getAccount(authentication);
-
-    // assertEquals(true, optAccount.isPresent());
-    // assertEquals("admin@mail.com", optAccount.get().getUsername());
-    // }
-    
     @Test
-    @Tag("Get account information")
+    @Tag("Get account")
     @DisplayName("Get account information without Authentication should throw error")
     void getAccount_withoutAuthentication_shouldThrowError() {
         assertThrows(IllegalArgumentException.class,
@@ -181,12 +157,21 @@ public class AccountServiceTest {
     }
     
     @Test
-    @Tag("Get account information")
+    @Tag("Get account")
     @DisplayName("Get account information without Principal should throw error")
     void getAccount_withoutPrincipal_shouldThrowError() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
         assertThrows(IllegalArgumentException.class, () -> accountService.getAccount(auth));
+    }
+    
+    @Test
+    @Tag("Get account")
+    @DisplayName("Get account information without Principal should throw error")
+    void getAccountDto_withoutPrincipal_shouldThrowError() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        assertThrows(IllegalArgumentException.class, () -> accountService.getAccountDto(auth));
     }
     
     @Test
@@ -218,7 +203,7 @@ public class AccountServiceTest {
         boolean emailExist = accountService.checkEmailExists(email);
         assertEquals(false, emailExist);
     }
-
+    
     @Test
     @Tag("RegisterNewAccount")
     @DisplayName("Register should works")    
@@ -280,4 +265,28 @@ public class AccountServiceTest {
         assertEquals(true, e.getMessage()
         .contains("Error when mapping account."));
     }
+    
+    // Check Email exists
+    @Test
+    @Tag("Check email exists")
+    @DisplayName("given an email when repository find it then return false")
+    void givenAnEmail_whenRepositoryFindIt_thenReturnFalse() {
+        String email = "test@mail.com";
+        
+        when(accountRepository.findByUsername(email)).thenReturn(Optional.of(admin));
+        boolean result = accountService.checkEmailExists(email);
+        assertEquals(true, result);
+    }
+    
+    @Test
+    @Tag("Check email exists")
+    @DisplayName("given an email when repository doesn't find it then return true")
+    void givenAnEmail_whenRepositoryDoesNotFindIt_thenReturnTrue() {
+        String email = "test@mail.com";
+        
+        when(accountRepository.findByUsername(email)).thenReturn(Optional.empty());
+        boolean result = accountService.checkEmailExists(email);
+        assertEquals(false, result);
+    }
+
 }

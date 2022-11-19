@@ -138,6 +138,12 @@ Imagine a relationnal model and create minimal JPA entities.
         deleted: boolean
     }
 
+-   Link
+-   Meta
+    -   responseTime
+    -   lang
+    -   apiVersion
+
 #### HyperdriveSystem api/v1/hyperdriveSystems
 
 | Méthodes | Entrée                            | Sortie                     |

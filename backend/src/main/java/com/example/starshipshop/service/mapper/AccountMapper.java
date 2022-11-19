@@ -9,6 +9,7 @@ import com.example.starshipshop.domain.EmailDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
 import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.domain.TelephoneDto;
+import com.example.starshipshop.domain.UserRequestInput;
 import com.example.starshipshop.repository.jpa.user.Account;
 import com.example.starshipshop.repository.jpa.user.Address;
 import com.example.starshipshop.repository.jpa.user.Email;
@@ -31,9 +32,14 @@ public interface AccountMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "account", ignore = true)
+    @Mapping(target = "addresses")
     User toUser(SimpleUserDto dto);
 
-    SimpleUserDto toUserDto(User user);
+    SimpleUserDto toSimpleUserDto(User user);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "account", ignore = true)
+    User fromUserRequestInput(UserRequestInput uri);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
@@ -45,5 +51,6 @@ public interface AccountMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "telephoneNumber", source = "telephoneNumber")
     Telephone toTelephone(TelephoneDto dto);
 }

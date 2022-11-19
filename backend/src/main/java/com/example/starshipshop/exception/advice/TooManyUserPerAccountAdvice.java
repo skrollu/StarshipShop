@@ -1,18 +1,19 @@
-package com.example.starshipshop.exception;
+package com.example.starshipshop.exception.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.example.starshipshop.exception.TooManyUserPerAccountException;
 
 @ControllerAdvice
-public class AccountUsernameAlreadyExistAdvice {
-	
+public class TooManyUserPerAccountAdvice {
+
 	@ResponseBody
-	@ExceptionHandler(AccountUsernameAlreadyExistException.class)
+	@ExceptionHandler(TooManyUserPerAccountException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	String accountUsernameAlreadyExistHandler(AccountUsernameAlreadyExistException ex) {
+	String resourceNotFoundHandler(TooManyUserPerAccountException ex) {
 		return "ADVICE: " + ex.getMessage();
 	}
 }

@@ -38,6 +38,7 @@ public class Account {
     @Column(name = "roles", nullable = false)
     private String roles;
 
+    @Size(max = 5)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
     private List<User> users;
 }
