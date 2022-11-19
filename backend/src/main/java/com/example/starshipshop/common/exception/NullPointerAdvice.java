@@ -1,19 +1,18 @@
-package com.example.starshipshop.exception.advice;
+package com.example.starshipshop.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import com.example.starshipshop.exception.NonMatchingPasswordException;
 
 @ControllerAdvice
-public class NonMatchingPasswordAdvice {
-	
+public class NullPointerAdvice {
+
 	@ResponseBody
-	@ExceptionHandler(NonMatchingPasswordException.class)
+	@ExceptionHandler(NullPointerException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	String nonMatchingPasswordHandler(NonMatchingPasswordException ex) {
+	String nullPointerHandler(NullPointerException ex) {
 		return "ADVICE: " + ex.getMessage();
 	}
 }

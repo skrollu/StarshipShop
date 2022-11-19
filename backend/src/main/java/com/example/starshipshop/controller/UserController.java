@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.controller.assembler.UserAssembler;
 import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.domain.UserRequestInput;
-import com.example.starshipshop.exception.ResourceNotFoundException;
 import com.example.starshipshop.service.AccountService;
 import lombok.RequiredArgsConstructor;
 

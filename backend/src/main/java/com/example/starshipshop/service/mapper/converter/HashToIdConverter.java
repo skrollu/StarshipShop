@@ -4,8 +4,7 @@ import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.util.Assert;
-
-import com.example.starshipshop.exception.ResourceNotFoundException;
+import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.util.StdConverter;
 
 import lombok.extern.slf4j.Slf4j;

@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.controller.assembler.AccountAssembler;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.EmailRequestInput;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
-import com.example.starshipshop.exception.ResourceNotFoundException;
 import com.example.starshipshop.service.AccountService;
 import lombok.RequiredArgsConstructor;
 

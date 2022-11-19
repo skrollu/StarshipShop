@@ -9,15 +9,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistException;
+import com.example.starshipshop.common.exception.NonMatchingPasswordException;
+import com.example.starshipshop.common.exception.TooManyUserPerAccountException;
+import com.example.starshipshop.common.exception.UserPseudoAlreadyExistsException;
 import com.example.starshipshop.config.security.SecurityUserRole;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
 import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.domain.UserRequestInput;
-import com.example.starshipshop.exception.AccountUsernameAlreadyExistException;
-import com.example.starshipshop.exception.NonMatchingPasswordException;
-import com.example.starshipshop.exception.TooManyUserPerAccountException;
-import com.example.starshipshop.exception.UserPseudoAlreadyExistsException;
 import com.example.starshipshop.repository.AccountRepository;
 import com.example.starshipshop.repository.UserRepository;
 import com.example.starshipshop.repository.jpa.user.Account;
@@ -129,7 +129,7 @@ public class AccountService implements UserDetailsService {
                 throw new UserPseudoAlreadyExistsException("" + sri.getPseudo());
             }
         }
-
+        
         // Add userToSave to Sets to create entity in cascade.
         User userToSave = accountMapper.fromUserRequestInput(sri);
         if(userToSave.getAddresses() != null && !userToSave.getAddresses().isEmpty()) {
@@ -151,13 +151,12 @@ public class AccountService implements UserDetailsService {
         User user = this.userRepository.save(userToSave);
         
         // Update security context
-        if(user != null) {
-            SecurityUserDetails securityUserDetailsFromDatabase = (SecurityUserDetails) loadUserByUsername(account.getUsername());
-            Account updatedAccount = securityUserDetailsFromDatabase.getAccount();
-            
-            SecurityUserDetails s = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            s.setAccount(updatedAccount);
-        }
+        SecurityUserDetails securityUserDetailsFromDatabase = (SecurityUserDetails) loadUserByUsername(account.getUsername());
+        Account updatedAccount = securityUserDetailsFromDatabase.getAccount();
+        
+        SecurityUserDetails s = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        s.setAccount(updatedAccount);
+        
         
         return accountMapper.toSimpleUserDto(user);
     }

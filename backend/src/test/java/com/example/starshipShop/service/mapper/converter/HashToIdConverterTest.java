@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import com.example.starshipshop.exception.ResourceNotFoundException;
+import com.example.starshipshop.common.exception.ResourceNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class HashToIdConverterTest {

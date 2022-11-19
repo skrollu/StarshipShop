@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
+import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.domain.ManufacturerDto;
 import com.example.starshipshop.domain.ManufacturerRequestInput;
-import com.example.starshipshop.exception.ResourceNotFoundException;
 import com.example.starshipshop.repository.ManufacturerRepository;
 import com.example.starshipshop.repository.jpa.Manufacturer;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;

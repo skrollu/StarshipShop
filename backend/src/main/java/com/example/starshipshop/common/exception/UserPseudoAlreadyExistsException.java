@@ -1,4 +1,4 @@
-package com.example.starshipshop.exception;
+package com.example.starshipshop.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
