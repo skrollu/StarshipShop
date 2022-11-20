@@ -53,11 +53,11 @@ public class UserControllerIT {
     @DisplayName("GET user when user exists should return the user info")
     void getAUser_whenUserExists_shouldThrowResourceNotFoundAdvice() throws Exception {
         this.mockMvc
-                .perform(get(BASE_URL + "/" + "john").with(httpBasic(USER_USERNAME, USER_PASSWORD)))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.pseudo", is("john")));
+        .perform(get(BASE_URL + "/" + "john").with(httpBasic(USER_USERNAME, USER_PASSWORD)))
+        .andExpect(status().isOk()).andExpect(jsonPath("$.pseudo", is("john")));
     }
-
-
+    
+    
     @Test
     @Tag("GET /{pseudo}")
     @DisplayName("GET user when user does not exist as user should throw error")
@@ -67,7 +67,7 @@ public class UserControllerIT {
         .perform(get(BASE_URL + "/" + "test")
         .with(httpBasic(USER_USERNAME, USER_PASSWORD)))
         .andExpect(status().isNotFound())
-        .andExpect(content().string("ADVICE: No user found with the given pseudo"));
+        .andExpect(content().string("ResourceNotFoundException: ADVICE: No user found with the given pseudo"));
     }
     
     @Test
@@ -76,36 +76,32 @@ public class UserControllerIT {
     @Order(2)
     void createAUser_whenAuthenticatedAsUser_shouldWorks()
     throws Exception {
-        String json = "{\r\n\"pseudo\": \"test\"\r\n}";
-        // "addresses\": [\r\n{\r\n\"address\": \"38 Rue Montorgueil\",\r\n\"zipCode\":
-        // \"75001\",\r\n\"city\": \"Paris\",\r\n\"state\": \"Ile de France\",\r\n\"country\":
-        // \"France\",\r\n\"planet\": \"Earth\"\r\n}\r\n],\r\n\"emails\": [\r\n{\r\n\"email\":
-        // \"test@mail.com\"\r\n} \r\n],\r\n\"telephones\": [\r\n{\r\n\"telephoneNumber\":
-        // \"0123456789\"\r\n}\r\n]\r\n}
+        String json =  "{\r\n\"pseudo\": \"test\",\r\n\"addresses\": [\r\n{\r\n\"address\": \"38 Rue Montorgueil\",\r\n\"zipCode\": \"75001\",\r\n\"city\": \"Paris\",\r\n\"state\": \"Ile de France\",\r\n\"country\": \"France\",\r\n\"planet\": \"Earth\"\r\n}\r\n],\r\n\"emails\": [\r\n{\r\n\"email\": \"test@mail.com\"\r\n}\r\n],\r\n\"telephones\": [\r\n{\r\n\"telephoneNumber\": \"9876543210\"\r\n}\r\n    ]\r\n}";
+        
         this.mockMvc
         .perform(post(BASE_URL + "/").with(httpBasic(USER_USERNAME, USER_PASSWORD))
         .content(json)
         .contentType(APPLICATION_JSON_UTF8))
-        // .andExpect(status().isCreated())
+        .andExpect(status().isCreated())
         .andExpect(jsonPath("$.pseudo", is("test")))
-        // .andExpect(jsonPath("$.emails[0].email",  is("test@mail.com")))
-        // .andExpect(jsonPath("$.telephones[0].telephoneNumber",  is("0123456789")))
+        .andExpect(jsonPath("$.emails[0].email",  is("test@mail.com")))
+        .andExpect(jsonPath("$.telephones[0].telephoneNumber",  is("9876543210")))
         ;
     }
     
-
+    
     // @Test
     // @Tag("POST /")
     // @DisplayName("create user should works")
     // @Order(2)
     // void createAUser_whenAuthenticatedAsUser_shouldWorks() throws Exception {
-    //     String json =
-    //             "{\r\n\"pseudo\": \"john\",\r\n\"addresses\": [\r\n{\r\n\"address\": \"38 Rue Montorgueil\",\r\n\"zipCode\": \"75001\",\r\n\"city\": \"Paris\",\r\n\"state\": \"Ile de France\",\r\n\"country\": \"France\",\r\n\"planet\": \"Earth\"\r\n}\r\n],\r\n\"emails\": [\r\n{\r\n\"email\": \"test@mail.com\"\r\n} \r\n],\r\n\"telephones\": [\r\n{\r\n\"telephoneNumber\": \"0123456789\"\r\n}\r\n]\r\n}";
-
-    //     this.mockMvc
-    //             .perform(post(BASE_URL + "/").with(httpBasic(USER_USERNAME, USER_PASSWORD))
-    //                     .content(json))
-    //             .andExpect(status().isCreated()).andExpect(jsonPath("$.pseudo", is("john")))
-    //             .andExpect(jsonPath("$.emails[0].email", "test@mail.com"));
-    // }
-}
+        //     String json =
+        //             "{\r\n\"pseudo\": \"john\",\r\n\"addresses\": [\r\n{\r\n\"address\": \"38 Rue Montorgueil\",\r\n\"zipCode\": \"75001\",\r\n\"city\": \"Paris\",\r\n\"state\": \"Ile de France\",\r\n\"country\": \"France\",\r\n\"planet\": \"Earth\"\r\n}\r\n],\r\n\"emails\": [\r\n{\r\n\"email\": \"test@mail.com\"\r\n} \r\n],\r\n\"telephones\": [\r\n{\r\n\"telephoneNumber\": \"0123456789\"\r\n}\r\n]\r\n}";
+        
+        //     this.mockMvc
+        //             .perform(post(BASE_URL + "/").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+        //                     .content(json))
+        //             .andExpect(status().isCreated()).andExpect(jsonPath("$.pseudo", is("john")))
+        //             .andExpect(jsonPath("$.emails[0].email", "test@mail.com"));
+        // }
+    }

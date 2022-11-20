@@ -14,6 +14,6 @@ public class NonMatchingPasswordAdvice {
 	@ExceptionHandler(NonMatchingPasswordException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	String nonMatchingPasswordHandler(NonMatchingPasswordException ex) {
-		return "ADVICE: " + ex.getMessage();
+		return "NonMatchingPasswordException: ADVICE: " + ex.getMessage();
 	}
 }

@@ -336,7 +336,7 @@ public class ManufacturerControllerIT {
 		mockMvc	.perform(put(BASE_URL + "/wrongId").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
 		.contentType(APPLICATION_JSON_UTF8)
 		.content(requestJson))
-		.andExpect(content().string(Matchers.startsWith("ADVICE")))
+		.andExpect(content().string(Matchers.startsWith("ResourceNotFoundException: ADVICE: ")))
 		.andExpect(content().string(containsString("Cannot convert hash to id with the given hash:")))
 		.andExpect(content().string(Matchers.endsWith("wrongId")))
 		.andExpect(status().isNotFound());
@@ -371,7 +371,7 @@ public class ManufacturerControllerIT {
 	public void deleteManufacturer_whenAuthenticatedAsAdmin_shouldThrowResourceNotFoundException() throws Exception {
 		mockMvc	.perform(delete(BASE_URL + "/{id}", "wrongId").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
 		.contentType(APPLICATION_JSON_UTF8))
-		.andExpect(content().string(Matchers.startsWith("ADVICE")))
+		.andExpect(content().string(Matchers.startsWith("ResourceNotFoundException: ADVICE: ")))
 		.andExpect(content().string(containsString("Cannot convert hash to id with the given hash:")))
 		.andExpect(content().string(Matchers.endsWith("wrongId")))
 		.andExpect(status().isNotFound());

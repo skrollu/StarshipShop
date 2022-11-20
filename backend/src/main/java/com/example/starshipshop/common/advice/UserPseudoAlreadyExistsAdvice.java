@@ -14,6 +14,6 @@ public class UserPseudoAlreadyExistsAdvice {
 	@ExceptionHandler(UserPseudoAlreadyExistsException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	String resourceNotFoundHandler(UserPseudoAlreadyExistsException ex) {
-		return "ADVICE: " + ex.getMessage();
+		return "UserPseudoAlreadyExistsException: ADVICE: " + ex.getMessage();
 	}
 }

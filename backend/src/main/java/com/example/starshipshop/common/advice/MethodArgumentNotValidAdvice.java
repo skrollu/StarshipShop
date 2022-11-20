@@ -14,6 +14,6 @@ public class MethodArgumentNotValidAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String nullPointerHandler(MethodArgumentNotValidException ex) {
-        return "ADVICE: " + ex.getMessage();
+        return "MethodArgumentNotValidException: ADVICE: " + ex.getMessage();
     }
 }

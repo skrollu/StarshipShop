@@ -14,6 +14,6 @@ public class TooManyUserPerAccountAdvice {
 	@ExceptionHandler(TooManyUserPerAccountException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	String resourceNotFoundHandler(TooManyUserPerAccountException ex) {
-		return "ADVICE: " + ex.getMessage();
+		return "TooManyUserPerAccountException: ADVICE: " + ex.getMessage();
 	}
 }

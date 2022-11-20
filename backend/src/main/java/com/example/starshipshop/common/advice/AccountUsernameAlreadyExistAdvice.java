@@ -14,6 +14,6 @@ public class AccountUsernameAlreadyExistAdvice {
 	@ExceptionHandler(AccountUsernameAlreadyExistException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	String accountUsernameAlreadyExistHandler(AccountUsernameAlreadyExistException ex) {
-		return "ADVICE: " + ex.getMessage();
+		return "AccountUsernameAlreadyExistException: ADVICE: " + ex.getMessage();
 	}
 }

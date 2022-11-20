@@ -1,5 +1,16 @@
-## TODO:
+# TODO:
 
+### Feature
+
+-   [ ] update user endpoint
+    -   [ ] Check number of addresses/emails/telephones per user
+    -   [ ] check redondance of the data
+    -   [ ] Fusion des données
+    -   [ ] check redondante pseudo
+
+### General
+
+-   [ ] Improve encodage of HATEOAS: ie create user return getUser + email link with encodage error for "@".
 -   [ ] Only ask for id for DTO, entity name is useless and can result in bugs... only the id is used today
 -   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.
 -   [ ] Improve validation of data in controller.

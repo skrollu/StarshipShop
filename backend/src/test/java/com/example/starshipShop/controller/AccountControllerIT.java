@@ -96,7 +96,7 @@ public class AccountControllerIT {
         .perform(post(BASE_URL + "/" + "register").contentType(APPLICATION_JSON_UTF8)
         .content(json))
         .andExpect(status().isBadRequest())
-        .andExpect(content().string("ADVICE: The given passwords and matching password are different."));
+        .andExpect(content().string("NonMatchingPasswordException: ADVICE: The given passwords and matching password are different."));
     }
     
     @Test
@@ -110,7 +110,7 @@ public class AccountControllerIT {
         post(BASE_URL + "/" + "register").contentType(APPLICATION_JSON_UTF8).content(json))
         .andExpect(status().isBadRequest())
         .andExpect(content().string(
-        "ADVICE: There is an account with that email address: user@mail.com"));
+        "AccountUsernameAlreadyExistException: ADVICE: There is an account with that email address: user@mail.com"));
         
     }
     
@@ -138,7 +138,7 @@ public class AccountControllerIT {
         this.mockMvc.perform(post(BASE_URL + "/" + "emailExists").contentType(APPLICATION_JSON_UTF8)
         .content(json))
         .andExpect(status().isBadRequest())
-        .andReturn().getResponse().getContentAsString().contains("ADVICE: Validation failed");
+        .andReturn().getResponse().getContentAsString().contains("MethodArgumentNotValidException: ADVICE: Validation failed");
     }
     
 }
