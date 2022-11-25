@@ -1,27 +1,28 @@
 package com.example.starshipshop.domain;
 
-import javax.validation.constraints.Email;
+import javax.annotation.Nullable;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-// @AllArgsConstructor Not working for no reason...
-public class EmailDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateUserAddressRequestInput {
+    @Nullable
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)
     private Long id;
-    @Email
-    private String email;
-
-    public EmailDto()  {}
-
-    public EmailDto(Long id, String email) {
-        this.id = id;
-        this.email = email;
-    }
+    private String address;
+    private Long zipCode;
+    private String city;
+    private String state;
+    private String country;
+    private String planet;
 }

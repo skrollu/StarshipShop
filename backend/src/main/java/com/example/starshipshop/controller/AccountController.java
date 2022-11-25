@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.controller.assembler.AccountAssembler;
 import com.example.starshipshop.domain.AccountDto;
@@ -23,33 +24,35 @@ import com.example.starshipshop.service.AccountService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/api/v1/account")
 public class AccountController {
-    
+
     private final AccountService accountService;
     private final AccountAssembler assembler;
-    
+
     @GetMapping(value = "/myAccount")
-    public ResponseEntity<EntityModel<AccountDto>> getMyAccount(Authentication authentication) throws ResourceNotFoundException {
+    public ResponseEntity<EntityModel<AccountDto>> getMyAccount(Authentication authentication)
+            throws ResourceNotFoundException {
         AccountDto result = this.accountService.getAccountDto(authentication);
         return ResponseEntity.ok(EntityModel.of(result,
-        linkTo(methodOn(AccountController.class).getMyAccount(authentication))
-        .withSelfRel()));
+                linkTo(methodOn(AccountController.class).getMyAccount(authentication))
+                        .withSelfRel()));
     }
-    
+
     @PostMapping(value = "/register")
-    public ResponseEntity<EntityModel<AccountDto>> registerNewAccount(@RequestBody @Valid RegisterNewAccountRequestInput rnari) {
+    public ResponseEntity<EntityModel<AccountDto>> registerNewAccount(
+            @RequestBody @Valid RegisterNewAccountRequestInput rnari) {
         AccountDto result = this.accountService.registerNewAccount(rnari);
         EntityModel<AccountDto> entityModel = this.assembler.toModel(result);
-        return ResponseEntity
-        .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-        .body(entityModel);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
-    
+
     @PostMapping(value = "/emailExists")
-    public ResponseEntity<Map<String, Boolean>> checkIfEmailAccountExists(@RequestBody @Valid EmailRequestInput eri) {
-        boolean result = this.accountService.checkEmailExists(eri.getEmail());
+    public ResponseEntity<Map<String, Boolean>> checkIfEmailAccountExists(
+            @RequestBody @Valid EmailRequestInput eri) {
+        boolean result = this.accountService.checkUsernameExists(eri.getEmail());
         Map<String, Boolean> response = new HashMap<>();
         response.put("exist", Boolean.valueOf(result));
         return ResponseEntity.ok(response);

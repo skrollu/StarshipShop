@@ -1,9 +1,7 @@
 package com.example.starshipshop.domain;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +11,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailRequestInput {
+public class AddressRequestInput {
     
     @NotNull
     @NotBlank
-    @Email
-    @JsonProperty("email")
-    private String email;
+    private String address;
+    @NotNull
+    private Long zipCode;
+    @NotNull
+    @NotBlank
+    private String city;
+    @NotNull
+    @NotBlank
+    private String state;
+    @NotNull
+    @NotBlank
+    private String country;
+    @NotNull
+    @NotBlank
+    private String planet;
 }

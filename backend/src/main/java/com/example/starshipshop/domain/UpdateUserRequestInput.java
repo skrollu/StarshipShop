@@ -16,9 +16,9 @@ public class UpdateUserRequestInput {
     @NotBlank
     private String pseudo;
     @Size(max = 3)
-    private Set<AddressDto> addresses;
+    private Set<UpdateUserAddressRequestInput> addresses;
     @Size(max = 3)
-    private Set<EmailDto> emails;
+    private Set<UpdateUserEmailRequestInput> emails;
     @Size(max = 3)
-    private Set<TelephoneDto> telephones;
+    private Set<UpdateUserTelephoneRequestInput> telephones;
 }

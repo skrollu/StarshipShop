@@ -10,13 +10,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
@@ -30,12 +27,19 @@ import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistExce
 import com.example.starshipshop.common.exception.NonMatchingPasswordException;
 import com.example.starshipshop.domain.AccountDto;
 import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
-import com.example.starshipshop.domain.SimpleUserDto;
 import com.example.starshipshop.repository.AccountRepository;
+import com.example.starshipshop.repository.AddressRepository;
+import com.example.starshipshop.repository.EmailRepository;
+import com.example.starshipshop.repository.TelephoneRepository;
 import com.example.starshipshop.repository.UserRepository;
 import com.example.starshipshop.repository.jpa.user.Account;
+import com.example.starshipshop.repository.jpa.user.Address;
+import com.example.starshipshop.repository.jpa.user.Email;
+import com.example.starshipshop.repository.jpa.user.Telephone;
+import com.example.starshipshop.repository.jpa.user.User;
 import com.example.starshipshop.repository.model.SecurityUserDetails;
 import com.example.starshipshop.service.mapper.AccountMapper;
+import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
@@ -49,16 +53,39 @@ public class AccountServiceTest {
     private AccountMapper accountMapper;
     @MockBean
     private PasswordEncoder encoder;
-    
+    @MockBean
+    private AddressRepository addressRepository;
+    @MockBean
+    private EmailRepository emailRepository;
+    @MockBean
+    private TelephoneRepository telephoneRepository;
+    @MockBean
+    private IdToHashConverter idToHashConverter;
+
     private AccountService accountService;
     private Account user;
     private Account admin;
     
     @BeforeEach
     public void setupAccountRepository() {
-        accountService = new AccountService(accountRepository, userRepository, accountMapper, encoder);
+        accountService = new AccountService(accountRepository, userRepository, addressRepository,emailRepository,telephoneRepository, accountMapper, encoder, idToHashConverter);
         user = new Account(1L, "user@mail.com", "password", "USER", null);
         admin = new Account(1L, "admin@mail.com", "password", "ADMIN, USER", null);
+
+        User u = User.builder().account(user).pseudo("john").emails(null).addresses(null)
+                .telephones(null).build();
+
+        Telephone t = Telephone.builder().user(u).telephoneNumber("0123456789").build();
+        Email e = Email.builder().user(u).email("mail@mail.com").build();
+        Address a = Address.builder()
+        .user(u)
+        .address("8 Rue du bourg")
+        .city("Paris")
+        .zipCode(75001L)
+        .state("Ile de France")
+        .country("France")
+        .planet("Earth")
+        .build();
     }
     
     @Test
@@ -180,7 +207,7 @@ public class AccountServiceTest {
     void emailExists_shouldWorks() {
         final String email = "admin@mail.com";
         when(accountRepository.findByUsername(email)).thenReturn(Optional.of(admin));
-        boolean emailExist = accountService.checkEmailExists(email);
+        boolean emailExist = accountService.checkUsernameExists(email);
         assertEquals(true, emailExist);
     }
     
@@ -190,7 +217,7 @@ public class AccountServiceTest {
     void emailExists_shouldNotWorks() {
         final String email = "admin@mail.com";
         when(accountRepository.findByUsername(email)).thenReturn(Optional.empty());
-        boolean emailExist = accountService.checkEmailExists(email);
+        boolean emailExist = accountService.checkUsernameExists(email);
         assertEquals(false, emailExist);
     }
     
@@ -200,7 +227,7 @@ public class AccountServiceTest {
     void emailExists_whenEmailHasNotTheCorrectFormat_shouldNotWorks() {
         final String email = "wrongFormatEmail";
         
-        boolean emailExist = accountService.checkEmailExists(email);
+        boolean emailExist = accountService.checkUsernameExists(email);
         assertEquals(false, emailExist);
     }
     
@@ -266,27 +293,26 @@ public class AccountServiceTest {
         .contains("Error when mapping account."));
     }
     
-    // Check Email exists
+    // Check username exists
     @Test
-    @Tag("Check email exists")
+    @Tag("Check username exists")
     @DisplayName("given an email when repository find it then return false")
     void givenAnEmail_whenRepositoryFindIt_thenReturnFalse() {
         String email = "test@mail.com";
         
         when(accountRepository.findByUsername(email)).thenReturn(Optional.of(admin));
-        boolean result = accountService.checkEmailExists(email);
+        boolean result = accountService.checkUsernameExists(email);
         assertEquals(true, result);
     }
     
     @Test
-    @Tag("Check email exists")
+    @Tag("Check username exists")
     @DisplayName("given an email when repository doesn't find it then return true")
     void givenAnEmail_whenRepositoryDoesNotFindIt_thenReturnTrue() {
         String email = "test@mail.com";
         
         when(accountRepository.findByUsername(email)).thenReturn(Optional.empty());
-        boolean result = accountService.checkEmailExists(email);
+        boolean result = accountService.checkUsernameExists(email);
         assertEquals(false, result);
     }
-
 }

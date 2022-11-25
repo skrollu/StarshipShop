@@ -1,27 +1,31 @@
 package com.example.starshipshop.domain;
 
-import javax.validation.constraints.Email;
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-// @AllArgsConstructor Not working for no reason...
-public class EmailDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateUserTelephoneRequestInput {
+    @Nullable
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)
     private Long id;
-    @Email
-    private String email;
-
-    public EmailDto()  {}
-
-    public EmailDto(Long id, String email) {
-        this.id = id;
-        this.email = email;
-    }
+    @NotNull
+    @NotBlank
+    @Size(min = 10, max = 10)
+    @Pattern(regexp = "(^$|[0-9]{10})")
+    private String telephoneNumber;
 }

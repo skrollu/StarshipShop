@@ -3,10 +3,11 @@
 ### Feature
 
 -   [ ] update user endpoint
-    -   [ ] Check number of addresses/emails/telephones per user
+    -   [x] Check number of addresses/emails/telephones per user
     -   [ ] check redondance of the data
-    -   [ ] Fusion des données
-    -   [ ] check redondante pseudo
+    -   // [ ] Fusion des données
+    -   [x] check redondante pseudo
+    -   [ ] Transactional update
 
 ### General
 
