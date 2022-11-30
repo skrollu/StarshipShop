@@ -8,17 +8,21 @@ import org.springframework.stereotype.Component;
 import com.example.starshipshop.controller.AccountController;
 import com.example.starshipshop.controller.UserController;
 import com.example.starshipshop.domain.SimpleUserDto;
+import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
 public class UserAssembler implements RepresentationModelAssembler<SimpleUserDto, EntityModel<SimpleUserDto>> {
     
+    private final IdToHashConverter idToHashConverter;
+
     @Override
     public EntityModel<SimpleUserDto> toModel(SimpleUserDto user) {
         return EntityModel.of(
         user, 
-        linkTo(methodOn(UserController.class).getUser(null, user.getPseudo()))
+        linkTo(methodOn(UserController.class).getUser(null, idToHashConverter.convert(user.getId())))
             .withSelfRel(),
         linkTo(methodOn(UserController.class).createUser(null, null))
             .withRel("createUser"),

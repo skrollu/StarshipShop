@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class SecurityUserDetails implements UserDetails {
 
-    private Account account;
+    private transient Account account;
 
     public SecurityUserDetails(Account account) {
         this.account = account;

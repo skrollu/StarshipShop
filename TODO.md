@@ -8,9 +8,11 @@
     -   // [ ] Fusion des données
     -   [x] check redondante pseudo
     -   [ ] Transactional update
+    -   [ ] What if we have the same id but with different value given many times in entry
 
 ### General
 
+-   [ ] Add a default exception handler
 -   [ ] Improve encodage of HATEOAS: ie create user return getUser + email link with encodage error for "@".
 -   [ ] Only ask for id for DTO, entity name is useless and can result in bugs... only the id is used today
 -   [ ] Change the response of each endpoints in a more complete one {meta, links, response} and the delete response.

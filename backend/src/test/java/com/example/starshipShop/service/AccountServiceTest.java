@@ -8,7 +8,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -23,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistException;
 import com.example.starshipshop.common.exception.NonMatchingPasswordException;
 import com.example.starshipshop.domain.AccountDto;
@@ -38,6 +41,7 @@ import com.example.starshipshop.repository.jpa.user.Email;
 import com.example.starshipshop.repository.jpa.user.Telephone;
 import com.example.starshipshop.repository.jpa.user.User;
 import com.example.starshipshop.repository.model.SecurityUserDetails;
+import com.example.starshipshop.service.AccountService;
 import com.example.starshipshop.service.mapper.AccountMapper;
 import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
 

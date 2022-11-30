@@ -1,19 +1,19 @@
 package com.example.starshipshop.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.mockito.ArgumentMatchers.contains;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.nio.charset.Charset;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -51,6 +51,7 @@ public class UserControllerIT {
 
     @Test
     @Tag("GET /{pseudo}")
+    @Order(1)
     @DisplayName("GET user when user exists should return the user info")
     void getAUser_whenUserExists_shouldThrowResourceNotFoundAdvice() throws Exception {
         this.mockMvc
@@ -87,6 +88,42 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.emails[0].email", is("test@mail.com")))
                 .andExpect(jsonPath("$.telephones[0].telephoneNumber", is("9876543210")));
     }
+    
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(3)
+    void updateAUser_shouldWorks() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john2@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"0123456789\"\r\n        }\r\n    ]\r\n}";
+        
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.pseudo", is("john2")))
+        .andExpect(jsonPath("$.emails[0].email", is("john2@mail.com")))
+        .andExpect(jsonPath("$.telephones[0].telephoneNumber", is("0123456789")));
+    }
+
+//     @Test
+//     @Tag("PUT /{userId}")
+//     @DisplayName("update user should works")
+//     @Order(4)
+//     void updateAUser_whenAddingAnEmail_shouldWorks() throws Exception {
+//         String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john2@mail.com\"\r\n        },\r\n             {\r\n            \"email\": \"john3@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"0123456789\"\r\n        }\r\n    ]\r\n}";
+        
+//         mockMvc
+//         .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+//                 .content(json).contentType(APPLICATION_JSON_UTF8))
+//         .andExpect(status().isCreated())
+//         .andExpect(jsonPath("$.id").exists())
+//         .andExpect(jsonPath("$.pseudo", is("john2")))
+//         .andExpect(jsonPath("$.emails", hasSize(2)))
+//         .andExpect(content().string(containsString("john2@mail.com")))
+//         .andExpect(content().string(containsString("john3@mail.com")))
+//         .andExpect(jsonPath("$.telephones[0].telephoneNumber", is("0123456789")));
+//     }
 
     @Test
     @Tag("POST /{userId}/emails")

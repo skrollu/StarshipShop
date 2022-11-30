@@ -42,15 +42,12 @@ public class User {
     @JoinColumn(name = "id_account", nullable = false, foreignKey = @ForeignKey(name = "FK_user_account"))
     private Account account;
     
-    @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Address> addresses;
     
-    @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Email> emails;
     
-    @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Telephone> telephones;
 }

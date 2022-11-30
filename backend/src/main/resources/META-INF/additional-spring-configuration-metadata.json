@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "app.hashids.salt",
+  "type": "java.lang.String",
+  "description": "Salt used to hash id from the database exposed outside"
+}]}

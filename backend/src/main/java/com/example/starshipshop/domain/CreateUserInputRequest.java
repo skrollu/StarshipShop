@@ -11,14 +11,14 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class UpdateUserRequestInput {
+public class CreateUserInputRequest {
     @Nonnull
     @NotBlank
     private String pseudo;
     @Size(max = 3)
-    private Set<UpdateUserAddressRequestInput> addresses;
+    private Set<CreateUserAddressInputRequest> addresses;
     @Size(max = 3)
-    private Set<UpdateUserEmailRequestInput> emails;
+    private Set<CreateUserEmailInputRequest> emails;
     @Size(max = 3)
-    private Set<UpdateUserTelephoneRequestInput> telephones;
+    private Set<CreateUserTelephoneInputRequest> telephones;
 }
