@@ -7,7 +7,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,12 +50,12 @@ public class UserControllerIT {
 
     @Test
     @Tag("GET /{pseudo}")
-    @Order(1)
+    @Order(0)
     @DisplayName("GET user when user exists should return the user info")
-    void getAUser_whenUserExists_shouldThrowResourceNotFoundAdvice() throws Exception {
+    void getAUser_whenUserExists_shouldUserInfo() throws Exception {
         this.mockMvc
                 .perform(get(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD)))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.pseudo", is("john")));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.pseudo").exists());
     }
 
 
@@ -106,24 +105,153 @@ public class UserControllerIT {
         .andExpect(jsonPath("$.telephones[0].telephoneNumber", is("0123456789")));
     }
 
-//     @Test
-//     @Tag("PUT /{userId}")
-//     @DisplayName("update user should works")
-//     @Order(4)
-//     void updateAUser_whenAddingAnEmail_shouldWorks() throws Exception {
-//         String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john2@mail.com\"\r\n        },\r\n             {\r\n            \"email\": \"john3@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"0123456789\"\r\n        }\r\n    ]\r\n}";
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenAddingAnEmail_shouldWorks() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john2@mail.com\"\r\n        },\r\n             {\r\n            \"email\": \"john3@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"0123456789\"\r\n        }\r\n    ]\r\n}";
         
-//         mockMvc
-//         .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
-//                 .content(json).contentType(APPLICATION_JSON_UTF8))
-//         .andExpect(status().isCreated())
-//         .andExpect(jsonPath("$.id").exists())
-//         .andExpect(jsonPath("$.pseudo", is("john2")))
-//         .andExpect(jsonPath("$.emails", hasSize(2)))
-//         .andExpect(content().string(containsString("john2@mail.com")))
-//         .andExpect(content().string(containsString("john3@mail.com")))
-//         .andExpect(jsonPath("$.telephones[0].telephoneNumber", is("0123456789")));
-//     }
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.pseudo", is("john2")))
+        .andExpect(jsonPath("$.emails", hasSize(2)))
+        .andExpect(content().string(containsString("john2@mail.com")))
+        .andExpect(content().string(containsString("john3@mail.com")));
+    }
+    
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenTwoEmailsHaveSameId_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        },\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john2@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string(containsString("IllegalArgumentException: ADVICE: ")))
+        .andExpect(content().string(containsString("Multiple emails with the same id: W5pvAw0r given.")))
+        ;
+    }
+
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenAnEmailHasAnIdNotHeldByTheUser_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"GELQkpdQ\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456791\"\r\n        },\r\n         {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+        
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("ResourceNotFoundException: ADVICE: ")))
+        .andExpect(content().string(containsString("The email with the given id: GELQkpdQ doesn't exists.")))
+        ;
+    }
+
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenAddingATelephone_shouldWorks() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        },\r\n        {\r\n            \"telephoneNumber\": \"0123456789\"\r\n        }\r\n    ]\r\n}";
+        
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.pseudo", is("john2")))
+        .andExpect(jsonPath("$.telephones", hasSize(2)))
+        .andExpect(content().string(containsString("123456790")))
+        .andExpect(content().string(containsString("0123456789")));
+    }
+    
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenTwoTelephonesHaveSameId_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456791\"\r\n        },\r\n         {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+        
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string(containsString("IllegalArgumentException: ADVICE: ")))
+        .andExpect(content().string(containsString("Multiple telephones with the same id: W5pvAw0r given.")))
+        ;
+    }
+
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenATelephoneHasAnIdNotHeldByTheUser_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456791\"\r\n        },\r\n         {\r\n            \"id\": \"GELQkpdQ\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+        
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("ResourceNotFoundException: ADVICE: ")))
+        .andExpect(content().string(containsString("The telephone with the given id: GELQkpdQ doesn't exists.")))
+        ;
+    }
+
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenAddingAnAddress_shouldWorks() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        },\r\n           {\r\n            \"address\": \"37 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.pseudo", is("john2")))
+        .andExpect(jsonPath("$.addresses", hasSize(2)))
+        .andExpect(content().string(containsString("37 Rue Montorgueil")))
+        .andExpect(content().string(containsString("38 Rue Montorgueil")));
+    }
+
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenTwoAddressesHaveSameId_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john2\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        },\r\n           {\r\n            \"id\": \"W5pvAw0r\",\r\n             \"address\": \"37 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string(containsString("IllegalArgumentException: ADVICE: ")))
+        .andExpect(content().string(containsString("Multiple addresses with the same id: W5pvAw0r given.")))
+        ;
+    }
+    
+    @Test
+    @Tag("PUT /{userId}")
+    @DisplayName("update user should works")
+    @Order(4)
+    void updateAUser_whenAnAddressHasAnIdNotHeldByTheUser_shouldThrowError() throws Exception {
+        String json = "{\r\n    \"pseudo\": \"john\",\r\n    \"addresses\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        },\r\n         {\r\n            \"id\": \"GELQkpdQ\",\r\n            \"address\": \"38 Rue Montorgueil\",\r\n            \"zipCode\": 75001,\r\n            \"city\": \"Paris\",\r\n            \"state\": \"Ile de France\",\r\n            \"country\": \"France\",\r\n            \"planet\": \"Earth\"\r\n        }\r\n    ],\r\n    \"emails\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"email\": \"john@mail.com\"\r\n        }\r\n    ],\r\n    \"telephones\": [\r\n        {\r\n            \"id\": \"W5pvAw0r\",\r\n            \"telephoneNumber\": \"123456790\"\r\n        }\r\n    ]\r\n}";
+        mockMvc
+        .perform(put(BASE_URL + "/" + "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+                .content(json).contentType(APPLICATION_JSON_UTF8))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("ResourceNotFoundException: ADVICE: ")))
+        .andExpect(content().string(containsString("The address with the given id: GELQkpdQ doesn't exists.")))
+        ;
+    }
 
     @Test
     @Tag("POST /{userId}/emails")
@@ -171,7 +299,6 @@ public class UserControllerIT {
                 .perform(post(BASE_URL + "/" + "W5pvAw0r/telephones").with(httpBasic(
                                             USER_USERNAME, 
                                             USER_PASSWORD)).contentType(APPLICATION_JSON_UTF8).content(json))
-                .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.telephoneNumber", is("0123456789")));
@@ -207,7 +334,7 @@ public class UserControllerIT {
             String json = "{\r\n    \"address\": \"38 Rue Montorgueil\",\r\n    \"zipCode\": 75001,\r\n    \"city\": \"Paris\",\r\n    \"state\": \"Ile de France\",\r\n    \"country\": \"France\",\r\n    \"planet\": \"Earth\"\r\n}";
             this.mockMvc.perform(post(BASE_URL + "/" + "W5pvAw0r/addresses")
                             .with(httpBasic(USER_USERNAME, USER_PASSWORD))
-                            .contentType(APPLICATION_JSON_UTF8).content(json)).andDo(log())
+                            .contentType(APPLICATION_JSON_UTF8).content(json))
                             .andExpect(status().isOk()).andExpect(jsonPath("$.id").exists())
                             .andExpect(jsonPath("$.address", is("38 Rue Montorgueil")));
     }

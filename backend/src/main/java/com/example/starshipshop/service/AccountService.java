@@ -243,6 +243,9 @@ public class AccountService implements UserDetailsService {
                 a.setUser(userToSave);
                 // check if given address has an id
                 if(a.getId() != null) {
+                    if(givenAddressesId.contains(a.getId())) {
+                        throw new IllegalArgumentException("Multiple addresses with the same id: " + idToHashConverter.convert(a.getId()) + " given.");
+                    }
                     givenAddressesId.add(a.getId());
                     // Check if given address id is already contained by the stored user 
                     boolean givenAddressExists = false;
@@ -280,6 +283,9 @@ public class AccountService implements UserDetailsService {
                 e.setUser(userToSave);
                 // check if given email has an id
                 if(e.getId() != null) {
+                    if(givenEmailsId.contains(e.getId())) {
+                        throw new IllegalArgumentException("Multiple emails with the same id: " + idToHashConverter.convert(e.getId()) + " given.");
+                    }
                     givenEmailsId.add(e.getId());
                     // Check if given email id is already contained by the stored user 
                     boolean givenEmailExists = false;
@@ -317,6 +323,9 @@ public class AccountService implements UserDetailsService {
                 t.setUser(userToSave);
                 // check if given telephone has an id
                 if(t.getId() != null) {
+                    if(givenTelephonesId.contains(t.getId())) {
+                        throw new IllegalArgumentException("Multiple telephones with the same id: " + idToHashConverter.convert(t.getId()) + " given.");
+                    }
                     givenTelephonesId.add(t.getId());
                     // Check if given telephone id is already contained by the stored user 
                     boolean givenTelephoneExists = false;
@@ -361,11 +370,10 @@ public class AccountService implements UserDetailsService {
         this.emailRepository.saveAll(userToSave.getEmails());
         this.telephoneRepository.saveAll(userToSave.getTelephones());
         
-        User result = this.userRepository.getReferenceById(userId);
         // Update user entity and security context by reference userInDatabase come from it.
-        BeanUtils.copyProperties(result, userInDatabase);
+        BeanUtils.copyProperties(userToSave, userInDatabase);
 
-        return accountMapper.toSimpleUserDto(result);
+        return accountMapper.toSimpleUserDto(userToSave);
     }
     
     /**
