@@ -1,12 +1,8 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.user;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -18,14 +14,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserEmailRequestInput {
+public class UpdateUserAddressInput {
     @Nullable
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)
     private Long id;
-    @NotNull
-    @NotBlank
-    @Email
-    @JsonProperty("email")
-    private String email;
+    private String address;
+    private Long zipCode;
+    private String city;
+    private String state;
+    private String country;
+    private String planet;
 }

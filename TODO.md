@@ -4,13 +4,17 @@
 
 -   [ ] update user endpoint
     -   [x] Check number of addresses/emails/telephones per user
-    -   [ ] check redondance of the data
-    -   // [ ] Fusion des données
+    -   [ ] check redondance of the data via set but if id is given its not working
     -   [x] check redondante pseudo
     -   [ ] Transactional update
-    -   [ ] What if we have the same id but with different value given many times in entry
+    -   [x] What if we have the same id but with different value given many times in entry  => error
 
 ### General
+
+-   [ ] Refactor domain objects: 
+    -  EntityInput si entité d'entrée pour la création = entité d'update
+    -  CreateEntityRequest si entité de création si différent d'update
+    -  UpdateEntityRequest si entité de création si différent de création
 
 -   [ ] Add a default exception handler
 -   [ ] Improve encodage of HATEOAS: ie create user return getUser + email link with encodage error for "@".

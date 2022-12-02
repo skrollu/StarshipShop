@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.domain.ManufacturerDto;
-import com.example.starshipshop.domain.ManufacturerRequestInput;
+import com.example.starshipshop.domain.ManufacturerInput;
 import com.example.starshipshop.repository.ManufacturerRepository;
 import com.example.starshipshop.repository.jpa.Manufacturer;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;
@@ -48,16 +49,16 @@ public class ManufacturerService {
 					.map(mapper::toManufacturerDto);
 	}
 
-	public ManufacturerDto createManufacturer(final ManufacturerRequestInput mri) {
-		this.checkManufacturerRequestInput(mri);
-		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.fromManufaturerRequestInput(mri)));
+	public ManufacturerDto createManufacturer(final ManufacturerInput mi) {
+		this.checkManufacturerRequestInput(mi);
+		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.fromManufaturerRequestInput(mi)));
 	}
 
-	public ManufacturerDto updateManufacturer(final Long id, ManufacturerRequestInput mri) {
+	public ManufacturerDto updateManufacturer(final Long id, ManufacturerInput mi) {
 		Assert.notNull(id, String.format("id cannot be null."));
-		this.checkManufacturerRequestInput(mri);
+		this.checkManufacturerRequestInput(mi);
 		this.checkManufacturerExist(id);
-		Manufacturer manufacturer = mapper.fromManufaturerRequestInput(mri);
+		Manufacturer manufacturer = mapper.fromManufaturerRequestInput(mi);
 		manufacturer.setId(id);
 		return mapper.toManufacturerDto(manufacturerRepository.save(manufacturer));
 	}
@@ -68,10 +69,10 @@ public class ManufacturerService {
 		manufacturerRepository.delete(manufacturerToDelete);
 	}
 
-	public void checkManufacturerRequestInput(ManufacturerRequestInput mri) {
-		Assert.notNull(mri, String.format("Manufacturer cannot be null."));
-		Assert.notNull(mri.getName(), String.format("Name of Manufacturer cannot be null."));
-		Assert.hasText(mri.getName(), String.format("Name of Manufacturer cannot be empty."));
+	public void checkManufacturerRequestInput(ManufacturerInput mi) {
+		Assert.notNull(mi, String.format("Manufacturer cannot be null."));
+		Assert.notNull(mi.getName(), String.format("Name of Manufacturer cannot be null."));
+		Assert.hasText(mi.getName(), String.format("Name of Manufacturer cannot be empty."));
 	}
 	
 	public void checkManufacturerDto(ManufacturerDto dto) {

@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistException;
@@ -24,17 +23,17 @@ import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.common.exception.TooManyUserPerAccountException;
 import com.example.starshipshop.common.exception.UserPseudoAlreadyExistsException;
 import com.example.starshipshop.config.security.SecurityUserRole;
-import com.example.starshipshop.domain.AccountDto;
-import com.example.starshipshop.domain.AddressDto;
-import com.example.starshipshop.domain.AddressRequestInput;
-import com.example.starshipshop.domain.CreateUserInputRequest;
-import com.example.starshipshop.domain.EmailDto;
-import com.example.starshipshop.domain.EmailRequestInput;
-import com.example.starshipshop.domain.RegisterNewAccountRequestInput;
-import com.example.starshipshop.domain.SimpleUserDto;
-import com.example.starshipshop.domain.TelephoneDto;
-import com.example.starshipshop.domain.TelephoneInputRequest;
-import com.example.starshipshop.domain.UpdateUserInputRequest;
+import com.example.starshipshop.domain.account.AccountOutput;
+import com.example.starshipshop.domain.account.CreateAccountInput;
+import com.example.starshipshop.domain.user.AddressOutput;
+import com.example.starshipshop.domain.user.CreateUserAddressInput;
+import com.example.starshipshop.domain.user.CreateUserEmailInput;
+import com.example.starshipshop.domain.user.CreateUserInput;
+import com.example.starshipshop.domain.user.CreateUserTelephoneInput;
+import com.example.starshipshop.domain.user.EmailOutput;
+import com.example.starshipshop.domain.user.SimpleUserOutput;
+import com.example.starshipshop.domain.user.TelephoneOutput;
+import com.example.starshipshop.domain.user.UpdateUserInput;
 import com.example.starshipshop.repository.AccountRepository;
 import com.example.starshipshop.repository.AddressRepository;
 import com.example.starshipshop.repository.EmailRepository;
@@ -52,17 +51,16 @@ import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class AccountService implements UserDetailsService {
-    
-    private final static int MAX_USER_COUNT_PER_ACCOUNT = 5;
-    private final static int MAX_ADDRESSES_PER_USER = 3;
-    private final static int MAX_EMAILS_PER_USER = 3;
-    private final static int MAX_TELEPHONES_PER_USER = 3;
-    
+
+    private static final int MAX_USER_COUNT_PER_ACCOUNT = 5;
+    private static final int MAX_ADDRESSES_PER_USER = 3;
+    private static final int MAX_EMAILS_PER_USER = 3;
+    private static final int MAX_TELEPHONES_PER_USER = 3;
+
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
@@ -71,116 +69,122 @@ public class AccountService implements UserDetailsService {
     private final AccountMapper accountMapper;
     private final PasswordEncoder encoder;
     private final IdToHashConverter idToHashConverter;
-    
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByUsername(username).map(SecurityUserDetails::new).orElseThrow(
-        () -> new UsernameNotFoundException("Username not found: " + username));
+                () -> new UsernameNotFoundException("Username not found: " + username));
     }
-    
+
     /**
-    * @param account
-    * @param userId
-    * @return the {@link User} with the {@code userId} held by the given {@code account}
-    * @throws {@link ResourceNotFoundException} if no {@link User} found with the given {@code userId}
-    */
-    private User getUserFromAccount(Account account, Long userId)  throws ResourceNotFoundException {
+     * @param account
+     * @param userId
+     * @return the {@link User} with the {@code userId} held by the given
+     *         {@code account}
+     * @throws {@link ResourceNotFoundException} if no {@link User} found with the
+     *                given {@code userId}
+     */
+    private User getUserFromAccount(Account account, Long userId) throws ResourceNotFoundException {
         if (account.getUsers() == null || account.getUsers().isEmpty()) {
             throw new ResourceNotFoundException("The authenticated account has no user defined");
         }
-        
+
         return account.getUsers().stream().filter(u -> u.getId().equals(userId))
-        .findFirst()
-        .orElseThrow(() -> new ResourceNotFoundException(
-        "Cannot retrieve user with the given id: "
-        + idToHashConverter.convert(userId)));
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Cannot retrieve user with the given id: "
+                                + idToHashConverter.convert(userId)));
     }
-    
+
     /**
-    * @param authentication
-    * @return a {@link SecurityUserDetails} instance held by the principal stored in the given
-    *         {@value authentication}
-    * @throws IllegalArgumentException
-    */
+     * @param authentication
+     * @return a {@link SecurityUserDetails} instance held by the principal stored
+     *         in the given
+     *         {@value authentication}
+     * @throws IllegalArgumentException
+     */
     private SecurityUserDetails getSecurityUserDetail(Authentication authentication)
-    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         Assert.notNull(authentication, "Authentication informations are null.");
         SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
         Assert.notNull(userDetails, "Principal informations are null.");
         return userDetails;
     }
-    
+
     public Account getAccount(Authentication authentication) {
         SecurityUserDetails userDetails = getSecurityUserDetail(authentication);
         return userDetails.getAccount();
     }
-    
-    public AccountDto getAccountDto(Authentication authentication) {
-        return accountMapper.toAccountDto(getAccount(authentication));
+
+    public AccountOutput getAccountDto(Authentication authentication) {
+        return accountMapper.toAccountOutput(getAccount(authentication));
     }
-    
-    public AccountDto registerNewAccount(RegisterNewAccountRequestInput rnari)
-    throws AccountUsernameAlreadyExistException, NonMatchingPasswordException,
-    IllegalArgumentException, NullPointerException {
-        Assert.notNull(rnari, "Register new account resource is null");
-        if (!rnari.getPassword().equals(rnari.getMatchingPassword())) {
+
+    public AccountOutput createAccount(CreateAccountInput cai)
+            throws AccountUsernameAlreadyExistException, NonMatchingPasswordException,
+            IllegalArgumentException, NullPointerException {
+        Assert.notNull(cai, "Create account resource is null");
+        if (!cai.getPassword().equals(cai.getMatchingPassword())) {
             throw new NonMatchingPasswordException();
         }
-        
-        if (checkUsernameExists(rnari.getUsername())) {
+
+        if (checkUsernameExists(cai.getUsername())) {
             throw new AccountUsernameAlreadyExistException(
-            "There is an account with that email address: " + rnari.getUsername());
+                    "There is an account with that email address: " + cai.getUsername());
         }
-        
-        Account toSave = accountMapper.fromRegisterNewAccountRequestInput(rnari);
+
+        Account toSave = accountMapper.fromCreateAccountInput(cai);
         if (toSave == null) {
             throw new NullPointerException("Error when mapping account.");
         }
         toSave.setPassword(encoder.encode(toSave.getPassword()));
         toSave.setRoles(SecurityUserRole.USER.name());
         Account result = accountRepository.save(toSave);
-        return this.accountMapper.toAccountDto(result);
+        return this.accountMapper.toAccountOutput(result);
     }
-    
+
     /**
-    * Check in database if the given {@code username} exists in database
-    */
+     * Check in database if the given {@code username} exists in database
+     */
     public boolean checkUsernameExists(String username) {
         Optional<Account> optAccount = accountRepository.findByUsername(username);
         return optAccount.isPresent() && optAccount.get() != null;
     }
-    
-    public SimpleUserDto getUserInfo(Authentication authentication, Long id) {
+
+    public SimpleUserOutput getUserInfo(Authentication authentication, Long id) {
         Assert.notNull(id, "Given id cannot be null");
-        AccountDto account = getAccountDto(authentication);
-        SimpleUserDto result = null;
-        for (SimpleUserDto u : account.getUsers()) {
+        Account account = getAccount(authentication);
+        User result = null;
+        for (User u : account.getUsers()) {
             if (u.getId().equals(id)) {
                 result = u;
                 break;
             }
         }
-        
-        return result;
+        if (result == null) {
+            throw new ResourceNotFoundException("No user found with the given id: " + idToHashConverter.convert(id));
+        }
+        return accountMapper.toSimpleUserOutput(result);
     }
-    
-    public SimpleUserDto createUser(Authentication authentication, CreateUserInputRequest cuir) throws TooManyUserPerAccountException, UserPseudoAlreadyExistsException {
-        Assert.notNull(cuir, "Given user information cannot be null");
+
+    public SimpleUserOutput createUser(Authentication authentication, CreateUserInput cui)
+            throws TooManyUserPerAccountException, UserPseudoAlreadyExistsException {
+        Assert.notNull(cui, "Given user information cannot be null");
         // Retrieve account info from authentication
         Account account = getAccount(authentication);
-        
+
         // Apply business rules on user
         if (account.getUsers().size() >= MAX_USER_COUNT_PER_ACCOUNT) {
             throw new TooManyUserPerAccountException();
         }
         for (User u : account.getUsers()) {
-            if (u.getPseudo().equals(cuir.getPseudo())) {
-                throw new UserPseudoAlreadyExistsException(cuir.getPseudo());
+            if (u.getPseudo().equals(cui.getPseudo())) {
+                throw new UserPseudoAlreadyExistsException(cui.getPseudo());
             }
         }
-        
+
         // Add userToSave to Sets to create entity in cascade.
-        User userToSave = accountMapper.fromCreateUserInputRequest(cuir);
+        User userToSave = accountMapper.fromCreateUserInput(cui);
         if (userToSave.getAddresses() != null && !userToSave.getAddresses().isEmpty()) {
             for (Address a : userToSave.getAddresses()) {
                 a.setUser(userToSave);
@@ -201,70 +205,77 @@ public class AccountService implements UserDetailsService {
         this.addressRepository.saveAll(userToSave.getAddresses());
         this.emailRepository.saveAll(userToSave.getEmails());
         this.telephoneRepository.saveAll(userToSave.getTelephones());
-        
+
         // Update security context
         this.updateSecurityContext(account.getUsername());
-        
-        return accountMapper.toSimpleUserDto(userToSave);
+
+        return accountMapper.toSimpleUserOutput(userToSave);
     }
-    
+
     /**
-    * On delete tout ce qui n'est pas fournit 
-    * pas de merge
-    * pas de comparaison de variable egale sauf pseudo
-    */
-    public SimpleUserDto updateUser(Authentication authentication, UpdateUserInputRequest uuir,
-    Long userId) throws TooManyUserPerAccountException, @Valid UserPseudoAlreadyExistsException,
-    ResourceNotFoundException {
-        Assert.notNull(uuir, "Given user information cannot be null");
-        Assert.notNull(uuir, "Given id cannot be null");
+     * Update the {@link User} entity in database according to {@code uui}.
+     * Delete non given/non required datas, update those with a correct id and add
+     * those with no id.
+     * 
+     * @return {@link SimpleUserOutput} which resume the given
+     *         {@link UpdateUserInput}
+     */
+    public SimpleUserOutput updateUser(Authentication authentication, UpdateUserInput uui,
+            Long userId) throws TooManyUserPerAccountException, @Valid UserPseudoAlreadyExistsException,
+            ResourceNotFoundException {
+        Assert.notNull(uui, "Given user information cannot be null");
+        Assert.notNull(uui, "Given id cannot be null");
         // Retrieve account info from authentication
         Account account = getAccount(authentication);
         User userInDatabase = getUserFromAccount(account, userId);
-        
+
         // Apply business rules on user
         // 2 users cannot have the same pseudo
         for (User u : account.getUsers()) {
-            if (u.getPseudo().equals(uuir.getPseudo()) && !u.getId().equals(userId)) {
-                throw new UserPseudoAlreadyExistsException(uuir.getPseudo());
+            if (u.getPseudo().equals(uui.getPseudo()) && !u.getId().equals(userId)) {
+                throw new UserPseudoAlreadyExistsException(uui.getPseudo());
             }
         }
-        
-        User userToSave = accountMapper.fromUpdateUserInputRequest(uuir);
+
+        User userToSave = accountMapper.fromUpdateUserInput(uui);
         userToSave.setId(userInDatabase.getId());
-        
-        // Check for each given address id if it exist in database and add a reference to userToSave
-        // Then check if all addresses in db are given else add their ids in addressesToRemove
+
+        // Check for each given address id if it exist in database and add a reference
+        // to userToSave
+        // Then check if all addresses in db are given else add their ids in
+        // addressesToRemove
         Set<Long> givenAddressesId = new HashSet<>();
         Set<Long> addressesIdToRemove = new HashSet<>();
         if (userToSave.getAddresses() != null && !userToSave.getAddresses().isEmpty()) {
-            for(Address a : userToSave.getAddresses()) {
+            for (Address a : userToSave.getAddresses()) {
                 // Add a reference to userToSave
                 a.setUser(userToSave);
                 // check if given address has an id
-                if(a.getId() != null) {
-                    if(givenAddressesId.contains(a.getId())) {
-                        throw new IllegalArgumentException("Multiple addresses with the same id: " + idToHashConverter.convert(a.getId()) + " given.");
+                if (a.getId() != null) {
+                    if (givenAddressesId.contains(a.getId())) {
+                        throw new IllegalArgumentException("Multiple addresses with the same id: "
+                                + idToHashConverter.convert(a.getId()) + " given.");
                     }
                     givenAddressesId.add(a.getId());
-                    // Check if given address id is already contained by the stored user 
+                    // Check if given address id is already contained by the stored user
                     boolean givenAddressExists = false;
-                    for(Address address: userInDatabase.getAddresses()) {
-                        if(a.getId().equals(address.getId())){
+                    for (Address address : userInDatabase.getAddresses()) {
+                        if (a.getId().equals(address.getId())) {
                             givenAddressExists = true;
                         }
                     }
-                    if(!givenAddressExists) {
-                        throw new ResourceNotFoundException("The address with the given id: " + idToHashConverter.convert(a.getId()) + " doesn't exists.");
+                    if (!givenAddressExists) {
+                        throw new ResourceNotFoundException("The address with the given id: "
+                                + idToHashConverter.convert(a.getId()) + " doesn't exists.");
                     }
                 }
             }
         }
         // Gather address to delete from database in addressesIdToRemove
-        if(userInDatabase.getAddresses() != null && !userInDatabase.getAddresses().isEmpty()) {
-            for(Address a: userInDatabase.getAddresses()) {
-                if(!givenAddressesId.isEmpty()) {
-                    if(!givenAddressesId.contains(a.getId())) {
+        if (userInDatabase.getAddresses() != null && !userInDatabase.getAddresses().isEmpty()) {
+            for (Address a : userInDatabase.getAddresses()) {
+                if (!givenAddressesId.isEmpty()) {
+                    if (!givenAddressesId.contains(a.getId())) {
                         addressesIdToRemove.add(a.getId());
                     }
                 } else {
@@ -273,38 +284,42 @@ public class AccountService implements UserDetailsService {
             }
         }
 
-        // Check for each given email id if it exist in database and add a reference to userToSave
-        // Then check if all emails in db are given else add their ids in emailsIdToRemove
+        // Check for each given email id if it exist in database and add a reference to
+        // userToSave
+        // Then check if all emails in db are given else add their ids in
+        // emailsIdToRemove
         Set<Long> givenEmailsId = new HashSet<>();
         Set<Long> emailsIdToRemove = new HashSet<>();
         if (userToSave.getEmails() != null && !userToSave.getEmails().isEmpty()) {
-            for(Email e : userToSave.getEmails()) {
+            for (Email e : userToSave.getEmails()) {
                 // Add a reference to userToSave
                 e.setUser(userToSave);
                 // check if given email has an id
-                if(e.getId() != null) {
-                    if(givenEmailsId.contains(e.getId())) {
-                        throw new IllegalArgumentException("Multiple emails with the same id: " + idToHashConverter.convert(e.getId()) + " given.");
+                if (e.getId() != null) {
+                    if (givenEmailsId.contains(e.getId())) {
+                        throw new IllegalArgumentException("Multiple emails with the same id: "
+                                + idToHashConverter.convert(e.getId()) + " given.");
                     }
                     givenEmailsId.add(e.getId());
-                    // Check if given email id is already contained by the stored user 
+                    // Check if given email id is already contained by the stored user
                     boolean givenEmailExists = false;
-                    for(Email email: userInDatabase.getEmails()) {
-                        if(e.getId().equals(email.getId())){
+                    for (Email email : userInDatabase.getEmails()) {
+                        if (e.getId().equals(email.getId())) {
                             givenEmailExists = true;
                         }
                     }
-                    if(!givenEmailExists) {
-                        throw new ResourceNotFoundException("The email with the given id: " + idToHashConverter.convert(e.getId()) + " doesn't exists.");
+                    if (!givenEmailExists) {
+                        throw new ResourceNotFoundException("The email with the given id: "
+                                + idToHashConverter.convert(e.getId()) + " doesn't exists.");
                     }
                 }
             }
         }
         // Gather email to delete from database in emailsIdToRemove
-        if(userInDatabase.getEmails() != null && !userInDatabase.getEmails().isEmpty()) {
-            for(Email e: userInDatabase.getEmails()) {
-                if(!givenEmailsId.isEmpty()) {
-                    if(!givenEmailsId.contains(e.getId())) {
+        if (userInDatabase.getEmails() != null && !userInDatabase.getEmails().isEmpty()) {
+            for (Email e : userInDatabase.getEmails()) {
+                if (!givenEmailsId.isEmpty()) {
+                    if (!givenEmailsId.contains(e.getId())) {
                         emailsIdToRemove.add(e.getId());
                     }
                 } else {
@@ -313,38 +328,42 @@ public class AccountService implements UserDetailsService {
             }
         }
 
-        // Check for each given telephone id if it exist in database and add a reference to userToSave
-        // Then check if all telephones in db are given else add their ids in telephonesIdToRemove
+        // Check for each given telephone id if it exist in database and add a reference
+        // to userToSave
+        // Then check if all telephones in db are given else add their ids in
+        // telephonesIdToRemove
         Set<Long> givenTelephonesId = new HashSet<>();
         Set<Long> telephonesIdToRemove = new HashSet<>();
         if (userToSave.getTelephones() != null && !userToSave.getTelephones().isEmpty()) {
-            for(Telephone t : userToSave.getTelephones()) {
+            for (Telephone t : userToSave.getTelephones()) {
                 // Add a reference to userToSave
                 t.setUser(userToSave);
                 // check if given telephone has an id
-                if(t.getId() != null) {
-                    if(givenTelephonesId.contains(t.getId())) {
-                        throw new IllegalArgumentException("Multiple telephones with the same id: " + idToHashConverter.convert(t.getId()) + " given.");
+                if (t.getId() != null) {
+                    if (givenTelephonesId.contains(t.getId())) {
+                        throw new IllegalArgumentException("Multiple telephones with the same id: "
+                                + idToHashConverter.convert(t.getId()) + " given.");
                     }
                     givenTelephonesId.add(t.getId());
-                    // Check if given telephone id is already contained by the stored user 
+                    // Check if given telephone id is already contained by the stored user
                     boolean givenTelephoneExists = false;
-                    for(Telephone telephone: userInDatabase.getTelephones()) {
-                        if(t.getId().equals(telephone.getId())){
+                    for (Telephone telephone : userInDatabase.getTelephones()) {
+                        if (t.getId().equals(telephone.getId())) {
                             givenTelephoneExists = true;
                         }
                     }
-                    if(!givenTelephoneExists) {
-                        throw new ResourceNotFoundException("The telephone with the given id: " + idToHashConverter.convert(t.getId()) + " doesn't exists.");
+                    if (!givenTelephoneExists) {
+                        throw new ResourceNotFoundException("The telephone with the given id: "
+                                + idToHashConverter.convert(t.getId()) + " doesn't exists.");
                     }
                 }
             }
         }
         // Gather telephone to delete from database in telephonesIdToRemove
-        if(userInDatabase.getTelephones() != null && !userInDatabase.getTelephones().isEmpty()) {
-            for(Telephone t: userInDatabase.getTelephones()) {
-                if(!givenTelephonesId.isEmpty()) {
-                    if(!givenTelephonesId.contains(t.getId())) {
+        if (userInDatabase.getTelephones() != null && !userInDatabase.getTelephones().isEmpty()) {
+            for (Telephone t : userInDatabase.getTelephones()) {
+                if (!givenTelephonesId.isEmpty()) {
+                    if (!givenTelephonesId.contains(t.getId())) {
                         telephonesIdToRemove.add(t.getId());
                     }
                 } else {
@@ -354,13 +373,13 @@ public class AccountService implements UserDetailsService {
         }
 
         // // Remove non given entities
-        if(!addressesIdToRemove.isEmpty()) {
+        if (!addressesIdToRemove.isEmpty()) {
             addressesIdToRemove.stream().forEach(addressRepository::deleteById);
         }
-        if(!emailsIdToRemove.isEmpty()) {
+        if (!emailsIdToRemove.isEmpty()) {
             emailsIdToRemove.stream().forEach(emailRepository::deleteById);
         }
-        if(!telephonesIdToRemove.isEmpty()) {
+        if (!telephonesIdToRemove.isEmpty()) {
             telephonesIdToRemove.stream().forEach(telephoneRepository::deleteById);
         }
         // Save entities
@@ -369,108 +388,110 @@ public class AccountService implements UserDetailsService {
         this.addressRepository.saveAll(userToSave.getAddresses());
         this.emailRepository.saveAll(userToSave.getEmails());
         this.telephoneRepository.saveAll(userToSave.getTelephones());
-        
-        // Update user entity and security context by reference userInDatabase come from it.
+
+        // Update user entity and security context by reference userInDatabase come from
+        // it.
         BeanUtils.copyProperties(userToSave, userInDatabase);
 
-        return accountMapper.toSimpleUserDto(userToSave);
+        return accountMapper.toSimpleUserOutput(userToSave);
     }
-    
+
     /**
-    * Reload the {@link Account} from database and update it in spring security context.
-    * Update security context is recommanded on {@link Account} update
-    * in order to keep context in phase with the database.
-    * @param username load account using it.
-    */
+     * Reload the {@link Account} from database and update it in spring security
+     * context.
+     * Update security context is recommanded on {@link Account} update
+     * in order to keep context in phase with the database.
+     * 
+     * @param username load account using it.
+     */
     private void updateSecurityContext(String username) {
         Assert.notNull(username, "Username must not be null");
         SecurityUserDetails securityUserDetailsFromDatabase = (SecurityUserDetails) loadUserByUsername(username);
         Account updatedAccount = securityUserDetailsFromDatabase.getAccount();
         SecurityUserDetails s = (SecurityUserDetails) SecurityContextHolder.getContext()
-        .getAuthentication().getPrincipal();
+                .getAuthentication().getPrincipal();
         s.setAccount(updatedAccount);
         log.info("Update security context");
     }
 
     /**
-    * Update security context is recommanded on {@link Account} update
-    * in order to keep context in phase with the database.
-    */
+     * Update security context is recommanded on {@link Account} update
+     * in order to keep context in phase with the database.
+     */
     private void updateSecurityContext(Account account) {
         Assert.notNull(account, "Account must not be null");
         SecurityUserDetails s = (SecurityUserDetails) SecurityContextHolder.getContext()
-        .getAuthentication().getPrincipal();
+                .getAuthentication().getPrincipal();
         s.setAccount(account);
         log.info("Update security context");
     }
-    
-    public EmailDto createUserEmail(Authentication authentication, EmailRequestInput eri, Long userId)
-    throws ResourceNotFoundException {
+
+    public EmailOutput createUserEmail(Authentication authentication, CreateUserEmailInput cuei, Long userId)
+            throws ResourceNotFoundException {
         Account authenticatedAccount = getAccount(authentication);
         User user = getUserFromAccount(authenticatedAccount, userId);
-        
+
         if (user.getEmails() != null && !user.getEmails().isEmpty()
-        && user.getEmails().size() >= MAX_EMAILS_PER_USER) {
+                && user.getEmails().size() >= MAX_EMAILS_PER_USER) {
             log.warn("A user cannot have more than " + MAX_EMAILS_PER_USER + " emails.");
             throw new TooManyRowsAffectedException(
-            "A user cannot have more than " + MAX_EMAILS_PER_USER + " emails.",
-            MAX_EMAILS_PER_USER, 4);
+                    "A user cannot have more than " + MAX_EMAILS_PER_USER + " emails.",
+                    MAX_EMAILS_PER_USER, 4);
         }
-        Email emailToSave = accountMapper.fromEmailRequestInput(eri);
+        Email emailToSave = accountMapper.fromCreateUserEmailInput(cuei);
         emailToSave.setUser(user);
         Email result = emailRepository.save(emailToSave);
-        
+
         // Update security context
         this.updateSecurityContext(authenticatedAccount.getUsername());
-        
-        return accountMapper.toEmailDto(result);
+
+        return accountMapper.toEmailOutput(result);
     }
-    
-    
-    public TelephoneDto createUserTelephone(Authentication authentication, TelephoneInputRequest tir, Long userId)
-    throws ResourceNotFoundException {
+
+    public TelephoneOutput createUserTelephone(Authentication authentication, CreateUserTelephoneInput cuti,
+            Long userId)
+            throws ResourceNotFoundException {
         Account authenticatedAccount = getAccount(authentication);
         User user = getUserFromAccount(authenticatedAccount, userId);
-        
+
         if (user.getTelephones() != null && !user.getTelephones().isEmpty()
-        && user.getTelephones().size() >= MAX_TELEPHONES_PER_USER) {
+                && user.getTelephones().size() >= MAX_TELEPHONES_PER_USER) {
             log.warn("A user cannot have more than " + MAX_TELEPHONES_PER_USER + " telephone number.");
             throw new TooManyRowsAffectedException(
-            "A user cannot have more than " + MAX_TELEPHONES_PER_USER + " telephone number.",
-            MAX_TELEPHONES_PER_USER, 4);
+                    "A user cannot have more than " + MAX_TELEPHONES_PER_USER + " telephone number.",
+                    MAX_TELEPHONES_PER_USER, 4);
         }
-        Telephone telephoneToSave = accountMapper.fromTelephoneRequestInput(tir);
+        Telephone telephoneToSave = accountMapper.fromCreateUserTelephoneInput(cuti);
         telephoneToSave.setUser(user);
         Telephone result = telephoneRepository.save(telephoneToSave);
-        
+
         // Update security context
         this.updateSecurityContext(authenticatedAccount.getUsername());
-        
-        return accountMapper.toTelephoneDto(result);
+
+        return accountMapper.toTelephoneOutput(result);
     }
-    
-    public AddressDto createUserAddress(Authentication authentication, AddressRequestInput ari,
-    Long userId) throws ResourceNotFoundException {
+
+    public AddressOutput createUserAddress(Authentication authentication, CreateUserAddressInput cuai,
+            Long userId) throws ResourceNotFoundException {
         Account authenticatedAccount = getAccount(authentication);
         User user = getUserFromAccount(authenticatedAccount, userId);
-        
+
         if (user.getAddresses() != null && !user.getAddresses().isEmpty()
-        && user.getAddresses().size() >= MAX_ADDRESSES_PER_USER) {
+                && user.getAddresses().size() >= MAX_ADDRESSES_PER_USER) {
             log.warn("A user cannot have more than " + MAX_ADDRESSES_PER_USER
-            + " addresses.");
+                    + " addresses.");
             throw new TooManyRowsAffectedException("A user cannot have more than "
-            + MAX_ADDRESSES_PER_USER + " addresses.", MAX_ADDRESSES_PER_USER, 4);
+                    + MAX_ADDRESSES_PER_USER + " addresses.", MAX_ADDRESSES_PER_USER, 4);
         }
-        Address addressToSave = accountMapper.fromAddressRequestInput(ari);
+        Address addressToSave = accountMapper.fromCreateUserAddressInput(cuai);
         addressToSave.setUser(user);
-        
+
         Address result = addressRepository.save(addressToSave);
-        
+
         // Update security context
         this.updateSecurityContext(authenticatedAccount.getUsername());
-        
-        return accountMapper.toAddressDto(result);
+
+        return accountMapper.toAddressOutput(result);
     }
-    
-    
+
 }

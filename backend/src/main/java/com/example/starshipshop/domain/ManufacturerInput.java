@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class WeaponRequestInput {
+@NonNull
+public class ManufacturerInput {
+
 	private String name;
-	private ManufacturerDto manufacturer;
 }

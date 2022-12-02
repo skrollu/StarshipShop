@@ -1,4 +1,4 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.user;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.NotBlank;
@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserTelephoneInputRequest {
+public class CreateUserTelephoneInput {
     @Nonnull
     @NotBlank
     @Size(min = 10, max = 10)
     @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephoneNumber;
-
 }

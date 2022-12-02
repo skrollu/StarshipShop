@@ -1,4 +1,4 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.user;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,7 +12,7 @@ import lombok.NonNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserAddressInputRequest {
+public class CreateUserAddressInput {
     @NonNull
     @NotBlank
     private String address;

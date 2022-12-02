@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.controller.assembler.ManufacturerAssembler;
 import com.example.starshipshop.domain.ManufacturerDto;
-import com.example.starshipshop.domain.ManufacturerRequestInput;
+import com.example.starshipshop.domain.ManufacturerInput;
 import com.example.starshipshop.service.ManufacturerService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -67,8 +67,8 @@ public class ManufacturerController {
 	
     @PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
-	public ResponseEntity<EntityModel<ManufacturerDto>> createManufacturer(@RequestBody ManufacturerRequestInput mri) {
-		EntityModel<ManufacturerDto> entityModel = this.assembler.toModel(this.manufacturerService.createManufacturer(mri));
+	public ResponseEntity<EntityModel<ManufacturerDto>> createManufacturer(@RequestBody ManufacturerInput mi) {
+		EntityModel<ManufacturerDto> entityModel = this.assembler.toModel(this.manufacturerService.createManufacturer(mi));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri())
 		.body(entityModel);
@@ -77,9 +77,9 @@ public class ManufacturerController {
     @PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<ManufacturerDto>> updateManufacturer(@PathVariable String id,
-	@RequestBody ManufacturerRequestInput mri) {
+	@RequestBody ManufacturerInput mi) {
 		EntityModel<ManufacturerDto> response = assembler.toModel(
-		this.manufacturerService.updateManufacturer(hashToIdConverter.convert(id), mri));
+		this.manufacturerService.updateManufacturer(hashToIdConverter.convert(id), mi));
 		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri())
 		.body(response);

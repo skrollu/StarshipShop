@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.controller.assembler.StarshipAssembler;
 import com.example.starshipshop.domain.StarshipDto;
-import com.example.starshipshop.domain.StarshipRequestInput;
+import com.example.starshipshop.domain.StarshipInput;
 import com.example.starshipshop.service.StarshipService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -63,8 +63,8 @@ public class StarshipController {
 	
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
-	public ResponseEntity<EntityModel<StarshipDto>> createStarship(@RequestBody StarshipRequestInput sri) {
-		EntityModel<StarshipDto> entityModel = assembler.toModel(this.starshipService.createStarship(sri));
+	public ResponseEntity<EntityModel<StarshipDto>> createStarship(@RequestBody StarshipInput si) {
+		EntityModel<StarshipDto> entityModel = assembler.toModel(this.starshipService.createStarship(si));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri()) 
 		.body(entityModel);
@@ -73,10 +73,10 @@ public class StarshipController {
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<StarshipDto>> updateStarship(@PathVariable String id,
-	@RequestBody StarshipRequestInput sri) {
+	@RequestBody StarshipInput si) {
 		
 		EntityModel<StarshipDto> entityModel = assembler.toModel(
-		this.starshipService.updateStarship(hashToIdConverter.convert(id), sri));
+		this.starshipService.updateStarship(hashToIdConverter.convert(id), si));
 		
 		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri()) 

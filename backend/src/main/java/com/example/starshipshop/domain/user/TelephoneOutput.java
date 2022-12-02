@@ -1,24 +1,31 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.user;
 
-import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class SimpleUserDto {
-
+@NoArgsConstructor
+public class TelephoneOutput {
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)
     private Long id;
-    private String pseudo;
-    private Set<AddressDto> addresses;
-    private Set<EmailDto> emails;
-    private Set<TelephoneDto> telephones;
+    @Nonnull
+    @NotBlank
+    @Size(min = 10, max = 10)
+    @Pattern(regexp = "(^$|[0-9]{10})")
+    private String telephoneNumber;
 }

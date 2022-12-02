@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@NonNull
-public class ManufacturerRequestInput {
+public class HyperdriveSystemInput {
 
 	private String name;
+	private ManufacturerDto manufacturer;
 }

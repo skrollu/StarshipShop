@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.controller.assembler.HyperdriveSystemAssembler;
 import com.example.starshipshop.domain.HyperdriveSystemDto;
-import com.example.starshipshop.domain.HyperdriveSystemRequestInput;
+import com.example.starshipshop.domain.HyperdriveSystemInput;
 import com.example.starshipshop.service.HyperdriveSystemService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -67,9 +67,9 @@ public class HyperdriveSystemController {
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
 	public ResponseEntity<EntityModel<HyperdriveSystemDto>> createHyperdriveSystem(
-	@RequestBody HyperdriveSystemRequestInput hsri) {
+	@RequestBody HyperdriveSystemInput hri) {
 		EntityModel<HyperdriveSystemDto> entityModel = assembler.toModel(
-		this.hyperdriveSystemService.createHyperdriveSystem(hsri));
+		this.hyperdriveSystemService.createHyperdriveSystem(hri));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri())
 		.body(entityModel);
@@ -78,9 +78,9 @@ public class HyperdriveSystemController {
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<HyperdriveSystemDto>> updateHyperdriveSystem(@PathVariable String id,
-	@RequestBody HyperdriveSystemRequestInput hsri) {
+	@RequestBody HyperdriveSystemInput hri) {
 		EntityModel<HyperdriveSystemDto> response = assembler.toModel(
-		this.hyperdriveSystemService.updateHyperdriveSystem(hashToIdConverter.convert(id), hsri));
+		this.hyperdriveSystemService.updateHyperdriveSystem(hashToIdConverter.convert(id), hri));
 		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri())
 		.body(response);

@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.domain.WeaponDto;
-import com.example.starshipshop.domain.WeaponRequestInput;
+import com.example.starshipshop.domain.WeaponInput;
 import com.example.starshipshop.repository.WeaponRepository;
 import com.example.starshipshop.repository.jpa.Weapon;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;
@@ -48,29 +49,29 @@ public class WeaponService {
 					.map(mapper::toWeaponDto);
 	}
 
-	public WeaponDto createWeapon(final WeaponRequestInput wri) {
-		this.checkWeaponRequestInput(wri);
+	public WeaponDto createWeapon(final WeaponInput wi) {
+		this.checkWeaponRequestInput(wi);
 		// Check Manufacturer
-		if(wri.getManufacturer() != null) {
-			this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
-			this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		if(wi.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(wi.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(wi.getManufacturer().getId());
 		}
 		
-		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wri)));
+		return mapper.toWeaponDto(weaponRepository.save(mapper.fromWeaponRequestInput(wi)));
 	}
 
-	public WeaponDto updateWeapon(final Long id, final WeaponRequestInput wri) {
+	public WeaponDto updateWeapon(final Long id, final WeaponInput wi) {
 		Assert.notNull(id, String.format("id cannot be null."));		
-		this.checkWeaponRequestInput(wri);
+		this.checkWeaponRequestInput(wi);
 		this.checkWeaponExist(id);
 
 		// Check Manufacturer
-		if(wri.getManufacturer() != null) {
-			this.manufacturerService.checkManufacturerDto(wri.getManufacturer());
-			this.manufacturerService.checkManufacturerExist(wri.getManufacturer().getId());
+		if(wi.getManufacturer() != null) {
+			this.manufacturerService.checkManufacturerDto(wi.getManufacturer());
+			this.manufacturerService.checkManufacturerExist(wi.getManufacturer().getId());
 		}
 
-		Weapon w = mapper.fromWeaponRequestInput(wri);
+		Weapon w = mapper.fromWeaponRequestInput(wi);
 		w.setId(id);
 		return mapper.toWeaponDto(weaponRepository.save(w));
 	}
@@ -81,10 +82,10 @@ public class WeaponService {
 		weaponRepository.delete(weaponToDelete);
 	}
 
-	public void checkWeaponRequestInput(WeaponRequestInput wri) {
-		Assert.notNull(wri, String.format("Weapon cannot be null."));
-		Assert.notNull(wri.getName(), String.format("Name of Weapon cannot be null."));
-		Assert.hasText(wri.getName(), String.format("Name of Weapon cannot be empty."));
+	public void checkWeaponRequestInput(WeaponInput wi) {
+		Assert.notNull(wi, String.format("Weapon cannot be null."));
+		Assert.notNull(wi.getName(), String.format("Name of Weapon cannot be null."));
+		Assert.hasText(wi.getName(), String.format("Name of Weapon cannot be empty."));
 	}
 
 	public void checkWeaponDto(WeaponDto dto) {

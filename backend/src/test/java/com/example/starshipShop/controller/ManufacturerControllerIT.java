@@ -29,7 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.starshipshop.domain.ManufacturerRequestInput;
+import com.example.starshipshop.domain.ManufacturerInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -122,7 +122,7 @@ public class ManufacturerControllerIT {
 	@Tag("POST /manufacturers/{id}")
 	@DisplayName("POST manufacturer when authenticated as Admin should works throught all layers")
 	public void createManufacturer_whenAuthenticatedAsAdmin_shouldWorksThroughAllLayers() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("ManufacturerCreated");
+		ManufacturerInput requestObj = new ManufacturerInput("ManufacturerCreated");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -142,7 +142,7 @@ public class ManufacturerControllerIT {
 	@Tag("POST /manufacturers/{id}")
 	@DisplayName("POST manufacturer when authenticated as user should return isForbiddent 403")
 	public void createManufacturer_whenAuthenticatedAsUser_shouldReturn403() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("ManufacturerCreated");
+		ManufacturerInput requestObj = new ManufacturerInput("ManufacturerCreated");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -160,7 +160,7 @@ public class ManufacturerControllerIT {
 	@Tag("POST /manufacturers/{id}")
 	@DisplayName("POST manufacturer when not authenticated should return isForbidden 401")
 	public void createManufacturer_whenNotAuthenticated_shouldReturn401() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("ManufacturerCreated");
+		ManufacturerInput requestObj = new ManufacturerInput("ManufacturerCreated");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -177,7 +177,7 @@ public class ManufacturerControllerIT {
 	@Tag("POST /manufacturers/{id}")
 	@DisplayName("POST manufacturer with empty name when authenticated as Admin should throw Illegal Argument Exception")
 	public void createManufacturerWithEmptyName_whenAuthenticatedAsAdmin_shouldThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput("");
+		ManufacturerInput requestObj = new ManufacturerInput("");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -196,7 +196,7 @@ public class ManufacturerControllerIT {
 	@Tag("POST /manufacturers/{id}")
 	@DisplayName("POST manufacturer with null name when authenticated as Admin should throw Illegal Argument Exception")
 	public void createManufacturerWithNullName_whenAuthenticatedAsAdmin_shouldThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -218,7 +218,7 @@ public class ManufacturerControllerIT {
 	public void updateManufacturer_whenAuthenticatedAsAdmin_shouldWorks() throws Exception {
 		final String name = "ManufacturerToUpdate3";
 		
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		requestObj.setName(name);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -242,7 +242,7 @@ public class ManufacturerControllerIT {
 	public void updateManufacturer_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
 		final String name = "ManufacturerToUpdate3";
 		
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		requestObj.setName(name);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -263,7 +263,7 @@ public class ManufacturerControllerIT {
 	public void updateManufacturer_whenNotAuthenticated_shouldResponse401() throws Exception {
 		final String name = "ManufacturerToUpdate3";
 		
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		requestObj.setName(name);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -284,7 +284,7 @@ public class ManufacturerControllerIT {
 	public void updateManufacturerWithEmptyName_whenAuthenticatedAsAdmin_shouldThrowIllegalArgumentException() throws Exception {
 		final String name = "";
 		
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		requestObj.setName(name);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -304,7 +304,7 @@ public class ManufacturerControllerIT {
 	@Tag("PUT /manufacturers/{id}")
 	@DisplayName("PUT manufacturer with null name when authenticated as Admin should throw Illegal Argument Exception")
 	public void updateManufacturerWithNullName_whenAuthenticatedAsAdmin_shouldThrowIllegalArgumentException() throws Exception {
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -325,7 +325,7 @@ public class ManufacturerControllerIT {
 	public void updateManufacturer_whenAuthenticatedAsAdmin_shouldThrowResourceNotFoundException() throws Exception {
 		final String name = "ManufacturerToUpdate3";
 		
-		ManufacturerRequestInput requestObj = new ManufacturerRequestInput();
+		ManufacturerInput requestObj = new ManufacturerInput();
 		requestObj.setName(name);
 		
 		ObjectMapper mapper = new ObjectMapper();

@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.domain.HyperdriveSystemDto;
-import com.example.starshipshop.domain.HyperdriveSystemRequestInput;
+import com.example.starshipshop.domain.HyperdriveSystemInput;
 import com.example.starshipshop.repository.HyperdriveSystemRepository;
 import com.example.starshipshop.repository.jpa.HyperdriveSystem;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;
@@ -48,7 +49,7 @@ public class HyperdriveSystemService {
 		.map(mapper::toHyperdriveSystemDto);
 	}
 	
-	public HyperdriveSystemDto createHyperdriveSystem(final HyperdriveSystemRequestInput hsri) {
+	public HyperdriveSystemDto createHyperdriveSystem(final HyperdriveSystemInput hsri) {
 		this.checkHyperdriveSystemRequestInput(hsri);
 		// Check Manufacturer
 		if(hsri.getManufacturer() != null) {
@@ -58,7 +59,7 @@ public class HyperdriveSystemService {
 		return mapper.toHyperdriveSystemDto(hyperdriveSystemRepository.save(mapper.fromHyperdriveSystemRequestInput(hsri)));
 	}
 	
-	public HyperdriveSystemDto updateHyperdriveSystem(final Long id, final HyperdriveSystemRequestInput hsri) {
+	public HyperdriveSystemDto updateHyperdriveSystem(final Long id, final HyperdriveSystemInput hsri) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		this.checkHyperdriveSystemRequestInput(hsri);
 		this.checkHyperdriveSystemExist(id);
@@ -78,7 +79,7 @@ public class HyperdriveSystemService {
 		hyperdriveSystemRepository.delete(hyperdriveSystemToDelete);
 	}
 	
-	public void checkHyperdriveSystemRequestInput(HyperdriveSystemRequestInput hsri) {
+	public void checkHyperdriveSystemRequestInput(HyperdriveSystemInput hsri) {
 		Assert.notNull(hsri, String.format("HyperdriveSystem cannot be null."));
 		Assert.notNull(hsri.getName(), String.format("Name of HyperdriveSystem cannot be null."));
 		Assert.hasText(hsri.getName(), String.format("Name of HyperdriveSystem cannot be empty."));

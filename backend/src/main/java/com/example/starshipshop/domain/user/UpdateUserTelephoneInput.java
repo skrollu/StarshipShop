@@ -1,4 +1,4 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.user;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserTelephoneRequestInput {
+public class UpdateUserTelephoneInput {
     @Nullable
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)

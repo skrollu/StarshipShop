@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.controller.assembler.WeaponAssembler;
 import com.example.starshipshop.domain.WeaponDto;
-import com.example.starshipshop.domain.WeaponRequestInput;
+import com.example.starshipshop.domain.WeaponInput;
 import com.example.starshipshop.service.WeaponService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -65,8 +65,8 @@ public class WeaponController {
 	
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
-	public ResponseEntity<EntityModel<WeaponDto>> createWeapon(@RequestBody WeaponRequestInput wri) {
-		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.createWeapon(wri));
+	public ResponseEntity<EntityModel<WeaponDto>> createWeapon(@RequestBody WeaponInput wi) {
+		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.createWeapon(wi));
 		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri()) 
 		.body(entityModel);
@@ -75,8 +75,8 @@ public class WeaponController {
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
 	public ResponseEntity<EntityModel<WeaponDto>> updateWeapon(@PathVariable String id,
-	@RequestBody WeaponRequestInput wri) {
-		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.updateWeapon(hashToIdConverter.convert(id), wri));
+	@RequestBody WeaponInput wi) {
+		EntityModel<WeaponDto> entityModel = assembler.toModel(this.weaponService.updateWeapon(hashToIdConverter.convert(id), wi));
 		return ResponseEntity 
 		.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
 		.toUri()) 

@@ -1,4 +1,4 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.account;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.Email;
@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class RegisterNewAccountRequestInput {
+public class CreateAccountInput {
 	@Email
 	@Nonnull
 	private String username;
-	
+
 	@Size(min = 8)
 	@Nonnull
 	private String password;
-	
+
 	@Size(min = 8)
 	@Nonnull
-    private String matchingPassword;
+	private String matchingPassword;
 }

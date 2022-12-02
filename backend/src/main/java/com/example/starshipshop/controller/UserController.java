@@ -20,16 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
 import com.example.starshipshop.controller.assembler.UserAssembler;
-import com.example.starshipshop.domain.AddressDto;
-import com.example.starshipshop.domain.AddressRequestInput;
-import com.example.starshipshop.domain.CreateUserInputRequest;
-import com.example.starshipshop.domain.EmailDto;
-import com.example.starshipshop.domain.EmailRequestInput;
-import com.example.starshipshop.domain.SimpleUserDto;
-import com.example.starshipshop.domain.TelephoneDto;
-import com.example.starshipshop.domain.TelephoneInputRequest;
-import com.example.starshipshop.domain.UpdateUserInputRequest;
-import com.example.starshipshop.domain.UpdateUserTelephoneRequestInput;
+import com.example.starshipshop.domain.user.AddressOutput;
+import com.example.starshipshop.domain.user.CreateUserAddressInput;
+import com.example.starshipshop.domain.user.CreateUserEmailInput;
+import com.example.starshipshop.domain.user.CreateUserInput;
+import com.example.starshipshop.domain.user.CreateUserTelephoneInput;
+import com.example.starshipshop.domain.user.EmailOutput;
+import com.example.starshipshop.domain.user.SimpleUserOutput;
+import com.example.starshipshop.domain.user.TelephoneOutput;
+import com.example.starshipshop.domain.user.UpdateUserInput;
 import com.example.starshipshop.service.AccountService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -39,61 +38,59 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-        
-        private final HashToIdConverter hashToIdConverter;
-        private final AccountService accountService;
-        private final UserAssembler assembler;
-        
-        @GetMapping("/{userId}")
-        public ResponseEntity<EntityModel<SimpleUserDto>> getUser(Authentication authentication,
-        @PathVariable String userId) throws ResourceNotFoundException {
-                Assert.notNull(userId, "Given id cannot be null");
-                SimpleUserDto result =
-                this.accountService.getUserInfo(authentication, hashToIdConverter.convert(
-                userId));
-                if (result == null) {
-                        throw new ResourceNotFoundException("No user found with the given id: " + userId);
-                }
-                return ResponseEntity.ok(EntityModel.of(result,
-                linkTo(methodOn(UserController.class).getUser(authentication, 
-                userId)).withSelfRel()));
-        }
-        
-        @PostMapping("/")
-        public ResponseEntity<EntityModel<SimpleUserDto>> createUser(Authentication authentication,
-        @RequestBody @Valid CreateUserInputRequest cuir) {
-                SimpleUserDto result = this.accountService.createUser(authentication, cuir);
-                EntityModel<SimpleUserDto> response = assembler.toModel(result);
-                return ResponseEntity.created(response.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(response);
-        }
-        
-        @PutMapping("/{userId}")
-        public ResponseEntity<EntityModel<SimpleUserDto>> updateUser(Authentication authentication,
-        @RequestBody @Valid UpdateUserInputRequest uuir, @PathVariable String userId) {
-                SimpleUserDto result = this.accountService.updateUser(authentication, uuir, hashToIdConverter.convert(userId));
-                EntityModel<SimpleUserDto> response = assembler.toModel(result);
-                return ResponseEntity.created(response.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(response);
-        }
-        
-        @PostMapping("/{userId}/emails")
-        public EmailDto createEmail(Authentication authentication, @RequestBody @Valid EmailRequestInput eri,
-        @PathVariable String userId) {
-                return this.accountService.createUserEmail(authentication, eri,
-                hashToIdConverter.convert(userId));
-        }
-        
-        @PostMapping("/{userId}/telephones")
-        public TelephoneDto createTelephone(Authentication authentication, @RequestBody @Valid TelephoneInputRequest tir,
-        @PathVariable String userId) {
-                return this.accountService.createUserTelephone(authentication, tir,
-                hashToIdConverter.convert(userId));
-        }
-        
-        @PostMapping("/{userId}/addresses")
-        public AddressDto createTelephone(Authentication authentication,
-        @RequestBody @Valid AddressRequestInput ari, @PathVariable String userId) {
-                return this.accountService.createUserAddress(authentication, ari, hashToIdConverter.convert(userId));
-        }
+
+	private final HashToIdConverter hashToIdConverter;
+	private final AccountService accountService;
+	private final UserAssembler assembler;
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<EntityModel<SimpleUserOutput>> getUser(Authentication authentication,
+			@PathVariable String userId) throws ResourceNotFoundException {
+		Assert.notNull(userId, "Given id cannot be null");
+		SimpleUserOutput result = this.accountService.getUserInfo(authentication, hashToIdConverter.convert(
+				userId));
+		return ResponseEntity.ok(EntityModel.of(result,
+				linkTo(methodOn(UserController.class).getUser(authentication,
+						userId)).withSelfRel()));
+	}
+
+	@PostMapping("/")
+	public ResponseEntity<EntityModel<SimpleUserOutput>> createUser(Authentication authentication,
+			@RequestBody @Valid CreateUserInput cui) {
+		SimpleUserOutput result = this.accountService.createUser(authentication, cui);
+		EntityModel<SimpleUserOutput> response = assembler.toModel(result);
+		return ResponseEntity.created(response.getRequiredLink(IanaLinkRelations.SELF).toUri())
+				.body(response);
+	}
+
+	@PutMapping("/{userId}")
+	public ResponseEntity<EntityModel<SimpleUserOutput>> updateUser(Authentication authentication,
+			@RequestBody @Valid UpdateUserInput uui, @PathVariable String userId) {
+		SimpleUserOutput result = this.accountService.updateUser(authentication, uui,
+				hashToIdConverter.convert(userId));
+		EntityModel<SimpleUserOutput> response = assembler.toModel(result);
+		return ResponseEntity.created(response.getRequiredLink(IanaLinkRelations.SELF).toUri())
+				.body(response);
+	}
+
+	@PostMapping("/{userId}/emails")
+	public EmailOutput createEmail(Authentication authentication, @RequestBody @Valid CreateUserEmailInput cuei,
+			@PathVariable String userId) {
+		return this.accountService.createUserEmail(authentication, cuei,
+				hashToIdConverter.convert(userId));
+	}
+
+	@PostMapping("/{userId}/telephones")
+	public TelephoneOutput createTelephone(Authentication authentication,
+			@RequestBody @Valid CreateUserTelephoneInput cuti,
+			@PathVariable String userId) {
+		return this.accountService.createUserTelephone(authentication, cuti,
+				hashToIdConverter.convert(userId));
+	}
+
+	@PostMapping("/{userId}/addresses")
+	public AddressOutput createTelephone(Authentication authentication,
+			@RequestBody @Valid CreateUserAddressInput cuai, @PathVariable String userId) {
+		return this.accountService.createUserAddress(authentication, cuai, hashToIdConverter.convert(userId));
+	}
 }
