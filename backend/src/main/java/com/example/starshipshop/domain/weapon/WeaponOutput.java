@@ -1,9 +1,8 @@
-package com.example.starshipshop.domain;
-
-import java.util.List;
+package com.example.starshipshop.domain.weapon;
 
 import org.springframework.hateoas.server.core.Relation;
 
+import com.example.starshipshop.domain.manufacturer.ManufacturerOutput;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,21 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Relation(collectionRelation = "starships", itemRelation = "starship")
-public class StarshipDto {
-	
+@Relation(collectionRelation = "weapons", itemRelation = "weapon")
+public class WeaponOutput {
 	@JsonSerialize(using = IdSerializer.class)
 	@JsonDeserialize(using = IdDeserializer.class)
 	private Long id;
 	private String name;
-	private String engines;
-	private double height;
-	private double width;
-	private double lenght;
-	private double weight;
-	private String description;
-	private ManufacturerDto manufacturer;
-	private HyperdriveSystemDto hyperdriveSystem;
-	private List<WeaponDto> weapons;
-
+	private ManufacturerOutput manufacturer;
 }

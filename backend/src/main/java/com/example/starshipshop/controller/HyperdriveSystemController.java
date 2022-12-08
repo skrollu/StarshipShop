@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.starshipshop.controller.assembler.HyperdriveSystemAssembler;
-import com.example.starshipshop.domain.HyperdriveSystemDto;
-import com.example.starshipshop.domain.HyperdriveSystemInput;
+import com.example.starshipshop.domain.hyperdriveSystem.HyperdriveSystemInput;
+import com.example.starshipshop.domain.hyperdriveSystem.HyperdriveSystemOutput;
 import com.example.starshipshop.service.HyperdriveSystemService;
 import com.example.starshipshop.service.mapper.converter.HashToIdConverter;
 
@@ -35,57 +35,52 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/hyperdriveSystems")
 public class HyperdriveSystemController {
-	
+
 	private final HyperdriveSystemService hyperdriveSystemService;
-	
 	private final HyperdriveSystemAssembler assembler;
-	
 	private final HashToIdConverter hashToIdConverter;
-	
+
 	@PreAuthorize("permitAll()")
 	@GetMapping
-	public CollectionModel<EntityModel<HyperdriveSystemDto>> getHyperdriveSystems() {
-		List<EntityModel<HyperdriveSystemDto>> result = hyperdriveSystemService	.getHyperdriveSystemsDto()
-		.stream()
-		.map(assembler::toModelWithSelfLink)
-		.collect(Collectors.toList());
+	public CollectionModel<EntityModel<HyperdriveSystemOutput>> getHyperdriveSystems() {
+		List<EntityModel<HyperdriveSystemOutput>> result = hyperdriveSystemService.getHyperdriveSystemsOutput()
+				.stream()
+				.map(assembler::toModelWithSelfLink)
+				.collect(Collectors.toList());
 		return CollectionModel.of(result,
-		linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystems()).withSelfRel());
+				linkTo(methodOn(HyperdriveSystemController.class).getHyperdriveSystems()).withSelfRel());
 	}
-	
+
 	@PreAuthorize("permitAll()")
 	@GetMapping("/{id}")
-	public EntityModel<HyperdriveSystemDto> getHyperdriveSystemById(@PathVariable String id) throws NullPointerException{
-		Optional<HyperdriveSystemDto> optHS = hyperdriveSystemService	.getHyperdriveSystemDtoById(hashToIdConverter.convert(id));
-		if(optHS.isPresent()){
-			return this.assembler.toModel(optHS.get());
-		} else {
-			throw new NullPointerException();
-		}
+	public EntityModel<HyperdriveSystemOutput> getHyperdriveSystemById(@PathVariable String id)
+			throws NullPointerException {
+		return this.assembler.toModel(hyperdriveSystemService
+				.getHyperdriveSystemOutputById(hashToIdConverter.convert(id)));
 	}
-	
+
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PostMapping
-	public ResponseEntity<EntityModel<HyperdriveSystemDto>> createHyperdriveSystem(
-	@RequestBody HyperdriveSystemInput hri) {
-		EntityModel<HyperdriveSystemDto> entityModel = assembler.toModel(
-		this.hyperdriveSystemService.createHyperdriveSystem(hri));
-		return ResponseEntity	.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-		.toUri())
-		.body(entityModel);
+	public ResponseEntity<EntityModel<HyperdriveSystemOutput>> createHyperdriveSystem(
+			@RequestBody HyperdriveSystemInput hri) {
+		EntityModel<HyperdriveSystemOutput> entityModel = assembler.toModel(
+				this.hyperdriveSystemService.createHyperdriveSystem(hri));
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+				.toUri())
+				.body(entityModel);
 	}
-	
+
 	@PreAuthorize("hasAuthority('starship:write')")
 	@PutMapping("/{id}")
-	public ResponseEntity<EntityModel<HyperdriveSystemDto>> updateHyperdriveSystem(@PathVariable String id,
-	@RequestBody HyperdriveSystemInput hri) {
-		EntityModel<HyperdriveSystemDto> response = assembler.toModel(
-		this.hyperdriveSystemService.updateHyperdriveSystem(hashToIdConverter.convert(id), hri));
-		return ResponseEntity	.created(response	.getRequiredLink(IanaLinkRelations.SELF)
-		.toUri())
-		.body(response);
+	public ResponseEntity<EntityModel<HyperdriveSystemOutput>> updateHyperdriveSystem(@PathVariable String id,
+			@RequestBody HyperdriveSystemInput hri) {
+		EntityModel<HyperdriveSystemOutput> response = assembler.toModel(
+				this.hyperdriveSystemService.updateHyperdriveSystem(hashToIdConverter.convert(id), hri));
+		return ResponseEntity.created(response.getRequiredLink(IanaLinkRelations.SELF)
+				.toUri())
+				.body(response);
 	}
-	
+
 	@PreAuthorize("hasAuthority('starship:write')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteHyperdriveSystem(@PathVariable String id) {

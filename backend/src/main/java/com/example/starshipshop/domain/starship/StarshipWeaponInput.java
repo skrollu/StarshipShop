@@ -1,6 +1,6 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.starship;
 
-import org.springframework.hateoas.server.core.Relation;
+import javax.annotation.Nonnull;
 
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdSerializer;
@@ -12,16 +12,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@Relation(collectionRelation = "hyperdriveSystems", itemRelation = "hyperdriveSystem")
-public class HyperdriveSystemDto {
-	@JsonSerialize(using = IdSerializer.class)
-	@JsonDeserialize(using = IdDeserializer.class)
-	private Long id;
-	private String name;
-	private ManufacturerDto manufacturer;
+public class StarshipWeaponInput {
+    @Nonnull
+    @JsonSerialize(using = IdSerializer.class)
+    @JsonDeserialize(using = IdDeserializer.class)
+    private Long weaponId;
 }

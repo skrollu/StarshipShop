@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
-import com.example.starshipshop.domain.ManufacturerDto;
-import com.example.starshipshop.domain.ManufacturerInput;
+import com.example.starshipshop.domain.manufacturer.ManufacturerInput;
+import com.example.starshipshop.domain.manufacturer.ManufacturerOutput;
 import com.example.starshipshop.repository.ManufacturerRepository;
 import com.example.starshipshop.repository.jpa.Manufacturer;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;
 import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
+import com.jayway.jsonpath.Option;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,46 +24,42 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ManufacturerService {
 
-
 	private final ManufacturerRepository manufacturerRepository;
-
 	private final StarshipShopMapper mapper;
-
 	private final IdToHashConverter idToHashConverter;
 
-	public List<Manufacturer> getManufacturers() {
+	private List<Manufacturer> getManufacturers() {
 		return manufacturerRepository.findAll();
 	}
 
-	public List<ManufacturerDto> getManufacturersDto() {
-		return this	.getManufacturers()
-					.stream()
-					.map(mapper::toManufacturerDto)
-					.collect(Collectors.toList());
+	public List<ManufacturerOutput> getManufacturerOutput() {
+		return this.getManufacturers()
+				.stream()
+				.map(mapper::toManufacturerOuput)
+				.collect(Collectors.toList());
 	}
 
-	public Optional<Manufacturer> getManufacturerById(final Long id) {
+	private Optional<Manufacturer> getManufacturerById(final Long id) {
 		return manufacturerRepository.findById(id);
-
 	}
 
-	public Optional<ManufacturerDto> getManufacturerDtoById(final Long id) {
-		return this	.getManufacturerById(id)
-					.map(mapper::toManufacturerDto);
+	public ManufacturerOutput getManufacturerOuputById(final Long id) throws ResourceNotFoundException {
+		return mapper.toManufacturerOuput(getManufacturerById(id).orElseThrow(() -> new ResourceNotFoundException(
+				"Cannot retrieve manufacturer with the given id: " + idToHashConverter.convert(id))));
 	}
 
-	public ManufacturerDto createManufacturer(final ManufacturerInput mi) {
+	public ManufacturerOutput createManufacturer(@Valid final ManufacturerInput mi) {
 		this.checkManufacturerRequestInput(mi);
-		return mapper.toManufacturerDto(manufacturerRepository.save(mapper.fromManufaturerRequestInput(mi)));
+		return mapper.toManufacturerOuput(manufacturerRepository.save(mapper.fromManufaturerInput(mi)));
 	}
 
-	public ManufacturerDto updateManufacturer(final Long id, ManufacturerInput mi) {
+	public ManufacturerOutput updateManufacturer(final Long id, ManufacturerInput mi) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		this.checkManufacturerRequestInput(mi);
 		this.checkManufacturerExist(id);
-		Manufacturer manufacturer = mapper.fromManufaturerRequestInput(mi);
+		Manufacturer manufacturer = mapper.fromManufaturerInput(mi);
 		manufacturer.setId(id);
-		return mapper.toManufacturerDto(manufacturerRepository.save(manufacturer));
+		return mapper.toManufacturerOuput(manufacturerRepository.save(manufacturer));
 	}
 
 	public void deleteManufacturer(final Long id) {
@@ -74,18 +73,11 @@ public class ManufacturerService {
 		Assert.notNull(mi.getName(), String.format("Name of Manufacturer cannot be null."));
 		Assert.hasText(mi.getName(), String.format("Name of Manufacturer cannot be empty."));
 	}
-	
-	public void checkManufacturerDto(ManufacturerDto dto) {
-		Assert.notNull(dto, String.format("Manufacturer cannot be null."));
-		Assert.notNull(dto.getId(), String.format("Id of Manufacturer cannot be null."));
-		Assert.notNull(dto.getName(), String.format("Name of Manufacturer cannot be null."));
-		Assert.hasText(dto.getName(), String.format("Name of Manufacturer cannot be empty."));
-	}
 
-	public Manufacturer checkManufacturerExist(Long id) {
-		return manufacturerRepository	.findById(id)
-								.orElseThrow(
-										() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
-												+ idToHashConverter.convert(id)));
+	public Manufacturer checkManufacturerExist(Long id) throws ResourceNotFoundException {
+		return manufacturerRepository.findById(id)
+				.orElseThrow(
+						() -> new ResourceNotFoundException("Manufacturer doesn't exist with this id: "
+								+ idToHashConverter.convert(id)));
 	}
 }

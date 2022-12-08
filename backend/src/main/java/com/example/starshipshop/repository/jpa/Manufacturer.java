@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,14 +34,20 @@ public class Manufacturer {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private List<HyperdriveSystem> hyperdriveSystems;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private List<Starship> starships;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 	private List<Weapon> weapons;

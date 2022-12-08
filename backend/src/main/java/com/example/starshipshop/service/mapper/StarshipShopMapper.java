@@ -2,15 +2,18 @@ package com.example.starshipshop.service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import com.example.starshipshop.domain.HyperdriveSystemDto;
-import com.example.starshipshop.domain.HyperdriveSystemInput;
-import com.example.starshipshop.domain.ManufacturerDto;
-import com.example.starshipshop.domain.ManufacturerInput;
-import com.example.starshipshop.domain.StarshipDto;
-import com.example.starshipshop.domain.StarshipInput;
-import com.example.starshipshop.domain.WeaponDto;
-import com.example.starshipshop.domain.WeaponInput;
+import com.example.starshipshop.domain.hyperdriveSystem.HyperdriveSystemInput;
+import com.example.starshipshop.domain.hyperdriveSystem.HyperdriveSystemOutput;
+import com.example.starshipshop.domain.manufacturer.ManufacturerInput;
+import com.example.starshipshop.domain.manufacturer.ManufacturerOutput;
+import com.example.starshipshop.domain.starship.StarshipOutput;
+import com.example.starshipshop.domain.starship.StarshipWeaponInput;
+import com.example.starshipshop.domain.starship.StarshipInput;
+import com.example.starshipshop.domain.weapon.WeaponOutput;
+import com.example.starshipshop.domain.weapon.WeaponInput;
 import com.example.starshipshop.repository.jpa.HyperdriveSystem;
 import com.example.starshipshop.repository.jpa.Manufacturer;
 import com.example.starshipshop.repository.jpa.Starship;
@@ -22,46 +25,39 @@ public interface StarshipShopMapper {
 	@Mapping(target = "hyperdriveSystems", ignore = true)
 	@Mapping(target = "starships", ignore = true)
 	@Mapping(target = "weapons", ignore = true)
-	Manufacturer toManufacturer(ManufacturerDto dto);
+	Manufacturer toManufacturer(ManufacturerInput input);
 
-	ManufacturerDto toManufacturerDto(Manufacturer manufacturer);
+	ManufacturerOutput toManufacturerOuput(Manufacturer manufacturer);
 
 	@Mapping(target = "hyperdriveSystems", ignore = true)
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "starships", ignore = true)
 	@Mapping(target = "weapons", ignore = true)
-	Manufacturer fromManufaturerRequestInput(ManufacturerInput mi);
-
-	ManufacturerInput toManufaturerRequestInput(Manufacturer manufacturer);
-
-	@Mapping(target = "starships", ignore = true)
-	HyperdriveSystem toHyperdriveSystem(HyperdriveSystemDto dto);
-
-	HyperdriveSystemDto toHyperdriveSystemDto(HyperdriveSystem hyperdriveSystem);
+	Manufacturer fromManufaturerInput(ManufacturerInput mi);
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "starships", ignore = true)
-	HyperdriveSystem fromHyperdriveSystemRequestInput(HyperdriveSystemInput hsri);
+	@Mapping(target = "manufacturer.id", source = "manufacturerId")
+	HyperdriveSystem toHyperdriveSystem(HyperdriveSystemInput hsi);
 
-	HyperdriveSystemInput toHyperdriveSystemRequestInput(HyperdriveSystem hyperdriveSystem);
+	HyperdriveSystemOutput toHyperdriveSystemOutput(HyperdriveSystem hyperdriveSystem);
 
-	@Mapping(target = "starships", ignore = true)
-	Weapon toWeapon(WeaponDto dto);
-
-	WeaponDto toWeaponDto(Weapon weapon);
+	WeaponOutput toWeaponOutput(Weapon weapon);
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "starships", ignore = true)
-	Weapon fromWeaponRequestInput(WeaponInput wi);
+	@Mapping(target = "manufacturer.id", source = "manufacturerId")
+	Weapon fromWeaponInput(WeaponInput wi);
 
-	WeaponInput toWeaponRequestInput(Weapon weapon);
-	
-	Starship toStarship(StarshipDto dto);
-
-	StarshipDto toStarshipDto(Starship starship);
+	StarshipOutput toStarshipOutput(Starship starship);
 
 	@Mapping(target = "id", ignore = true)
-	Starship fromStarshipRequestInput(StarshipInput si);
+	@Mapping(target = "manufacturer.id", source = "manufacturerId")
+	@Mapping(target = "hyperdriveSystem.id", source = "hyperdriveSystemId")
+	Starship fromStarshipInput(StarshipInput si);
 
-	StarshipInput toStarshipRequestInput(Starship starship);
+	@Mapping(target = "id", source = "weaponId")
+	Weapon fromStarshipWeaponInput(StarshipWeaponInput swi);
+
+	StarshipInput toStarshipInput(Starship starship);
 }

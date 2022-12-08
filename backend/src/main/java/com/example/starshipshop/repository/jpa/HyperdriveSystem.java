@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,6 +42,8 @@ public class HyperdriveSystem {
 	@JoinColumn(name = "id_manufacturer", nullable = true, foreignKey = @ForeignKey(name = "FK_manufacturer_hyperdriveSystem"))
 	private Manufacturer manufacturer;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@JsonBackReference
 	@OneToMany(mappedBy = "hyperdriveSystem", fetch = FetchType.LAZY)
 	private List<Starship> starships;

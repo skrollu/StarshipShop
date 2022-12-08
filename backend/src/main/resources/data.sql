@@ -30,8 +30,6 @@ values
 (2,5)
 ;
 
--- bcrypt(password) = $2y$10$XnNNdjWaPcF7ekAVxhYJP.j3nhcLaVLN3xfvAvMqaiJ2z/wx7Coiy
--- insert into account(username, password, roles) values
--- ('user', '$2a$10$3xhZl7AalnLHzSenU8i1y.anhs7JEUPyPm2kzGtQ4bT2ExF5k2aQW', 'USER'),
--- ('admin', '$2a$10$arMWicLUnoeiq/TJWbMFqe5j2XD3qfaxufdYsjCO3KOhvIbm1.Opi', 'USER, ADMIN')
--- ;
+insert into account (username, roles, password) values
+('user@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
+('admin@mail.com', 'USER, ADMIN', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q');

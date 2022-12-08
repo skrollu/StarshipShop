@@ -18,11 +18,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name = "weapon")
@@ -41,6 +45,8 @@ public class Weapon {
 	@JoinColumn(name = "id_manufacturer", nullable = true, foreignKey = @ForeignKey(name = "FK_manufacturer_weapon"))
 	private Manufacturer manufacturer;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@JsonBackReference
 	@ManyToMany(mappedBy = "weapons", fetch = FetchType.LAZY)
 	private List<Starship> starships;

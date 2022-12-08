@@ -1,4 +1,7 @@
-package com.example.starshipshop.domain;
+package com.example.starshipshop.domain.manufacturer;
+
+import javax.annotation.Nonnull;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class WeaponInput {
+public class ManufacturerInput {
+
+	@Nonnull
+	@NotBlank
 	private String name;
-	private ManufacturerDto manufacturer;
 }
