@@ -3,6 +3,7 @@ package com.example.starshipshop.domain.user;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -14,13 +15,15 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class CreateUserInput {
-    @Nonnull
-    @NotBlank
+    @NotBlank(message = "Pseudo is mandatory and cannot be null, empty or blank")
     private String pseudo;
-    @Size(max = 3)
+    @Nullable
+    @Size(min = 0, max = 3)
     private Set<CreateUserAddressInput> addresses;
-    @Size(max = 3)
+    @Nullable
+    @Size(min = 0, max = 3)
     private Set<CreateUserEmailInput> emails;
-    @Size(max = 3)
+    @Nullable
+    @Size(min = 0, max = 3)
     private Set<CreateUserTelephoneInput> telephones;
 }

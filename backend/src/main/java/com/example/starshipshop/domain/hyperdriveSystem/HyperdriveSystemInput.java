@@ -1,6 +1,7 @@
 package com.example.starshipshop.domain.hyperdriveSystem;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
 
 import com.example.starshipshop.service.mapper.serializer.IdCombinedSerializer.IdDeserializer;
@@ -19,10 +20,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HyperdriveSystemInput {
 
-	@Nonnull
-	@NotBlank
+	@NotBlank(message = "Name is mandatory and cannot be null, empty or blank")
 	private String name;
-
+	@Nullable
 	@JsonSerialize(using = IdSerializer.class)
 	@JsonDeserialize(using = IdDeserializer.class)
 	private Long manufacturerId;

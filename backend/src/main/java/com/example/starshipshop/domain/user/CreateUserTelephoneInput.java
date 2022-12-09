@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateUserTelephoneInput {
-    @Nonnull
-    @NotBlank
+    @NotBlank(message = "Telephone number is mandatory and cannot be null, empty or blank")
     @Size(min = 10, max = 10)
     @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephoneNumber;

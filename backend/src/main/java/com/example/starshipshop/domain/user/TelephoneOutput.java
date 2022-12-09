@@ -23,9 +23,5 @@ public class TelephoneOutput {
     @JsonSerialize(using = IdSerializer.class)
     @JsonDeserialize(using = IdDeserializer.class)
     private Long id;
-    @Nonnull
-    @NotBlank
-    @Size(min = 10, max = 10)
-    @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephoneNumber;
 }

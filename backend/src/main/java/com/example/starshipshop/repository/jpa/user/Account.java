@@ -30,7 +30,7 @@ public class Account {
     @Column(name = "id_account", updatable = false, columnDefinition = "BIGINT")
     private Long id;
     @Column(name = "username", nullable = false)
-    @Email
+    @Email(message = "Email must respect a valid email")
     private String username;
     @Column(name = "password", nullable = false)
     @Size(min = 8)

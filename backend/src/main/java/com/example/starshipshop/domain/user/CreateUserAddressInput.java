@@ -1,6 +1,7 @@
 package com.example.starshipshop.domain.user;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,20 +14,17 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateUserAddressInput {
-    @NonNull
-    @NotBlank
+    @NotBlank(message = "Address is mandatory and cannot be null, empty or blank")
     private String address;
+    @NonNull
+    @Positive
     private Long zipCode;
-    @NonNull
-    @NotBlank
+    @NotBlank(message = "City is mandatory and cannot be null, empty or blank")
     private String city;
-    @NonNull
-    @NotBlank
+    @NotBlank(message = "State is mandatory and cannot be null, empty or blank")
     private String state;
-    @NonNull
-    @NotBlank
+    @NotBlank(message = "Country is mandatory and cannot be null, empty or blank")
     private String country;
-    @NonNull
-    @NotBlank
+    @NotBlank(message = "Planet is mandatory and cannot be null, empty or blank")
     private String planet;
 }

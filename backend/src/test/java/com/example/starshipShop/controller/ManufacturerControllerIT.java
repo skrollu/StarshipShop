@@ -210,7 +210,7 @@ public class ManufacturerControllerIT {
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
-				.andExpect(content().string(containsString("NullPointerException: ADVICE: ")));
+				.andExpect(content().string(containsString("MethodArgumentNotValidException: ADVICE: ")));
 	}
 
 	// PUT /manufacturers/{id}
@@ -321,7 +321,7 @@ public class ManufacturerControllerIT {
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
 				.andExpect(content()
-						.string(containsString("NullPointerException: ADVICE: name is marked non-null but is null")));
+						.string(containsString("MethodArgumentNotValidException: ADVICE: ")));
 	}
 
 	@Test

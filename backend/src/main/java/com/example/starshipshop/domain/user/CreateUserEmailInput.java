@@ -1,7 +1,7 @@
 package com.example.starshipshop.domain.user;
 
-import javax.annotation.Nonnull;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateUserEmailInput {
-    @Nonnull
-    @Email
+
+    @NotBlank(message = "Email is mandatory and cannot be null, empty or blank")
+    @Email(message = "Email must respect a valid email")
     private String email;
 }

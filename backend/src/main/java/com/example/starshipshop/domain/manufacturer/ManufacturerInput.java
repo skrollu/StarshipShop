@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ManufacturerInput {
 
-	@Nonnull
-	@NotBlank
+	@NotBlank(message = "Name is mandatory and cannot be null, empty or blank")
 	private String name;
 }

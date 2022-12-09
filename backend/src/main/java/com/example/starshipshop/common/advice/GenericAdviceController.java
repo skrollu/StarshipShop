@@ -1,14 +1,18 @@
 package com.example.starshipshop.common.advice;
 
 import javax.validation.UnexpectedTypeException;
+
 import org.hibernate.jdbc.TooManyRowsAffectedException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistException;
 import com.example.starshipshop.common.exception.NonMatchingPasswordException;
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
@@ -17,7 +21,7 @@ import com.example.starshipshop.common.exception.UserPseudoAlreadyExistsExceptio
 
 @RestControllerAdvice
 public class GenericAdviceController {
-    
+
     @ExceptionHandler(AccountUsernameAlreadyExistException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String accountUsernameAlreadyExistHandler(AccountUsernameAlreadyExistException ex) {
@@ -26,7 +30,7 @@ public class GenericAdviceController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String nullPointerHandler(MethodArgumentNotValidException ex) {
+    String methodArgumentNotValidHandler(MethodArgumentNotValidException ex) {
         return "MethodArgumentNotValidException: ADVICE: " + ex.getMessage();
     }
 
@@ -44,39 +48,45 @@ public class GenericAdviceController {
 
     @ExceptionHandler(TooManyUserPerAccountException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String resourceNotFoundHandler(TooManyUserPerAccountException ex) {
-        return "TooManyUserPerAccountException: ADVICE: " + ex.getMessage();
+    String tooManyUserPerAccountHandler(TooManyUserPerAccountException ex) {
+        return "tooManyUserPerAccountException: ADVICE: " + ex.getMessage();
     }
 
     @ExceptionHandler(TooManyRowsAffectedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String resourceNotFoundHandler(TooManyRowsAffectedException ex) {
+    String tooManyRowsAffecteHandler(TooManyRowsAffectedException ex) {
         return "TooManyRowsAffectedException: ADVICE: " + ex.getMessage();
     }
 
     @ExceptionHandler(UnexpectedTypeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String resourceNotFoundHandler(UnexpectedTypeException ex) {
+    String unexpectedTypeHandler(UnexpectedTypeException ex) {
         return "UnexpectedTypeException: ADVICE: " + ex.getMessage();
     }
 
     @ExceptionHandler(UserPseudoAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String resourceNotFoundHandler(UserPseudoAlreadyExistsException ex) {
+    String userPseudoAlreadyExistsHandler(UserPseudoAlreadyExistsException ex) {
         return "UserPseudoAlreadyExistsException: ADVICE: " + ex.getMessage();
     }
 
-    @ResponseBody
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String illegalArgumentHandler(IllegalArgumentException ex) {
         return "IllegalArgumentException: ADVICE: " + ex.getMessage();
     }
 
-    @ResponseBody
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String nullPointerHandler(NullPointerException ex) {
         return "NullPointerException: ADVICE: " + ex.getMessage();
+    }
+
+    public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+        @Override
+        protected ResponseEntity<Object> handleMethodArgumentNotValid(
+                MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+            return new ResponseEntity<>("MethodArgumentNotValidException: ADVICE: " + ex.getMessage(), headers, status);
+        }
     }
 }
