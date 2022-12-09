@@ -178,6 +178,7 @@ public class StarshipService {
 		return mapper.toStarshipOutput(saved);
 	}
 
+	@Transactional
 	public void deleteStarship(final Long id) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		Starship starshipToDelete = this.checkStarshipExist(id);

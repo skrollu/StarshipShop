@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.example.starshipshop.common.exception.ResourceNotFoundException;
@@ -16,7 +17,6 @@ import com.example.starshipshop.repository.ManufacturerRepository;
 import com.example.starshipshop.repository.jpa.Manufacturer;
 import com.example.starshipshop.service.mapper.StarshipShopMapper;
 import com.example.starshipshop.service.mapper.converter.IdToHashConverter;
-import com.jayway.jsonpath.Option;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,11 +48,13 @@ public class ManufacturerService {
 				"Cannot retrieve manufacturer with the given id: " + idToHashConverter.convert(id))));
 	}
 
+	@Transactional
 	public ManufacturerOutput createManufacturer(@Valid final ManufacturerInput mi) {
 		this.checkManufacturerRequestInput(mi);
 		return mapper.toManufacturerOuput(manufacturerRepository.save(mapper.fromManufaturerInput(mi)));
 	}
 
+	@Transactional
 	public ManufacturerOutput updateManufacturer(final Long id, ManufacturerInput mi) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		this.checkManufacturerRequestInput(mi);
@@ -62,6 +64,7 @@ public class ManufacturerService {
 		return mapper.toManufacturerOuput(manufacturerRepository.save(manufacturer));
 	}
 
+	@Transactional
 	public void deleteManufacturer(final Long id) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		Manufacturer manufacturerToDelete = this.checkManufacturerExist(id);

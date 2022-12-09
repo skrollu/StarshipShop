@@ -92,6 +92,7 @@ public class WeaponService {
 		return mapper.toWeaponOutput(saved);
 	}
 
+	@Transactional
 	public void deleteWeapon(final Long id) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		Weapon weaponToDelete = this.checkWeaponExist(id);

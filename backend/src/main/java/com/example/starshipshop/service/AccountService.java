@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.example.starshipshop.common.exception.AccountUsernameAlreadyExistException;
@@ -120,6 +121,7 @@ public class AccountService implements UserDetailsService {
         return accountMapper.toAccountOutput(getAccount(authentication));
     }
 
+    @Transactional
     public AccountOutput createAccount(CreateAccountInput cai)
             throws AccountUsernameAlreadyExistException, NonMatchingPasswordException,
             IllegalArgumentException, NullPointerException {
@@ -167,6 +169,7 @@ public class AccountService implements UserDetailsService {
         return accountMapper.toSimpleUserOutput(result);
     }
 
+    @Transactional
     public SimpleUserOutput createUser(Authentication authentication, CreateUserInput cui)
             throws TooManyUserPerAccountException, UserPseudoAlreadyExistsException {
         Assert.notNull(cui, "Given user information cannot be null");
@@ -220,6 +223,7 @@ public class AccountService implements UserDetailsService {
      * @return {@link SimpleUserOutput} which resume the given
      *         {@link UpdateUserInput}
      */
+    @Transactional
     public SimpleUserOutput updateUser(Authentication authentication, UpdateUserInput uui,
             Long userId) throws TooManyUserPerAccountException, @Valid UserPseudoAlreadyExistsException,
             ResourceNotFoundException {
@@ -426,6 +430,7 @@ public class AccountService implements UserDetailsService {
         log.info("Update security context");
     }
 
+    @Transactional
     public EmailOutput createUserEmail(Authentication authentication, CreateUserEmailInput cuei, Long userId)
             throws ResourceNotFoundException {
         Account authenticatedAccount = getAccount(authentication);
@@ -448,6 +453,7 @@ public class AccountService implements UserDetailsService {
         return accountMapper.toEmailOutput(result);
     }
 
+    @Transactional
     public TelephoneOutput createUserTelephone(Authentication authentication, CreateUserTelephoneInput cuti,
             Long userId)
             throws ResourceNotFoundException {
@@ -471,6 +477,7 @@ public class AccountService implements UserDetailsService {
         return accountMapper.toTelephoneOutput(result);
     }
 
+    @Transactional
     public AddressOutput createUserAddress(Authentication authentication, CreateUserAddressInput cuai,
             Long userId) throws ResourceNotFoundException {
         Account authenticatedAccount = getAccount(authentication);

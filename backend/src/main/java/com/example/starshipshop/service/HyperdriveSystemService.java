@@ -95,6 +95,7 @@ public class HyperdriveSystemService {
 		return mapper.toHyperdriveSystemOutput(saved);
 	}
 
+	@Transactional
 	public void deleteHyperdriveSystem(final Long id) {
 		Assert.notNull(id, String.format("id cannot be null."));
 		HyperdriveSystem hyperdriveSystemToDelete = this.checkHyperdriveSystemExist(id);

@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @Slf4j
-// @EnableJpaRepositories(enableDefaultTransactions = false)
+@EnableJpaRepositories(enableDefaultTransactions = false)
 public class StarshipShopApplication {
 
 	public static void main(String[] args) {
