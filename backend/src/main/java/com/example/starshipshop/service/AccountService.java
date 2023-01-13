@@ -117,7 +117,7 @@ public class AccountService implements UserDetailsService {
         return userDetails.getAccount();
     }
 
-    public AccountOutput getAccountDto(Authentication authentication) {
+    public AccountOutput getAccountOutput(Authentication authentication) {
         return accountMapper.toAccountOutput(getAccount(authentication));
     }
 
@@ -142,6 +142,38 @@ public class AccountService implements UserDetailsService {
         toSave.setPassword(encoder.encode(toSave.getPassword()));
         toSave.setRoles(SecurityUserRole.USER.name());
         Account result = accountRepository.save(toSave);
+        return this.accountMapper.toAccountOutput(result);
+    }
+
+    @Transactional
+    public AccountOutput updateAccount(@Valid CreateAccountInput cai,
+            Authentication authentication)
+            throws AccountUsernameAlreadyExistException, NonMatchingPasswordException,
+            IllegalArgumentException, NullPointerException {
+        Assert.notNull(cai, "Create account resource is null");
+        // Retrieve account info from authentication
+        Account account = getAccount(authentication);
+
+        if (!cai.getPassword().equals(cai.getMatchingPassword())) {
+            throw new NonMatchingPasswordException();
+        }
+
+        // Throw error only if the we try to change the username
+        if (!account.getUsername().equals(cai.getUsername()) && checkUsernameExists(cai.getUsername())) {
+            throw new AccountUsernameAlreadyExistException(
+                    "There is an account with that email address: " + cai.getUsername());
+        }
+
+        Account toSave = accountMapper.fromCreateAccountInput(
+                cai);
+        toSave.setPassword(encoder.encode(toSave.getPassword()));
+        toSave.setRoles(account.getRoles());
+        toSave.setUsers(account.getUsers());
+        toSave.setId(account.getId());
+        Account result = accountRepository.save(toSave);
+
+        this.updateSecurityContext(result.getUsername());
+
         return this.accountMapper.toAccountOutput(result);
     }
 

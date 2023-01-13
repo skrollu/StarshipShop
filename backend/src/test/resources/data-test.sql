@@ -50,7 +50,10 @@ values
 
 insert into account (username, roles, password) values
 ('user@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
-('admin@mail.com', 'USER, ADMIN', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q');
+('admin@mail.com', 'USER, ADMIN', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
+('update1@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
+('update2@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
+('update3@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q');
 
 insert into user (pseudo, id_account)
 values

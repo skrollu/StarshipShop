@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class AccountController {
     @GetMapping(value = "/myAccount")
     public ResponseEntity<EntityModel<AccountOutput>> getMyAccount(Authentication authentication)
             throws ResourceNotFoundException {
-        AccountOutput result = this.accountService.getAccountDto(authentication);
+        AccountOutput result = this.accountService.getAccountOutput(authentication);
         return ResponseEntity.ok(EntityModel.of(result,
                 linkTo(methodOn(AccountController.class).getMyAccount(authentication))
                         .withSelfRel()));
@@ -48,6 +49,15 @@ public class AccountController {
     public ResponseEntity<EntityModel<AccountOutput>> registerNewAccount(
             @RequestBody @Valid CreateAccountInput cai) {
         AccountOutput result = this.accountService.createAccount(cai);
+        EntityModel<AccountOutput> entityModel = this.assembler.toModel(result);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<EntityModel<AccountOutput>> registerNewAccount(
+            @RequestBody @Valid CreateAccountInput cai, Authentication authentication) {
+        AccountOutput result = this.accountService.updateAccount(cai, authentication);
         EntityModel<AccountOutput> entityModel = this.assembler.toModel(result);
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
