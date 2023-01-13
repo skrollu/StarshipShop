@@ -2,6 +2,7 @@ package com.example.starshipshop.common.advice;
 
 import javax.validation.UnexpectedTypeException;
 
+import org.apache.maven.exception.DefaultExceptionHandler;
 import org.hibernate.jdbc.TooManyRowsAffectedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
