@@ -1,7 +1,7 @@
 {
 	"name": "starshipshop",
 	"version": "0.0.1-SNAPSHOT",
-	"description": "A Star wars starships e-commerce project",
+	"description": "A Star wars starships e-commerce microservices project",
 	"main": "",
 	"repository": {
 		"type": "git",
@@ -14,10 +14,10 @@
 	},
 	"homepage": "https://github.com/skrollu/StarshipShop#readme",
 	"scripts": {
-		"backend-dev-start": "cd backend && mvn spring-boot:run -Pdev",
-		"backend-dev-package": "cd backend && mvn clean package -DskipTests -Pdev",
-		"backend-unit-test": "npm run backend-dev-package && cd backend && mvn test",
-		"backend-integration-test": "npm run backend-dev-package && cd backend && mvn verify",
+		"dev-start": "mvn spring-boot:run -Pdev",
+		"dev-package": "mvn clean package -DskipTests -Pdev",
+		"unit-test": "mvn test",
+		"integration-test": "mvn verify",
 		"check-sonarqube": "echo /!\\ Be sure to run the sonarqube docker container following the guide in README.md /!\\  && cd backend && mvn verify sonar:sonar -Dsonar.qualitygate.wait=true",
 		"docker-start-sonarqube": "docker run -d --rm --name sonarqube -p 9000:9000 -v sonarqube_data:/opt/sonarqube/data -v sonarqube_extensions:/opt/sonarqube/extensions -v sonarqube_logs:/opt/sonarqube/logs sonarqube"
 	}
