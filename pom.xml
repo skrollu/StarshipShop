@@ -15,6 +15,7 @@
     <description>Starhipshop microservices parent project</description>
     <modules>
         <module>starship-service</module>
+        <module>order-service</module>
     </modules>
     <properties>
         <!-- Global properties -->

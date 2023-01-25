@@ -1,0 +1,29 @@
+package com.starshipshop.orderservice.controller.advice;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
+
+import com.starshipshop.orderservice.controller.OrderController;
+import com.starshipshop.orderservice.domain.OrderDto;
+import com.starshipshop.orderservice.service.mapper.converter.IdToHashConverter;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Component
+public class OrderAssembler implements RepresentationModelAssembler<OrderDto, EntityModel<OrderDto>> {
+
+    private final IdToHashConverter idToHashConverter;
+
+    @Override
+    public EntityModel<OrderDto> toModel(OrderDto orderDto) {
+        return EntityModel.of(
+                orderDto,
+                linkTo(methodOn(OrderController.class).createOrder(null))
+                        .withSelfRel());
+    }
+}
