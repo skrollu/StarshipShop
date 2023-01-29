@@ -1,0 +1,7 @@
+app:
+  hashids:
+    salt: mySuperDevSalt
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

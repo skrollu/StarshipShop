@@ -9,10 +9,10 @@
         <version>0.0.1</version>
     </parent>
     <groupId>com.starshipshop</groupId>
-    <artifactId>order-service</artifactId>
+    <artifactId>inventory-service</artifactId>
     <version>0.0.1</version>
-    <name>order-service</name>
-    <description>Order service project</description>
+    <name>inventory-service</name>
+    <description>Inventory service project</description>
     <properties>
         <!-- Global properties -->
         <java.version>11</java.version>
