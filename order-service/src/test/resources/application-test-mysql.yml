@@ -1,0 +1,29 @@
+app:
+  hashids:
+    salt: mySuperTestSalt
+spring:
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/order_service_test?useSSL=false
+    username: root
+  h2:
+    console:
+      enabled: true
+      path: /console
+  jpa:
+    defer-datasource-initialization: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    show-sql: true
+  sql:
+    init:
+      mode: always
+      platform: mysql
+# spring.sql.init.data-locations=classpath:data-test.sql
+#spring.sql.init.schema-locations=schema-test.sql
+      

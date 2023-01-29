@@ -238,7 +238,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <activatedProperties>dev</activatedProperties>
+                <spring.profiles.active>dev</spring.profiles.active>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -247,7 +247,7 @@
         <profile>
             <id>test</id>
             <properties>
-                <activatedProperties>test</activatedProperties>
+                <spring.profiles.active>test</spring.profiles.active>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
