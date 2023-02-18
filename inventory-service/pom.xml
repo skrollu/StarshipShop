@@ -16,7 +16,6 @@
     <properties>
         <!-- Global properties -->
         <java.version>11</java.version>
-
         <sonar.organization>skrollu</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
@@ -97,6 +96,18 @@
             <version>
                 ${spring-security-test.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- CLOUD -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 
