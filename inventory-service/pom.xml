@@ -8,7 +8,6 @@
         <artifactId>starshipshop-microservices-parent</artifactId>
         <version>0.0.1</version>
     </parent>
-    <groupId>com.starshipshop</groupId>
     <artifactId>inventory-service</artifactId>
     <version>0.0.1</version>
     <name>inventory-service</name>
@@ -108,6 +107,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
             <version>3.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
 
