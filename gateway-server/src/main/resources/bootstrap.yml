@@ -4,3 +4,8 @@ spring:
   cloud:
     config:
       uri: http://localhost:9101
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
