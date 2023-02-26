@@ -8,7 +8,6 @@
         <artifactId>starshipshop-microservices-parent</artifactId>
         <version>0.0.1</version>
     </parent>
-    <groupId>com.starshipshop</groupId>
     <artifactId>discovery-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>discovery-server</name>

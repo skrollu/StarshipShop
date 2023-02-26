@@ -7,7 +7,6 @@
         <artifactId>starshipshop-microservices-parent</artifactId>
         <version>0.0.1</version>
     </parent>
-    <groupId>com-starshipshop</groupId>
     <artifactId>starship-service</artifactId>
     <version>0.0.1</version>
     <name>starship-service</name>
