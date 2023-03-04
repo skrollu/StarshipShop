@@ -2,6 +2,7 @@ package com.starshipshop.inventoryservice.service;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,15 +27,23 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     @SneakyThrows
-    public List<InventoryResponse> isInStock(List<String> skuCodes) {
-        log.info("Checking inventory for the following skuCodes: " + skuCodes);
+    public List<InventoryResponse> isInStockIn(List<String> skuCodes) {
+        List<InventoryResponse> result = new ArrayList<>();
+        for (String sku: skuCodes) {
+            result.add(this.isInStock(sku));
+        }
+        return result;
+    }
 
-        return inventoryRepository.findBySkuCodeIn(skuCodes)
-                .stream()
+    @Transactional(readOnly = true)
+    @SneakyThrows
+    public InventoryResponse isInStock(String skuCode) {
+        log.info("Checking inventory for the following skuCodes: " + skuCode);
+
+        return inventoryRepository.findBySkuCode(skuCode)
                 .map(inventory -> InventoryResponse.builder()
                         .skuCode(inventory.getSkuCode())
                         .isInStock(inventory.getQuantity() > 0).build())
-                .collect(toList());
+                .orElse(null);
     }
-
 }

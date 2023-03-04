@@ -20,6 +20,7 @@
         <module>starship-service</module>
         <module>order-service</module>
         <module>inventory-service</module>
+        <module>product-service</module>
     </modules>
     <properties>
         <!-- Global properties -->
