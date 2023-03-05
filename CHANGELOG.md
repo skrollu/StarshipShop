@@ -1,3 +1,9 @@
+### 05-03-2023
+
+- Cloudify starship service (connect to config server and discovery server).
+- Make a request with openfeign from product service to inventory and starship service.
+- Configure the gateway server filters to access eureka and product starship through it.
+
 ### 10-11-2022
 
 -   Manage errors response simply
