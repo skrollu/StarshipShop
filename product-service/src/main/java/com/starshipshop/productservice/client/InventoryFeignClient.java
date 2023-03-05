@@ -1,6 +1,6 @@
 package com.starshipshop.productservice.client;
 
-import com.starshipshop.productservice.client.request.InventoryResponse;
+import com.starshipshop.productservice.client.response.InventoryResponse;
 import com.starshipshop.productservice.config.InventoryFeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

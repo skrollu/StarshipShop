@@ -1,7 +1,9 @@
 package com.starshipshop.productservice.domain.service;
 
 import com.starshipshop.productservice.client.InventoryFeignClient;
-import com.starshipshop.productservice.client.request.InventoryResponse;
+import com.starshipshop.productservice.client.StarshipFeignClient;
+import com.starshipshop.productservice.client.response.InventoryResponse;
+import com.starshipshop.productservice.client.response.StarshipResponse;
 import com.starshipshop.productservice.web.response.StarshipProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,16 +13,17 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final InventoryFeignClient inventoryFeignClient;
+    private final StarshipFeignClient starshipFeignClient;
 
     public StarshipProductResponse getStarshipProduct(String skuCode) {
 
         InventoryResponse inventoryResponse = inventoryFeignClient.isInStock(skuCode);
-        StarshipProductResponse result = StarshipProductResponse.builder()
-                .name(null)
-                .description(null)
+        StarshipResponse starshipResponse = starshipFeignClient.getStarshipById("npw2GoM6");
+
+        return StarshipProductResponse.builder()
+                .name(starshipResponse.getName())
+                .description(starshipResponse.getDescription())
                 .isInStock(inventoryResponse.isInStock())
                 .build();
-
-        return result;
     }
 }
