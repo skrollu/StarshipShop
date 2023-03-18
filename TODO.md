@@ -1,5 +1,8 @@
 # TODO:
+### Cloud
 
+[ ] config server cannot handle circuit breaker config of product-service. It needs a specials move -> see documentation:
+https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#config-client-retry
 ### Feature
 
 -   [ ] update user endpoint
