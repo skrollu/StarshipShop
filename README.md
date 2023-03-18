@@ -8,7 +8,8 @@ This project describe a starships management api. Originaly created to improve m
 
 ### Used tehcnologies:
 
--   Springboot
+-  Spring boot
+-  Spring Cloud
     -   Hibernate
     -   Lombok
     -   Mapstruct
@@ -17,6 +18,13 @@ This project describe a starships management api. Originaly created to improve m
     -   Jacoco
 -   Sonarqube (See how to configure Sonarqube [here](#run-tests-and-report-on-sonarqube))
 -   Mysql (See how to configure MySQL [here](#run-application-with-a-mysql-server-on-a-docker-container).)
+
+# Shortcut to document soon
+
+```sh
+docker run -d -p 9411:9411 openzipkin/zipkin
+./kc.bat start-dev --http-port=8181
+```
 
 # Run application
 

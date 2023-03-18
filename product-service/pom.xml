@@ -14,16 +14,13 @@
     <description>Product service project</description>
 
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     </properties>
 
     <dependencies>
         <!-- WEB -->
         <dependency>
-            <groupId>
-                org.springframework.boot</groupId>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
@@ -39,7 +36,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- TOOLS Dependencies -->
+        <!-- TOOLS -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -54,7 +51,7 @@
             <version>${org.mapstruct.version}</version>
         </dependency>
 
-        <!-- TEST Dependencies-->
+        <!-- TEST -->
         <dependency>
             <groupId>
                 org.springframework.boot</groupId>
@@ -71,7 +68,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>4.0.1</version>
         </dependency>
 
         <dependency>
@@ -93,6 +89,15 @@
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
