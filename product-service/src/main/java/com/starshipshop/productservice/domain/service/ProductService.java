@@ -31,7 +31,7 @@ public class ProductService {
         return StarshipProductResponse.builder()
                 .name(starshipResponse.getName())
                 .description(starshipResponse.getDescription())
-                .isInStock(inventoryResponse.isInStock())
+                .quantity(inventoryResponse.getQuantity())
                 .price(starshipProduct.getPrice())
                 .color(starshipProduct.getColor())
                 .build();
