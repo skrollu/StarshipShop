@@ -21,6 +21,7 @@
         <module>order-service</module>
         <module>inventory-service</module>
         <module>product-service</module>
+        <module>image-service</module>
     </modules>
     <properties>
         <!-- Global properties -->
