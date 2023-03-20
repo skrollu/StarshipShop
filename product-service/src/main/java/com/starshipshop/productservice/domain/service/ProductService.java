@@ -9,6 +9,10 @@ import com.starshipshop.productservice.repository.jpa.StarshipProduct;
 import com.starshipshop.productservice.repository.jpa.StarshipProductRepository;
 import com.starshipshop.productservice.web.response.StarshipProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +26,10 @@ public class ProductService {
     private final StarshipFeignClient starshipFeignClient;
     private final StarshipProductRepository starshipProductRepository;
 
-    public List<StarshipProductResponse> getAllStarshipProduct() {
-        List<StarshipProduct> starshipProducts = starshipProductRepository.findAll();
+    public List<StarshipProductResponse> getAllStarshipProduct(Integer pageNo, Integer pageSize, String sortBy) {
+        // TODO improve a better sorting to sort by field contained in response object
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<StarshipProduct> starshipProducts = starshipProductRepository.findAll(paging);
 
         List<String> skuCodes = new ArrayList<>();
         starshipProducts.stream().forEach(sp -> skuCodes.add(sp.getSkuCode()));

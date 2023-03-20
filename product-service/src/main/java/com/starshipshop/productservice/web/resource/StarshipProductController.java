@@ -4,10 +4,7 @@ import com.starshipshop.productservice.domain.service.ProductService;
 import com.starshipshop.productservice.web.response.StarshipProductResponse;
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +16,11 @@ public class StarshipProductController {
     private final ProductService productService;
 
     @GetMapping
-    List<StarshipProductResponse> getAll() {
-        return productService.getAllStarshipProduct();
+    List<StarshipProductResponse> getAll(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "price") String sortBy) {
+        return productService.getAllStarshipProduct(pageNo, pageSize, sortBy);
     }
 
     @GetMapping("/{skuCode}")
