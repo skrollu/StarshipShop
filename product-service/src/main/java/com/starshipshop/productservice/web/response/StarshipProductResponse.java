@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class StarshipProductResponse {
     private String name;
     private String description;
-    private boolean isInStock;
+    private int quantity;
     private BigDecimal price;
     private String color;
 }

@@ -43,7 +43,7 @@ public class InventoryService {
         return inventoryRepository.findBySkuCode(skuCode)
                 .map(inventory -> InventoryResponse.builder()
                         .skuCode(inventory.getSkuCode())
-                        .isInStock(inventory.getQuantity() > 0).build())
+                        .quantity(inventory.getQuantity()).build())
                 .orElse(null);
     }
 }
