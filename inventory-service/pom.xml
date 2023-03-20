@@ -41,12 +41,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- SECURITY -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
         <!-- TOOLS -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -79,12 +73,16 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SECURITY -->
+        <!-- SECURITY
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
         </dependency>
-
+-->
         <!-- CLOUD -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
