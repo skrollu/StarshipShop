@@ -23,6 +23,8 @@ This project describe a starships management api. Originaly created to improve m
 
 ```sh
 docker run -d -p 9411:9411 openzipkin/zipkin
+ou 
+java -jar zipkin-server-2.24.0-exec.jar
 ./kc.bat start-dev --http-port=8181
 ```
 

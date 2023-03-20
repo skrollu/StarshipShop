@@ -31,13 +31,11 @@ public class ProductService {
         starshipProducts.stream().forEach(sp -> starshipIds.add(sp.getStarshipId()));
 
         List<InventoryResponse> inventoryResponses = inventoryFeignClient.isInStockIn(skuCodes);
-        List<StarshipResponse> starshipResponse = starshipFeignClient.getStarshipByIds(starshipIds)
+        List<StarshipResponse> starshipResponses = starshipFeignClient.getStarshipByIds(starshipIds)
                 .getContent()
                 .stream()
                 .map(EntityModel::getContent)
                 .toList();
-
-        List<StarshipProductResponse> result = new ArrayList<>();
 
         Map<String, InventoryResponse> map1 = new HashMap<>();
         for (InventoryResponse i : inventoryResponses) {
@@ -45,13 +43,14 @@ public class ProductService {
         }
 
         Map<String, StarshipResponse> map2 = new HashMap<>();
-        for (StarshipResponse i : starshipResponse) {
+        for (StarshipResponse i : starshipResponses) {
             map2.put(i.getId(), i);
         }
 
+        List<StarshipProductResponse> result = new ArrayList<>();
         for (StarshipProduct i : starshipProducts) {
-            InventoryResponse ir = map1.get(i.getStarshipId());
-            StarshipResponse sr = map2.get(i.getId());
+            InventoryResponse ir = map1.get(i.getSkuCode());
+            StarshipResponse sr = map2.get(i.getStarshipId());
             if (ir != null && sr != null) {
                 StarshipProductResponse spr = StarshipProductResponse.builder()
                         .name(sr.getName())
