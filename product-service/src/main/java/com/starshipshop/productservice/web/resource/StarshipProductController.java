@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/products/starship")
@@ -16,10 +18,15 @@ public class StarshipProductController {
 
     private final ProductService productService;
 
+    @GetMapping
+    List<StarshipProductResponse> getAll() {
+        return productService.getAllStarshipProduct();
+    }
+
     @GetMapping("/{skuCode}")
 //    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     StarshipProductResponse getBySkuCode(@PathVariable String skuCode) {
-        return productService.getStarshipProduct(skuCode);
+        return productService.getStarshipProductBySkuCode(skuCode);
     }
 
 //    String fallBackMethod(String skuCoden, RuntimeException ex) {

@@ -9,7 +9,10 @@ import com.starshipshop.productservice.repository.jpa.StarshipProduct;
 import com.starshipshop.productservice.repository.jpa.StarshipProductRepository;
 import com.starshipshop.productservice.web.response.StarshipProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -19,7 +22,52 @@ public class ProductService {
     private final StarshipFeignClient starshipFeignClient;
     private final StarshipProductRepository starshipProductRepository;
 
-    public StarshipProductResponse getStarshipProduct(String skuCode) {
+    public List<StarshipProductResponse> getAllStarshipProduct() {
+        List<StarshipProduct> starshipProducts = starshipProductRepository.findAll();
+
+        List<String> skuCodes = new ArrayList<>();
+        starshipProducts.stream().forEach(sp -> skuCodes.add(sp.getSkuCode()));
+        List<String> starshipIds = new ArrayList<>();
+        starshipProducts.stream().forEach(sp -> starshipIds.add(sp.getStarshipId()));
+
+        List<InventoryResponse> inventoryResponses = inventoryFeignClient.isInStockIn(skuCodes);
+        List<StarshipResponse> starshipResponse = starshipFeignClient.getStarshipByIds(starshipIds)
+                .getContent()
+                .stream()
+                .map(EntityModel::getContent)
+                .toList();
+
+        List<StarshipProductResponse> result = new ArrayList<>();
+
+        Map<String, InventoryResponse> map1 = new HashMap<>();
+        for (InventoryResponse i : inventoryResponses) {
+            map1.put(i.getSkuCode(), i);
+        }
+
+        Map<String, StarshipResponse> map2 = new HashMap<>();
+        for (StarshipResponse i : starshipResponse) {
+            map2.put(i.getId(), i);
+        }
+
+        for (StarshipProduct i : starshipProducts) {
+            InventoryResponse ir = map1.get(i.getStarshipId());
+            StarshipResponse sr = map2.get(i.getId());
+            if (ir != null && sr != null) {
+                StarshipProductResponse spr = StarshipProductResponse.builder()
+                        .name(sr.getName())
+                        .description(sr.getDescription())
+                        .quantity(ir.getQuantity())
+                        .price(i.getPrice())
+                        .color(i.getColor())
+                        .build();
+                result.add(spr);
+            }
+        }
+
+        return result;
+    }
+
+    public StarshipProductResponse getStarshipProductBySkuCode(String skuCode) {
 
         StarshipProduct starshipProduct = starshipProductRepository.findBySkuCode(skuCode)
                 .orElseThrow(() -> {

@@ -51,7 +51,17 @@ public class StarshipService {
 
 	public StarshipOutput getStarshipOutputById(final Long id) {
 		return mapper.toStarshipOutput(this.geStarshipById(id).orElseThrow(() -> new ResourceNotFoundException(
-				"Cannot retrieve hyperdriveSystem with the given id: " + idToHashConverter.convert(id))));
+				"Cannot retrieve starship with the given id: " + idToHashConverter.convert(id))));
+	}
+
+	private List<Starship> geStarshipByIds(final List<Long> ids) {
+		return starshipRepository.findByIdIn(ids);
+	}
+
+	public List<StarshipOutput> getStarshipOutputByIds(final List<Long> ids) {
+		return this.geStarshipByIds(ids).stream()
+				.map(starship -> mapper.toStarshipOutput(starship))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional

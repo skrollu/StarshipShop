@@ -1,5 +1,7 @@
 package com.starshipshop.productservice.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starshipshop.productservice.client.StarshipFeignClient;
 import feign.Client;
 import feign.Contract;

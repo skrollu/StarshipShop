@@ -1,3 +1,8 @@
+### 19-03-2023
+
+- Implement zipkin for all services
+- improve product and starship service in order to have a complete navigation features in the future web site
+
 ### 05-03-2023
 
 - Cloudify starship service (connect to config server and discovery server).
