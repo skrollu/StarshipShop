@@ -27,14 +27,16 @@ public class ProductService {
     private final StarshipProductRepository starshipProductRepository;
 
     public List<StarshipProductResponse> getAllStarshipProduct(Integer pageNo, Integer pageSize, String sortBy) {
-        // TODO improve a better sorting to sort by field contained in response object
+        // TODO improve the sort to sort by field contained in the StarshipProductResponse object
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<StarshipProduct> starshipProducts = starshipProductRepository.findAll(paging);
 
         List<String> skuCodes = new ArrayList<>();
-        starshipProducts.stream().forEach(sp -> skuCodes.add(sp.getSkuCode()));
         List<String> starshipIds = new ArrayList<>();
-        starshipProducts.stream().forEach(sp -> starshipIds.add(sp.getStarshipId()));
+        starshipProducts.stream().forEach(sp -> {
+            skuCodes.add(sp.getSkuCode());
+            starshipIds.add(sp.getStarshipId());
+        });
 
         List<InventoryResponse> inventoryResponses = inventoryFeignClient.isInStockIn(skuCodes);
         List<StarshipResponse> starshipResponses = starshipFeignClient.getStarshipByIds(starshipIds)
@@ -43,16 +45,19 @@ public class ProductService {
                 .map(EntityModel::getContent)
                 .toList();
 
+        // Gather inventory response list in a map
         Map<String, InventoryResponse> map1 = new HashMap<>();
         for (InventoryResponse i : inventoryResponses) {
             map1.put(i.getSkuCode(), i);
         }
 
+        // Gather starship response list in a map
         Map<String, StarshipResponse> map2 = new HashMap<>();
         for (StarshipResponse i : starshipResponses) {
             map2.put(i.getId(), i);
         }
 
+        // Gather inventory, starship and product data in a result list.
         List<StarshipProductResponse> result = new ArrayList<>();
         for (StarshipProduct i : starshipProducts) {
             InventoryResponse ir = map1.get(i.getSkuCode());
