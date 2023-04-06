@@ -13,31 +13,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.starshipshop.starshipservice.common.exception.AccountUsernameAlreadyExistException;
-import com.starshipshop.starshipservice.common.exception.NonMatchingPasswordException;
 import com.starshipshop.starshipservice.common.exception.ResourceNotFoundException;
 import com.starshipshop.starshipservice.common.exception.TooManyUserPerAccountException;
 import com.starshipshop.starshipservice.common.exception.UserPseudoAlreadyExistsException;
 
 @RestControllerAdvice
 public class GenericAdviceController {
-
-    @ExceptionHandler(AccountUsernameAlreadyExistException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String accountUsernameAlreadyExistHandler(AccountUsernameAlreadyExistException ex) {
-        return "AccountUsernameAlreadyExistException: ADVICE: " + ex.getMessage();
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String methodArgumentNotValidHandler(MethodArgumentNotValidException ex) {
         return "MethodArgumentNotValidException: ADVICE: " + ex.getMessage();
-    }
-
-    @ExceptionHandler(NonMatchingPasswordException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String nonMatchingPasswordHandler(NonMatchingPasswordException ex) {
-        return "NonMatchingPasswordException: ADVICE: " + ex.getMessage();
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

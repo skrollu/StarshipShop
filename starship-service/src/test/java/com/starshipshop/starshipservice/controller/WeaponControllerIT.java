@@ -38,10 +38,6 @@ public class WeaponControllerIT {
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     private static final String BASE_URL = "/api/v1/weapons";
-    private static final String USER_USERNAME = "user@mail.com";
-    private static final String USER_PASSWORD = "password";
-    private static final String ADMIN_USERNAME = "admin@mail.com";
-    private static final String ADMIN_PASSWORD = "password";
 
     @Autowired
     private MockMvc mockMvc;
@@ -95,7 +91,7 @@ public class WeaponControllerIT {
     void createWeapon_whenAuthenticatedAsAdmin_shouldWorksThroughAllLayers() throws Exception {
 
         String json = "{\r\n\"name\": \"WeaponCreated1\",\r\n\"manufacturerId\":\"W5pvAw0r\"\r\n}";
-        mockMvc.perform(post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+        mockMvc.perform(post(BASE_URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(json))
                 .andDo(print())
@@ -114,7 +110,7 @@ public class WeaponControllerIT {
         String json = "{\r\n\"name\":\"WeaponCreated2\"\r\n}";
 
         mockMvc.perform(
-                post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+                post(BASE_URL)
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(json))
 
@@ -132,7 +128,7 @@ public class WeaponControllerIT {
 
         String json = "{\r\n\"name\": \"StarshipUpdated\"\r\n}";
 
-        mockMvc.perform(put(BASE_URL + "/" + "GELQkpdQ").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+        mockMvc.perform(put(BASE_URL + "/" + "GELQkpdQ")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(json))
 
@@ -150,7 +146,7 @@ public class WeaponControllerIT {
     @Tag("DELETE /weapons/{id}")
     @DisplayName("DEL a weapon when authenticated as Admin should works throught all layers")
     void deleteWeapon_whenAuthenticatedAsAdmin_shouldWorksThroughAllLayers() throws Exception {
-        mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+        mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM")
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.deleted").exists())
                 .andExpect(jsonPath("$.deleted").value(true))
@@ -160,7 +156,7 @@ public class WeaponControllerIT {
     @Test
     @DisplayName("DEL a weapon when authenticated as Admin should throws error")
     void deleteWeapon_whenAuthenticatedAsAdmin_shouldThrowsError() throws Exception {
-        mockMvc.perform(delete(BASE_URL + "/{id}", "").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+        mockMvc.perform(delete(BASE_URL + "/{id}", "")
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError());
     }

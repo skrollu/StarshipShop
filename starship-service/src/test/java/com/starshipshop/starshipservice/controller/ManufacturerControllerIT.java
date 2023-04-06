@@ -45,10 +45,6 @@ public class ManufacturerControllerIT {
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
 	private static final String BASE_URL = "/api/v1/manufacturers";
-	private static final String USER_USERNAME = "user@mail.com";
-	private static final String USER_PASSWORD = "password";
-	private static final String ADMIN_USERNAME = "admin@mail.com";
-	private static final String ADMIN_PASSWORD = "password";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -74,7 +70,7 @@ public class ManufacturerControllerIT {
 	@Tag("GET /manufacturers")
 	@DisplayName("GET all manufacturers when authenticated as User should works")
 	void getManufacturers_whenAuthenticatedAsUser_shouldWorks() throws Exception {
-		this.mockMvc.perform(get(BASE_URL).with(httpBasic(USER_USERNAME, USER_PASSWORD)))
+		this.mockMvc.perform(get(BASE_URL))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("ManufacturerToGet1")))
 				.andExpect(jsonPath("$._embedded.manufacturers[0]").exists())
@@ -106,7 +102,7 @@ public class ManufacturerControllerIT {
 	@Tag("GET /manufacturers/{id}")
 	@DisplayName("GET one manufacturer when authenticated as user should works throught all layers")
 	void getManufacturerById_whenAuthenticatedAsUser_shouldWorksThroughAllLayers() throws Exception {
-		this.mockMvc.perform(get(BASE_URL + "/{id}", "W5pvAw0r").with(httpBasic(USER_USERNAME, USER_PASSWORD)))
+		this.mockMvc.perform(get(BASE_URL + "/{id}", "W5pvAw0r"))
 
 				.andExpect(jsonPath("$.name").exists())
 				.andExpect(jsonPath("$.name", is("ManufacturerToGet1")))
@@ -130,7 +126,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(jsonPath("$.name").value("ManufacturerCreated"))
@@ -150,7 +146,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(post(BASE_URL).with(httpBasic(USER_USERNAME, USER_PASSWORD))
+		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isForbidden());
@@ -186,7 +182,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
@@ -206,7 +202,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
@@ -229,7 +225,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(put(BASE_URL + "/mbLbXp35").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(put(BASE_URL + "/mbLbXp35")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(jsonPath("$.id").exists())
@@ -253,7 +249,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(put(BASE_URL + "/mbLbXp35").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+		mockMvc.perform(put(BASE_URL + "/mbLbXp35")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isForbidden());
@@ -296,7 +292,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(put(BASE_URL + "/mbLbXp35").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(put(BASE_URL + "/mbLbXp35")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
@@ -316,7 +312,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(put(BASE_URL + "/mbLbXp35").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(put(BASE_URL + "/mbLbXp35")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
@@ -339,7 +335,7 @@ public class ManufacturerControllerIT {
 				.withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(requestObj);
 
-		mockMvc.perform(put(BASE_URL + "/wrongId").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(put(BASE_URL + "/wrongId")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(requestJson))
 				.andExpect(content().string(Matchers.startsWith("ResourceNotFoundException: ADVICE: ")))
@@ -355,7 +351,7 @@ public class ManufacturerControllerIT {
 	public void deleteManufacturer_whenAuthenticatedAsAdmin_shouldWorksThroughAllLayers() throws Exception {
 		// Id of a not joined Manufacturer to avoid nested errors or errors caused by
 		// delete before other tests ended.
-		mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.deleted").exists())
 				.andExpect(jsonPath("$.deleted").value(true))
@@ -368,7 +364,7 @@ public class ManufacturerControllerIT {
 	public void deleteManufacturer_whenAuthenticatedAsUser_shouldResponse403() throws Exception {
 		// Id of a not joined Manufacturer to avoid nested errors or errors caused by
 		// delete before other tests ended.
-		mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM").with(httpBasic(USER_USERNAME, USER_PASSWORD))
+		mockMvc.perform(delete(BASE_URL + "/{id}", "qZpyYpYM")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
 	}
@@ -377,7 +373,7 @@ public class ManufacturerControllerIT {
 	@Tag("DELETE /manufacturers/{id}")
 	@DisplayName("DELETE manufacturer with wrong id when authenticated as Admin should throw Resource not found exception by the HashToIdConverter")
 	public void deleteManufacturer_whenAuthenticatedAsAdmin_shouldThrowResourceNotFoundException() throws Exception {
-		mockMvc.perform(delete(BASE_URL + "/{id}", "wrongId").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+		mockMvc.perform(delete(BASE_URL + "/{id}", "wrongId")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().string(Matchers.startsWith("ResourceNotFoundException: ADVICE: ")))
 				.andExpect(content().string(containsString("Cannot convert hash to id with the given hash:")))

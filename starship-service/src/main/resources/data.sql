@@ -29,7 +29,3 @@ values
 (2,4),
 (2,5)
 ;
-
-insert into account (username, roles, password) values
-('user@mail.com', 'USER', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q'),
-('admin@mail.com', 'USER, ADMIN', '$2a$10$dGadJR7BG7mjieUoefN/we8/GfanT/WQF85vctZIwRjG5GLaHoY1q');

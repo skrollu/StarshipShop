@@ -41,10 +41,6 @@ public class HyperdriveSystemControllerIT {
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     private static final String BASE_URL = "/api/v1/hyperdriveSystems";
-    private static final String USER_USERNAME = "user@mail.com";
-    private static final String USER_PASSWORD = "password";
-    private static final String ADMIN_USERNAME = "admin@mail.com";
-    private static final String ADMIN_PASSWORD = "password";
 
     @Autowired
     private MockMvc mockMvc;
@@ -88,7 +84,7 @@ public class HyperdriveSystemControllerIT {
 
         String json = "{\r\n\"name\":\"HyperdriveSystemCreated\"\r\n}";
 
-        mockMvc.perform(post(BASE_URL).with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+        mockMvc.perform(post(BASE_URL)
                 .contentType(APPLICATION_JSON_UTF8).content(json))
 
                 .andExpect(status().isCreated()).andExpect(jsonPath("$.id").exists())
@@ -109,7 +105,7 @@ public class HyperdriveSystemControllerIT {
         String json = "{\r\n\"name\": \"HyperdriveUpdated3\"\r\n}";
 
         mockMvc.perform(
-                put(BASE_URL + "/" + "mbLbXp35").with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD))
+                put(BASE_URL + "/" + "mbLbXp35")
                         .contentType(APPLICATION_JSON_UTF8).content(json))
 
                 .andExpect(status().isCreated()).andExpect(jsonPath("$.id").exists())
@@ -127,7 +123,7 @@ public class HyperdriveSystemControllerIT {
     void deleteHyperdriveSystem_whenAuthenticatedAsAdmin_shouldWorksThroughAllLayers()
             throws Exception {
         mockMvc.perform(delete(BASE_URL + "/{id}", "GELQkpdQ")
-                .with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD)).contentType(APPLICATION_JSON_UTF8))
+                .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.deleted").exists())
                 .andExpect(jsonPath("$.deleted").value(true)).andExpect(status().isOk());
     }
@@ -138,7 +134,7 @@ public class HyperdriveSystemControllerIT {
     void deleteHyperdriveSystem_whenAuthenticatedAsAdmin_shouldThrowsClientError()
             throws Exception {
         mockMvc.perform(delete(BASE_URL + "/{id}", "")
-                .with(httpBasic(ADMIN_USERNAME, ADMIN_PASSWORD)).contentType(APPLICATION_JSON_UTF8))
+                .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError());
     }
 }
