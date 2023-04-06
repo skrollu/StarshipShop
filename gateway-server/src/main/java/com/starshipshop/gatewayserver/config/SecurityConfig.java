@@ -11,14 +11,15 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
     @Bean
-    SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity){
-        return serverHttpSecurity
+    SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
+        http
                 .csrf().disable()
-                .authorizeExchange(exchange -> exchange.pathMatchers("/eureka/**") // static resources
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/eureka/**") // static resources
                         .permitAll()
                         .anyExchange()
                         .authenticated())
-                .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
-                .build();
+                .oauth2Login();
+        return http.build();
     }
 }
