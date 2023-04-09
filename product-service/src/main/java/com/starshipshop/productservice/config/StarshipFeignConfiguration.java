@@ -3,6 +3,7 @@ package com.starshipshop.productservice.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starshipshop.productservice.client.StarshipFeignClient;
+import com.starshipshop.productservice.client.auth.BearerTokenRequestInterceptor;
 import feign.Client;
 import feign.Contract;
 import feign.Feign;
@@ -11,6 +12,7 @@ import feign.codec.Decoder;
 import feign.codec.Encoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.openfeign.security.OAuth2AccessTokenInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +24,6 @@ public class StarshipFeignConfiguration {
     private String username;
     @Value("${client.starship.password}")
     private String password;
-//    private final StarshipErrorDecoder errorDecoder;
 
     @Bean
     public StarshipFeignClient initFeignClient(final Decoder decoder, final Encoder encoder, final Client client, final Contract contract) {
@@ -31,8 +32,7 @@ public class StarshipFeignConfiguration {
                 .contract(contract)
                 .decoder(decoder)
                 .encoder(encoder)
-//                .errorDecoder(errorDecoder)
-                .requestInterceptor(new BasicAuthRequestInterceptor(username, password))
+                .requestInterceptor(new BearerTokenRequestInterceptor())
                 .target(StarshipFeignClient.class, "starship-service");
     }
 }

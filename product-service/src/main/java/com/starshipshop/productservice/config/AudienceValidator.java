@@ -1,5 +1,4 @@
-package com.starshipshop.starshipservice.config.security;
-
+package com.starshipshop.productservice.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -10,18 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class AudienceValidator implements OAuth2TokenValidator<Jwt> {
-    OAuth2Error error = new OAuth2Error("invalid_token", "The required audience is missing", null);
+//    OAuth2Error error = new OAuth2Error("invalid_token", "The required audience is missing", null);
 
     public OAuth2TokenValidatorResult validate(Jwt jwt) {
-//        log.info(jwt.getClaims().toString());
-//        log.info(jwt.getSubject().toString());
-//        log.info(jwt.getHeaders().toString());
-//        log.info(jwt.getAudience().toString());
-//        log.info(jwt.getIssuer().toString());
-//        log.info(jwt.getAudience().stream().toString());
-//        log.info(jwt.getId().toString());
-
-
         return OAuth2TokenValidatorResult.success();
 //        if (jwt.getAudience().contains("messaging")) {
 //            return OAuth2TokenValidatorResult.success();

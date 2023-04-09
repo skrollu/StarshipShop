@@ -4,6 +4,7 @@ import com.starshipshop.productservice.domain.service.ProductService;
 import com.starshipshop.productservice.web.response.StarshipProductResponse;
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class StarshipProductController {
 
     private final ProductService productService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     List<StarshipProductResponse> getAll(
             @RequestParam(defaultValue = "0") Integer pageNo,
@@ -23,6 +25,7 @@ public class StarshipProductController {
         return productService.getAllStarshipProduct(pageNo, pageSize, sortBy);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{skuCode}")
 //    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     StarshipProductResponse getBySkuCode(@PathVariable String skuCode) {
