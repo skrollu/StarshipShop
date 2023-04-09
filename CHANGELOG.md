@@ -1,3 +1,9 @@
+### 09-04-2023
+
+- Add basic AudienceValidator and JWTDecoder to see JWT content
+- Add Scope based authority for starship endpoints (odc: https://docs.spring.io/spring-security/reference/reactive/oauth2/resource-server/jwt.html) Maps each scope to an authority with the prefix SCOPE_.
+- I think I need spring-boot-starter-oauth2-client to have a role based authorisation route.
+
 ### 19-03-2023
 
 - Implement zipkin for all services

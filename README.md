@@ -22,10 +22,12 @@ This project describe a starships management api. Originaly created to improve m
 # Shortcut to document soon
 
 ```sh
-docker run -d -p 9411:9411 openzipkin/zipkin
+docker run  --name zipkin -d -p 9411:9411 openzipkin/zipkin
 ou 
 java -jar zipkin-server-2.24.0-exec.jar
+---
 ./kc.bat start-dev --http-port=8181
+docker run --name keycloak -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin  quay.io/keycloak/keycloak:21.0.1 start-dev
 ```
 
 # Run application
