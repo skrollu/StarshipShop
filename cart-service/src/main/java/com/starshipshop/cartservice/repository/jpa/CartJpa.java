@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "cart")
-public class Cart {
+public class CartJpa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cart", updatable = false, columnDefinition = "BIGINT")
@@ -28,5 +28,5 @@ public class Cart {
     @EqualsAndHashCode.Exclude
     @JsonBackReference
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
-    private List<Product> products;
+    private List<ProductJpa> products;
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "product")
-public class Product {
+public class ProductJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,6 @@ public class Product {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cart", nullable = false, foreignKey = @ForeignKey(name = "FK_cart_product"))
-    private Cart cart;
+    private CartJpa cart;
 
 }

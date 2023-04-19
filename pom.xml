@@ -23,6 +23,7 @@
         <module>product-service</module>
         <module>image-service</module>
         <module>cart-service</module>
+        <module>user-service</module>
     </modules>
     <properties>
         <!-- Global properties -->
