@@ -1,4 +1,4 @@
-package com.starshipshop.inventoryservice.domain;
+package com.starshipshop.inventoryservice.web.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

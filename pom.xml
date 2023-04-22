@@ -23,7 +23,6 @@
         <module>product-service</module>
         <module>image-service</module>
         <module>cart-service</module>
-        <module>user-service</module>
     </modules>
     <properties>
         <!-- Global properties -->
@@ -62,6 +61,12 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

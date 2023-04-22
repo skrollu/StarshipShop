@@ -1,6 +1,17 @@
-app:
-  hashids:
-    salt: mySuperTestSalt
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+      springframework:
+        security: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:9102/eureka/
+
 spring:
   datasource:
     password: ""
@@ -18,9 +29,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
-    show-sql: true
+        format_sql: false
+    show-sql: false
+  sleuth:
+    sampler:
+      probability: 1.0
   sql:
     init:
       mode: always
       platform: h2
+  zipkin:
+    base-url: http://localhost:9411
