@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderLineDto {
+public class OrderLine {
 
     @NotBlank
     @Size(min = 3)

@@ -1,24 +1,9 @@
-package com.starshipshop.orderservice.repository.jpa.order;
+package com.starshipshop.orderservice.repository.jpa;
 
+import lombok.*;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +11,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "order_line")
-public class OrderLine {
+public class OrderLineJpa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order_line", updatable = false, columnDefinition = "BIGINT")
@@ -45,6 +30,6 @@ public class OrderLine {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_order", nullable = false, foreignKey = @ForeignKey(name = "FK_order_line_order"))
-    private Order order;
+    private OrderJpa order;
 
 }

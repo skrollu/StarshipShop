@@ -1,9 +1,8 @@
 package com.starshipshop.orderservice.repository;
 
+import com.starshipshop.orderservice.repository.jpa.OrderLineJpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.starshipshop.orderservice.repository.jpa.order.OrderLine;
-
-public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
+public interface OrderLineRepository extends JpaRepository<OrderLineJpa, Long> {
 
 }

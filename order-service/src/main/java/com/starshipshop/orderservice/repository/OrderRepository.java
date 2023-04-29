@@ -1,10 +1,9 @@
 package com.starshipshop.orderservice.repository;
 
+import com.starshipshop.orderservice.repository.jpa.OrderJpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.starshipshop.orderservice.repository.jpa.order.Order;
+public interface OrderRepository extends JpaRepository<OrderJpa, Long> {
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
-
-    Order findByOrderNumber(String orderNumber);
+    OrderJpa findByOrderNumber(String orderNumber);
 }

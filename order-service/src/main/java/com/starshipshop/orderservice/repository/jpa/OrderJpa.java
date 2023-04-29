@@ -1,24 +1,15 @@
-package com.starshipshop.orderservice.repository.jpa.order;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+package com.starshipshop.orderservice.repository.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "orders")
-public class Order {
+public class OrderJpa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order", updatable = false, columnDefinition = "BIGINT")
@@ -52,5 +43,5 @@ public class Order {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private Set<OrderLine> orderLines;
+    private Set<OrderLineJpa> orderLines;
 }
