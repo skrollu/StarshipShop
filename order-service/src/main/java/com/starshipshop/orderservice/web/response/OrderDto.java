@@ -1,6 +1,5 @@
 package com.starshipshop.orderservice.web.response;
 
-import com.starshipshop.orderservice.domain.OrderLine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

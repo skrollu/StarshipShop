@@ -4,5 +4,5 @@ import com.starshipshop.orderservice.domain.Order;
 
 public interface OrderService {
 
-    Order getOrder(String orderNumber);
+    Order getOrder(String userId, String orderNumber);
 }
