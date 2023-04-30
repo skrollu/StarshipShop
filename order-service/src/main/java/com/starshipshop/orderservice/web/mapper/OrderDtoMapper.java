@@ -8,5 +8,4 @@ import org.mapstruct.Mapper;
 public interface OrderDtoMapper {
 
     OrderDto mapOrderToOrderDto(Order order);
-    Order mapOrderDtoToOrder(OrderDto dto);
 }

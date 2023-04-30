@@ -14,8 +14,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderAdapter orderAdapter;
 
     @Override
-    public Order getOrder(String orderNumber) {
-        return orderAdapter.findByOrderNumber(orderNumber);
+    public Order getOrder(String userId, String orderNumber) {
+        return orderAdapter.findByUserIdAndOrderNumber(userId, orderNumber);
     }
 /*
     @Transactional

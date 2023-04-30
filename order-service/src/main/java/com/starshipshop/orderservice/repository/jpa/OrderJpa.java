@@ -23,6 +23,9 @@ public class OrderJpa {
     @Column(name = "id_order", updatable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(name = "id_user", updatable = false)
+    private String userId;
+
     @Column(name = "order_number", updatable = false)
     private String orderNumber;
 

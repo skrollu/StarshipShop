@@ -17,12 +17,12 @@ public class OrderAdapterImplTest {
     @Test
     void findByOrderNumber_withNullOrderNumber_givesNothing() {
         OrderRepository orderRepository = mock(OrderRepository.class);
-        when(orderRepository.findByOrderNumber(null))
+        when(orderRepository.findByUserIdAndOrderNumber(null, null))
                 .thenReturn(Optional.empty());
         OrderMapper orderMapper = mock(OrderMapper.class);
         OrderAdapterImpl instance = new OrderAdapterImpl(orderRepository, orderMapper);
 
-        Order result = instance.findByOrderNumber(null);
+        Order result = instance.findByUserIdAndOrderNumber(null, null);
 
         assertThat(result).isNull();
     }
@@ -30,21 +30,34 @@ public class OrderAdapterImplTest {
     @Test
     void findByOrderNumber_withAnEmptyOrderNumber_givesNothing() {
         OrderRepository orderRepository = mock(OrderRepository.class);
-        when(orderRepository.findByOrderNumber(""))
+        when(orderRepository.findByUserIdAndOrderNumber("123", ""))
                 .thenReturn(Optional.empty());
         OrderMapper orderMapper = mock(OrderMapper.class);
         OrderAdapterImpl instance = new OrderAdapterImpl(orderRepository, orderMapper);
 
-        Order result = instance.findByOrderNumber("");
+        Order result = instance.findByUserIdAndOrderNumber("123", "");
 
         assertThat(result).isNull();
     }
 
     @Test
-    void findByOrderNumber_withAValidOrderNumber_givesOrder() {
+    void findByOrderNumber_withAnEmptyUserId_givesNothing() {
         OrderRepository orderRepository = mock(OrderRepository.class);
-        when(orderRepository.findByOrderNumber("123"))
-                .thenReturn(Optional.of(OrderJpa.builder().orderNumber("123").id(1L)
+        when(orderRepository.findByUserIdAndOrderNumber("", "123"))
+                .thenReturn(Optional.empty());
+        OrderMapper orderMapper = mock(OrderMapper.class);
+        OrderAdapterImpl instance = new OrderAdapterImpl(orderRepository, orderMapper);
+
+        Order result = instance.findByUserIdAndOrderNumber("", "123");
+
+        assertThat(result).isNull();
+    }
+
+    @Test
+    void findByOrderNumber_withAParameters_givesOrder() {
+        OrderRepository orderRepository = mock(OrderRepository.class);
+        when(orderRepository.findByUserIdAndOrderNumber("123", "123"))
+                .thenReturn(Optional.of(OrderJpa.builder().userId("123").orderNumber("123").id(1L)
                         .build()));
         OrderMapper orderMapper = mock(OrderMapper.class);
         when(orderMapper.mapToOrder(OrderJpa.builder()
@@ -57,9 +70,10 @@ public class OrderAdapterImplTest {
                         .build());
         OrderAdapterImpl instance = new OrderAdapterImpl(orderRepository, orderMapper);
 
-        Order result = instance.findByOrderNumber("123");
+        Order result = instance.findByUserIdAndOrderNumber("123", "123");
 
         assertThat(result).isEqualTo(Order.builder()
+                .userId("123")
                 .orderNumber("123")
                 .id(1L)
                 .build());

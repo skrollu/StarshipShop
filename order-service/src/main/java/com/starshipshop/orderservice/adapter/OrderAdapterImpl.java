@@ -16,9 +16,10 @@ public class OrderAdapterImpl implements OrderAdapter {
     final OrderMapper orderMapper;
 
     @Override
-    public Order findByOrderNumber(String orderNumber) {
+    public Order findByUserIdAndOrderNumber(String userId, String orderNumber) {
+        if (Objects.isNull(userId) || userId.isEmpty()) return null;
         if (Objects.isNull(orderNumber) || orderNumber.isEmpty()) return null;
-        return orderRepository.findByOrderNumber(orderNumber)
+        return orderRepository.findByUserIdAndOrderNumber(userId, orderNumber)
                 .map(orderMapper::mapToOrder)
                 .orElse(null);
     }

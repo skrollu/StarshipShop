@@ -1,14 +1,13 @@
 package com.starshipshop.orderservice.domain;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
 
 @Data
 @AllArgsConstructor
@@ -17,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class Order {
 
     private Long id;
+    private String userId;
     private String orderNumber;
     private LocalDate orderDate;
     private LocalDate sendingDate;

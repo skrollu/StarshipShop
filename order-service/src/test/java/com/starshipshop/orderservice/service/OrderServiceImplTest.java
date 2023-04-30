@@ -11,13 +11,25 @@ import static org.mockito.Mockito.*;
 class OrderServiceImplTest {
 
     @Test
-    void getOrder_withNullOrderNumber_givesNothing() {
+    void getOrder_withNullUserId_givesNothing() {
         OrderAdapter orderAdapter = mock(OrderAdapterImpl.class);
-        when(orderAdapter.findByOrderNumber(null))
+        when(orderAdapter.findByUserIdAndOrderNumber(null, "123"))
                 .thenReturn(null);
         OrderService instance = new OrderServiceImpl(orderAdapter);
 
-        Order result = instance.getOrder(null);
+        Order result = instance.getOrder(null, null);
+
+        assertThat(result).isNull();
+    }
+
+    @Test
+    void getOrder_withNullOrderNumber_givesNothing() {
+        OrderAdapter orderAdapter = mock(OrderAdapterImpl.class);
+        when(orderAdapter.findByUserIdAndOrderNumber("123", null))
+                .thenReturn(null);
+        OrderService instance = new OrderServiceImpl(orderAdapter);
+
+        Order result = instance.getOrder(null, null);
 
         assertThat(result).isNull();
     }
@@ -25,11 +37,24 @@ class OrderServiceImplTest {
     @Test
     void getOrder_withEmptyOrderNumber_givesNothing() {
         OrderAdapter orderAdapter = mock(OrderAdapterImpl.class);
-        when(orderAdapter.findByOrderNumber(null))
+        when(orderAdapter.findByUserIdAndOrderNumber("123", ""))
                 .thenReturn(null);
         OrderService instance = new OrderServiceImpl(orderAdapter);
 
-        Order result = instance.getOrder("");
+        Order result = instance.getOrder("123", "");
+
+        assertThat(result).isNull();
+    }
+
+
+    @Test
+    void getOrder_withEmptUserId_givesNothing() {
+        OrderAdapter orderAdapter = mock(OrderAdapterImpl.class);
+        when(orderAdapter.findByUserIdAndOrderNumber("", "123"))
+                .thenReturn(null);
+        OrderService instance = new OrderServiceImpl(orderAdapter);
+
+        Order result = instance.getOrder("", "123");
 
         assertThat(result).isNull();
     }
@@ -37,11 +62,11 @@ class OrderServiceImplTest {
     @Test
     void getOrder_withValidOrderNumber_givesOrder() {
         OrderAdapter orderAdapter = mock(OrderAdapterImpl.class);
-        when(orderAdapter.findByOrderNumber("123"))
-                .thenReturn(Order.builder().orderNumber("123").build());
+        when(orderAdapter.findByUserIdAndOrderNumber("123", "123"))
+                .thenReturn(Order.builder().userId("123").orderNumber("123").build());
         OrderService instance = new OrderServiceImpl(orderAdapter);
 
-        Order result = instance.getOrder("123");
+        Order result = instance.getOrder("123", "123");
 
         assertThat(result.getOrderNumber()).isEqualTo("123");
     }

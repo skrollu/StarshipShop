@@ -4,5 +4,5 @@ import com.starshipshop.orderservice.domain.Order;
 
 public interface OrderAdapter {
 
-    Order findByOrderNumber(String orderNumber);
+    Order findByUserIdAndOrderNumber(String userId, String orderNumber);
 }

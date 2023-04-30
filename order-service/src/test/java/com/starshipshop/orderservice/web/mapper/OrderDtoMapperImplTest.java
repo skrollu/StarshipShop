@@ -28,6 +28,7 @@ public class OrderDtoMapperImplTest {
         Order order = Order.builder()
                 .id(12L)
                 .orderNumber("123")
+                .userId("123")
                 .orderDate(LocalDate.now())
                 .sendingDate(LocalDate.now())
                 .cancellationDate(LocalDate.now())
@@ -60,6 +61,7 @@ public class OrderDtoMapperImplTest {
         map.put("123", line);
         Order order = Order.builder()
                 .id(12L)
+                .userId("123")
                 .orderNumber("123")
                 .orderDate(LocalDate.now())
                 .sendingDate(LocalDate.now())
@@ -82,80 +84,6 @@ public class OrderDtoMapperImplTest {
         assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(123.123));
         assertThat(result.getOrderLines().size()).isOne();
         assertThat(result.getOrderLines().get("123")).isEqualTo(OrderLineDto.builder()
-                .skuCode("123")
-                .price(BigDecimal.valueOf(123))
-                .quantity(123)
-                .build());
-    }
-
-    @Test
-    void mapOrderDtoToOrder_withNullOrder_givesNothing() {
-        OrderDtoMapper instance = new OrderDtoMapperImpl();
-
-        Order result = instance.mapOrderDtoToOrder(null);
-
-        assertThat(result).isNull();
-    }
-
-    @Test
-    void mapOrderDtoToOrder_withValidOrderDto_givesOrder() {
-        OrderDto dto = OrderDto.builder()
-                .id(12L)
-                .orderNumber("123")
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
-                .cancellationDate(LocalDate.now())
-                .returnDate(LocalDate.now())
-                .price(BigDecimal.valueOf(123.123))
-                .build();
-
-        OrderDtoMapper instance = new OrderDtoMapperImpl();
-
-        Order result = instance.mapOrderDtoToOrder(dto);
-
-        assertThat(result.getId()).isEqualTo(12L);
-        assertThat(result.getOrderNumber()).isEqualTo("123");
-        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(123.123));
-        assertThat(result.getOrderLines()).isNull();
-    }
-
-    @Test
-    void mapOrderDtoToOrder_withCompleteOrderDto_givesCompleteOrder() {
-        OrderLineDto line = OrderLineDto.builder()
-                .skuCode("123")
-                .price(BigDecimal.valueOf(123))
-                .quantity(123)
-                .build();
-        HashMap map = new HashMap<>();
-        map.put("123", line);
-        OrderDto dto = OrderDto.builder()
-                .id(12L)
-                .orderNumber("123")
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
-                .cancellationDate(LocalDate.now())
-                .returnDate(LocalDate.now())
-                .price(BigDecimal.valueOf(123.123))
-                .orderLines(map)
-                .build();
-
-        OrderDtoMapper instance = new OrderDtoMapperImpl();
-
-        Order result = instance.mapOrderDtoToOrder(dto);
-
-        assertThat(result.getId()).isEqualTo(12L);
-        assertThat(result.getOrderNumber()).isEqualTo("123");
-        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(123.123));
-        assertThat(result.getOrderLines().size()).isOne();
-        assertThat(result.getOrderLines().get("123")).isEqualTo(OrderLine.builder()
                 .skuCode("123")
                 .price(BigDecimal.valueOf(123))
                 .quantity(123)
