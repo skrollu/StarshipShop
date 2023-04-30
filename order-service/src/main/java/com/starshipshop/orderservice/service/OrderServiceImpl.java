@@ -1,5 +1,7 @@
 package com.starshipshop.orderservice.service;
 
+import com.starshipshop.orderservice.adapter.OrderAdapter;
+import com.starshipshop.orderservice.domain.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,11 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
-/*
-    private final OrderRepository orderRepository;
-    private final OrderLineRepository orderLineRepository;
-    private final OrderMapper orderMapper;
 
+    private final OrderAdapter orderAdapter;
+
+    @Override
+    public Order getOrder(String orderNumber) {
+        return orderAdapter.findByOrderNumber(orderNumber);
+    }
+/*
     @Transactional
     public OrderDto createOrder(@Valid CreateOrderInputDto coid) {
         Order toSave = orderMapper.mapCreateOrderInputDtoToOrder(coid);
