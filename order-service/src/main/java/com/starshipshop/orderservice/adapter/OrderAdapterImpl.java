@@ -1,12 +1,15 @@
 package com.starshipshop.orderservice.adapter;
 
+import com.starshipshop.orderservice.common.exception.ResourceNotFoundException;
 import com.starshipshop.orderservice.domain.Order;
 import com.starshipshop.orderservice.repository.OrderRepository;
 import com.starshipshop.orderservice.repository.mapper.OrderMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.Objects;
+import javax.validation.constraints.NotBlank;
 
 @RequiredArgsConstructor
 @Component
@@ -16,11 +19,12 @@ public class OrderAdapterImpl implements OrderAdapter {
     final OrderMapper orderMapper;
 
     @Override
-    public Order findByUserIdAndOrderNumber(String userId, String orderNumber) {
-        if (Objects.isNull(userId) || userId.isEmpty()) return null;
-        if (Objects.isNull(orderNumber) || orderNumber.isEmpty()) return null;
+    @Validated
+    public Order findByUserIdAndOrderNumber(@NotBlank String userId, @NotBlank String orderNumber) throws ResourceNotFoundException {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(orderNumber))
+            throw new IllegalArgumentException("Cannot find order a blank userId or orderNumber");
         return orderRepository.findByUserIdAndOrderNumber(userId, orderNumber)
                 .map(orderMapper::mapToOrder)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("No order found with the given orderNumber %s".formatted(orderNumber)));
     }
 }
