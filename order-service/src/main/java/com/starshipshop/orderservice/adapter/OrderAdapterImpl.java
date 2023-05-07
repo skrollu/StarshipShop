@@ -22,7 +22,7 @@ public class OrderAdapterImpl implements OrderAdapter {
     @Validated
     public Order findByUserIdAndOrderNumber(@NotBlank String userId, @NotBlank String orderNumber) throws ResourceNotFoundException {
         if (StringUtils.isBlank(userId) || StringUtils.isBlank(orderNumber))
-            throw new IllegalArgumentException("Cannot find order a blank userId or orderNumber");
+            throw new IllegalArgumentException("Cannot find order with a blank userId or orderNumber");
         return orderRepository.findByUserIdAndOrderNumber(userId, orderNumber)
                 .map(orderMapper::mapToOrder)
                 .orElseThrow(() -> new ResourceNotFoundException("No order found with the given orderNumber %s".formatted(orderNumber)));
