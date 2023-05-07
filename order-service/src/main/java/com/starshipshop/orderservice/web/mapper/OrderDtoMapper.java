@@ -2,7 +2,6 @@ package com.starshipshop.orderservice.web.mapper;
 
 import com.starshipshop.orderservice.domain.Order;
 import com.starshipshop.orderservice.domain.OrderLine;
-import com.starshipshop.orderservice.repository.jpa.OrderLineJpa;
 import com.starshipshop.orderservice.web.request.OrderLineInputDto;
 import com.starshipshop.orderservice.web.response.OrderOutputDto;
 import org.mapstruct.Mapper;

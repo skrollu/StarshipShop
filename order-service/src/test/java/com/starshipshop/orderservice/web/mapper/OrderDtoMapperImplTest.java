@@ -2,12 +2,12 @@ package com.starshipshop.orderservice.web.mapper;
 
 import com.starshipshop.orderservice.domain.Order;
 import com.starshipshop.orderservice.domain.OrderLine;
-import com.starshipshop.orderservice.web.response.OrderOutputDto;
 import com.starshipshop.orderservice.web.response.OrderLineOutputDto;
+import com.starshipshop.orderservice.web.response.OrderOutputDto;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -28,10 +28,10 @@ public class OrderDtoMapperImplTest {
         Order order = Order.builder()
                 .id(12L)
                 .userId("123")
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
-                .cancellationDate(LocalDate.now())
-                .returnDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
+                .sendingDate(LocalDateTime.now())
+                .cancellationDate(LocalDateTime.now())
+                .returnDate(LocalDateTime.now())
                 .price(BigDecimal.valueOf(123.123))
                 .build();
 
@@ -40,10 +40,10 @@ public class OrderDtoMapperImplTest {
         OrderOutputDto result = instance.mapOrderToOrderOutputDto(order);
 
         assertThat(result.getId()).isEqualTo(12L);
-        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(123.123));
         assertThat(result.getOrderLines()).isNull();
     }
@@ -60,10 +60,10 @@ public class OrderDtoMapperImplTest {
         Order order = Order.builder()
                 .id(12L)
                 .userId("123")
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
-                .cancellationDate(LocalDate.now())
-                .returnDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
+                .sendingDate(LocalDateTime.now())
+                .cancellationDate(LocalDateTime.now())
+                .returnDate(LocalDateTime.now())
                 .price(BigDecimal.valueOf(123.123))
                 .orderLines(map)
                 .build();
@@ -73,10 +73,10 @@ public class OrderDtoMapperImplTest {
         OrderOutputDto result = instance.mapOrderToOrderOutputDto(order);
 
         assertThat(result.getId()).isEqualTo(12L);
-        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDate.now());
-        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getCancellationDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getReturnDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(123.123));
         assertThat(result.getOrderLines().size()).isOne();
         assertThat(result.getOrderLines().get("123")).isEqualTo(OrderLineOutputDto.builder()

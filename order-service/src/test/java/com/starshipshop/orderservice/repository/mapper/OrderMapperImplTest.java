@@ -7,7 +7,7 @@ import com.starshipshop.orderservice.repository.jpa.OrderLineJpa;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -126,8 +126,8 @@ class OrderMapperImplTest {
                 .build();
         OrderJpa orderJpa = OrderJpa.builder()
                 .id(1L)
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
+                .sendingDate(LocalDateTime.now())
                 .cancellationDate(null)
                 .returnDate(null)
                 .price(new BigDecimal(123))
@@ -137,8 +137,8 @@ class OrderMapperImplTest {
         Order result = instance.mapToOrder(orderJpa);
 
         assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getOrderDate()).isEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getCancellationDate()).isNull();
         assertThat(result.getReturnDate()).isNull();
         assertThat(result.getPrice()).isEqualTo(new BigDecimal(123));
@@ -152,8 +152,8 @@ class OrderMapperImplTest {
         OrderMapper instance = new OrderMapperImpl();
         OrderJpa orderJpa = OrderJpa.builder()
                 .id(1L)
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
+                .sendingDate(LocalDateTime.now())
                 .cancellationDate(null)
                 .returnDate(null)
                 .price(new BigDecimal(123))
@@ -163,8 +163,8 @@ class OrderMapperImplTest {
         Order result = instance.mapToOrder(orderJpa);
 
         assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getOrderDate()).isEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getCancellationDate()).isNull();
         assertThat(result.getReturnDate()).isNull();
         assertThat(result.getPrice()).isEqualTo(new BigDecimal(123));
@@ -225,8 +225,8 @@ class OrderMapperImplTest {
         map.put("456", orderLine2);
         Order order = Order.builder()
                 .id(1L)
-                .orderDate(LocalDate.now())
-                .sendingDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
+                .sendingDate(LocalDateTime.now())
                 .cancellationDate(null)
                 .returnDate(null)
                 .price(new BigDecimal(123))
@@ -236,8 +236,8 @@ class OrderMapperImplTest {
         OrderJpa result = instance.mapToOrderJpa(order);
 
         assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getOrderDate()).isEqualTo(LocalDate.now());
-        assertThat(result.getSendingDate()).isEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getSendingDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getCancellationDate()).isNull();
         assertThat(result.getReturnDate()).isNull();
         assertThat(result.getPrice()).isEqualTo(new BigDecimal(123));

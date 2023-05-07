@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,10 +17,10 @@ public class Order {
 
     private Long id;
     private String userId;
-    private LocalDate orderDate;
-    private LocalDate sendingDate;
-    private LocalDate cancellationDate;
-    private LocalDate returnDate;
+    private LocalDateTime orderDate;
+    private LocalDateTime sendingDate;
+    private LocalDateTime cancellationDate;
+    private LocalDateTime returnDate;
     private BigDecimal price;
     private HashMap<String, OrderLine> orderLines;
     private OrderStatus status;
@@ -30,7 +30,7 @@ public class Order {
         if (orderLines.isEmpty()) throw new IllegalArgumentException("Cannot create order without orderLines");
         Order result = Order.builder()
                 .userId(userId)
-                .orderDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
                 .orderLines(orderLines)
                 .status(OrderStatus.PENDING)
                 .build();

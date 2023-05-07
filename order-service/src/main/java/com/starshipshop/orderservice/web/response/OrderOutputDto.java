@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @Data
@@ -15,10 +15,10 @@ import java.util.HashMap;
 @Builder
 public class OrderOutputDto {
     private Long id;
-    private LocalDate orderDate;
-    private LocalDate sendingDate;
-    private LocalDate cancellationDate;
-    private LocalDate returnDate;
+    private LocalDateTime orderDate;
+    private LocalDateTime sendingDate;
+    private LocalDateTime cancellationDate;
+    private LocalDateTime returnDate;
     private BigDecimal price;
     private HashMap<String, OrderLineOutputDto> orderLines;
 }

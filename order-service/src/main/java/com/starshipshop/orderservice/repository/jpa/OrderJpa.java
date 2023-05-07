@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -28,16 +28,16 @@ public class OrderJpa {
 
     @Column(name = "order_date", updatable = false)
     @NotNull(message = "Order date cannot be null")
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
 
     @Column(name = "sending_date", updatable = false)
-    private LocalDate sendingDate;
+    private LocalDateTime sendingDate;
 
     @Column(name = "cancellation_date", updatable = false)
-    private LocalDate cancellationDate;
+    private LocalDateTime cancellationDate;
 
     @Column(name = "return_date", updatable = false)
-    private LocalDate returnDate;
+    private LocalDateTime returnDate;
 
     @Column(name = "price", updatable = false)
     private BigDecimal price;

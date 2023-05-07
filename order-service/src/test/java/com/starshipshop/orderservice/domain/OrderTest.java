@@ -3,7 +3,7 @@ package com.starshipshop.orderservice.domain;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,7 +63,7 @@ public class OrderTest {
         Order result = Order.create("123", map);
 
         assertThat(result.getUserId()).isEqualTo("123");
-        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDate.now());
+        assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getOrderLines().size()).isEqualTo(map.size());
         assertThat(result.getStatus()).isEqualTo(OrderStatus.PENDING);
         // TODO assert price
