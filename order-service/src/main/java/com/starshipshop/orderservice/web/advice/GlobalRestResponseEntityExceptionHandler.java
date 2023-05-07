@@ -1,7 +1,7 @@
 package com.starshipshop.orderservice.web.advice;
 
 import com.starshipshop.orderservice.common.exception.ResourceNotFoundException;
-import com.starshipshop.orderservice.web.response.ErrorDto;
+import com.starshipshop.orderservice.web.response.ErrorOutputDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class GlobalRestResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
     protected ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
-        ErrorDto body = new ErrorDto("ResourceNotFoundException", "001", ex.getMessage());
+        ErrorOutputDto body = new ErrorOutputDto("ResourceNotFoundException", "001", ex.getMessage());
 
         ResponseEntity<Object> objectResponseEntity = handleExceptionInternal(ex, body,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);

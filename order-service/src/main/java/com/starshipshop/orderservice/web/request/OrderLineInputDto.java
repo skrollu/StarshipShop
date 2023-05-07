@@ -1,4 +1,4 @@
-package com.starshipshop.orderservice.web.response;
+package com.starshipshop.orderservice.web.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderLineDto {
-
+public class OrderLineInputDto {
     @NotBlank
     @Size(min = 3)
     private String skuCode;
@@ -23,5 +22,4 @@ public class OrderLineDto {
     private BigDecimal price;
     @NotNull
     private int quantity;
-
 }

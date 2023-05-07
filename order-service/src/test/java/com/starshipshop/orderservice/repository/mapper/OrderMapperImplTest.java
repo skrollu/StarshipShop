@@ -126,7 +126,6 @@ class OrderMapperImplTest {
                 .build();
         OrderJpa orderJpa = OrderJpa.builder()
                 .id(1L)
-                .orderNumber("1234")
                 .orderDate(LocalDate.now())
                 .sendingDate(LocalDate.now())
                 .cancellationDate(null)
@@ -153,7 +152,6 @@ class OrderMapperImplTest {
         OrderMapper instance = new OrderMapperImpl();
         OrderJpa orderJpa = OrderJpa.builder()
                 .id(1L)
-                .orderNumber("1234")
                 .orderDate(LocalDate.now())
                 .sendingDate(LocalDate.now())
                 .cancellationDate(null)
@@ -227,7 +225,6 @@ class OrderMapperImplTest {
         map.put("456", orderLine2);
         Order order = Order.builder()
                 .id(1L)
-                .orderNumber("1234")
                 .orderDate(LocalDate.now())
                 .sendingDate(LocalDate.now())
                 .cancellationDate(null)

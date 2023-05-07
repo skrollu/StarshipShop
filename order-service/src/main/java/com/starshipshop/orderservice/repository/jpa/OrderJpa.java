@@ -26,9 +26,6 @@ public class OrderJpa {
     @Column(name = "id_user", updatable = false)
     private String userId;
 
-    @Column(name = "order_number", updatable = false)
-    private String orderNumber;
-
     @Column(name = "order_date", updatable = false)
     @NotNull(message = "Order date cannot be null")
     private LocalDate orderDate;

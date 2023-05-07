@@ -1,9 +1,7 @@
 package com.starshipshop.orderservice.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
+import org.apache.commons.lang.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +10,8 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderLine {
 
     @NotBlank
@@ -24,10 +24,14 @@ public class OrderLine {
 
     private OrderStatus status;
 
-    public OrderLine (@NotBlank @NonNull String skuCode, @NonNull BigDecimal price, int quantity) {
-        this.skuCode = skuCode;
-        this.price = price;
-        this.quantity = quantity;
-        this.status = OrderStatus.PENDING;
+    public static OrderLine create(@NotBlank @NonNull String skuCode, @NonNull BigDecimal price, int quantity) throws IllegalArgumentException {
+        if (StringUtils.isBlank(skuCode))
+            throw new IllegalArgumentException("Cannot create OrderLine with a blank skuCode");
+        return OrderLine.builder()
+                .skuCode(skuCode)
+                .price(price)
+                .quantity(quantity)
+                .status(OrderStatus.PENDING)
+                .build();
     }
 }

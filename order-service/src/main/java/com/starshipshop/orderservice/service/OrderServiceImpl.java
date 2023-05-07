@@ -2,9 +2,14 @@ package com.starshipshop.orderservice.service;
 
 import com.starshipshop.orderservice.adapter.OrderAdapter;
 import com.starshipshop.orderservice.domain.Order;
+import com.starshipshop.orderservice.domain.OrderLine;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Service
@@ -14,33 +19,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderAdapter orderAdapter;
 
     @Override
-    public Order getOrder(String userId, String orderNumber) {
+    public Order getOrder(String userId, Long orderNumber) {
         return orderAdapter.findByUserIdAndOrderNumber(userId, orderNumber);
     }
-/*
-    @Transactional
-    public OrderDto createOrder(@Valid CreateOrderInputDto coid) {
-        Order toSave = orderMapper.mapCreateOrderInputDtoToOrder(coid);
-        toSave.setOrderNumber("test");
-        toSave.setOrderDate(LocalDate.now());
-        BigDecimal price = new BigDecimal(0);
-        for (OrderLineJpa o : toSave.getOrderLines()) {
-            o.setOrder(toSave);
-            price = price.add(new BigDecimal(o.getPrice().doubleValue()).multiply(new BigDecimal(o.getQuantity())));
-        }
-        log.info("Calculated price: ", price.toString());
-        toSave.setPrice(price);
-        Order order = orderRepository.save(toSave);
-        order.setOrderLines(saveOrderLines(toSave.getOrderLines()));
-        return orderMapper.mapOrderToOrderDto(order);
-    }
 
-    private Set<OrderLineJpa> saveOrderLines(Set<OrderLineJpa> orderLines) {
-        Set<OrderLineJpa> result = new HashSet<>();
-        for (OrderLineJpa o : orderLines) {
-            result.add(orderLineRepository.save(o));
-        }
-        return result;
+    @Transactional
+    @Override
+    public Order createOrder(@NonNull String userId, @NonNull HashMap<String, OrderLine> orderLines) {
+        Order order = Order.create(userId, orderLines);
+        return orderAdapter.createOrder(order);
     }
-*/
 }

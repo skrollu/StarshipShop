@@ -13,14 +13,13 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderDto {
+public class OrderOutputDto {
     private Long id;
-    private String orderNumber;
     private LocalDate orderDate;
     private LocalDate sendingDate;
     private LocalDate cancellationDate;
     private LocalDate returnDate;
     private BigDecimal price;
-    private HashMap<String, OrderLineDto> orderLines;
+    private HashMap<String, OrderLineOutputDto> orderLines;
 }
 

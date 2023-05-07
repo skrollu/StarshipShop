@@ -31,9 +31,9 @@ public class OrderResourceIT {
     @Test
     @WithMockUser(value = "123")
     void getOrder_validOrderAndUser_givesStatus200() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/123"))
+        mockMvc.perform(get(BASE_URL + "/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.orderNumber", is("123")))
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.orderDate").exists())
                 .andExpect(jsonPath("$.orderLines.123.price", is(100.0)))
                 .andExpect(jsonPath("$.orderLines.456.quantity", is(2)))
@@ -43,7 +43,7 @@ public class OrderResourceIT {
     @Test
     @WithMockUser(value = "123")
     void getOrder_validUserButBadOrder_givesStatus404() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/789"))
+        mockMvc.perform(get(BASE_URL + "/3"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.title", is("ResourceNotFoundException")));
     }

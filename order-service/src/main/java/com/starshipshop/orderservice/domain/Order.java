@@ -17,7 +17,6 @@ public class Order {
 
     private Long id;
     private String userId;
-    private String orderNumber;
     private LocalDate orderDate;
     private LocalDate sendingDate;
     private LocalDate cancellationDate;
