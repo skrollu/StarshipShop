@@ -66,6 +66,9 @@ public class OrderTest {
         assertThat(result.getOrderDate()).isBeforeOrEqualTo(LocalDateTime.now());
         assertThat(result.getOrderLines().size()).isEqualTo(map.size());
         assertThat(result.getStatus()).isEqualTo(OrderStatus.PENDING);
-        // TODO assert price
+
+        BigDecimal ol1price = ol1.getPrice().multiply(BigDecimal.valueOf(ol1.getQuantity()));
+        BigDecimal ol2price = ol2.getPrice().multiply(BigDecimal.valueOf(ol2.getQuantity()));
+        assertThat(result.getPrice()).isEqualTo(ol1price.add(ol2price));
     }
 }

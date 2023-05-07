@@ -37,7 +37,7 @@ public class Order {
 
         BigDecimal orderPrice = new BigDecimal(0);
         for (Map.Entry<String, OrderLine> entry : orderLines.entrySet())
-            orderPrice = orderPrice.add(entry.getValue().getPrice());
+            orderPrice = orderPrice.add(entry.getValue().getPrice()).multiply(BigDecimal.valueOf(entry.getValue().getQuantity()));
         result.setPrice(orderPrice);
 
         return result;
