@@ -5,9 +5,9 @@ name: Java CI with Maven
 
 on:
     push:
-        branches: [main]
+        branches: [main, sonar]
     pull_request:
-        branches: [main]
+        branches: [main, sonar]
 
 jobs:
     build:
@@ -16,10 +16,10 @@ jobs:
         steps:
             - name: Step 1 - Checkout branch
               uses: actions/checkout@v3
-            - name: Step 2 - Set up JDK 11
+            - name: Step 2 - Set up JDK 17
               uses: actions/setup-java@v3
               with:
-                  java-version: "11"
+                  java-version: "17"
                   distribution: "temurin"
                   cache: maven
             - name: Step 3 - Build with Maven
@@ -28,9 +28,12 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-            DB_DATABASE_STARSHIP_SERVICE: starship_service_test
-            DB_DATABASE_ORDER_SERVICE: order_service_test
-            DB_DATABASE_INVENTORY_SERVICE: inventory_service_test
+            DB_STARSHIP_SERVICE: starship_service_test
+            DB_ORDER_SERVICE: order_service_test
+            DB_INVENTORY_SERVICE: inventory_service_test
+            DB_CART_SERVICE: cart_service_test
+            DB_IMAGE_SERVICE: image_service_test
+            DB_PRODUCT_SERVICE: product_service_test
             DB_USER: root
             DB_PASSWORD: root
 
@@ -39,10 +42,10 @@ jobs:
               uses: actions/checkout@v3
               with:
                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-            - name: Step 2 - Set up JDK 11
+            - name: Step 2 - Set up JDK 17
               uses: actions/setup-java@v3
               with:
-                  java-version: "11"
+                  java-version: "17"
                   distribution: "temurin"
                   cache: maven
             - name: Step 3 - Cache SonarCloud packages
@@ -62,11 +65,16 @@ jobs:
             - name: Step 5 - Set up MySQL
               run: |
                   sudo /etc/init.d/mysql start
-                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE_STARSHIP_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE_ORDER_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-                  mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE_INVENTORY_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-            - name: Step 6 - Run tests with Maven and analyze with sonar
+                  mysql -e 'CREATE DATABASE ${{ env.DB_STARSHIP_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_ORDER_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_INVENTORY_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_PRODUCT_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_CART_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                  mysql -e 'CREATE DATABASE ${{ env.DB_IMAGE_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+            - name: Step 6 - Run config-server in background
+              run: cd config-server | mvn spring-boot:run
+            - name: Step 7 - Run tests with Maven and analyze with sonarcloud
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-              run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+              run: mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop

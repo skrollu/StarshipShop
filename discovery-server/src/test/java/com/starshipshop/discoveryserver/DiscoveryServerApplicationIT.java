@@ -1,10 +1,10 @@
-package com.starshipshop.configserver;
+package com.starshipshop.discoveryserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigServerApplicationTests {
+class DiscoveryServerApplicationIT {
 
 	@Test
 	void contextLoads() {
