@@ -72,7 +72,15 @@ jobs:
                   mysql -e 'CREATE DATABASE ${{ env.DB_CART_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
                   mysql -e 'CREATE DATABASE ${{ env.DB_IMAGE_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
             - name: Step 6 - Run config-server in background
-              run: /config-server/run-as-a-service.sh
+              # Copy service file, incase if there are any changes
+              # reload configurations incase if service file has changed
+              # restart the service
+              # start of VM restart
+              run: |
+                sudo cp config-server.service /etc/systemd/system/config-server.service
+                sudo systemctl daemon-reload
+                sudo systemctl restart config-server
+                sudo systemctl enable config-server
             - name: Step 7 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
