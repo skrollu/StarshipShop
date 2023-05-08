@@ -1,0 +1,8 @@
+[Unit]
+Description=Launch the config-server
+
+[Service]
+ExecStart=/target/config-server-0.0.1.jar SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
