@@ -25,6 +25,7 @@ jobs:
             - name: Step 3 - Build with Maven
               run: mvn -B package -Pdev -DskipTests
     test:
+        needs: build
         runs-on: ubuntu-latest
 
         env:
@@ -82,8 +83,15 @@ jobs:
                 sudo systemctl daemon-reload
                 sudo systemctl restart config-server
                 sudo systemctl enable config-server
-            - name: Step 7 - Run tests with Maven and analyze with sonarcloud
+            - name: Step 7 - Setup keycloak to be able to run integration tests
+              uses: addnab/docker-run-action@v3
+              with:
+                image: docker://jboss/keycloak:16.1.1
+                options: -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin
+                run: |
+                  bin/kc.bat import --file realms/starshipshop-realm.json
+            - name: Step 8 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-              run: mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop
+              run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop

@@ -28,7 +28,8 @@ java -jar zipkin-server-2.24.0-exec.jar
 ---
 ./kc.bat start-dev --http-port=8181
 docker run --name keycloak -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin  quay.io/keycloak/keycloak:21.0.1 start-dev
-docker exec -it keycloak opt/keycloak/bin/kc.sh export --realm starshipshop-realm --file starshipshop-realm-export
+export seams not to be allowed in docker keycloak container but may works with jboss image. Works correctly with server version.
+kc.bat export --file starshipshop-realm-export.json
 ```
 
 # Run application
