@@ -72,7 +72,9 @@ jobs:
                   mysql -e 'CREATE DATABASE ${{ env.DB_CART_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
                   mysql -e 'CREATE DATABASE ${{ env.DB_IMAGE_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
             - name: Step 6 - Run config-server in background
-              run: cd config-server | mvn spring-boot:run
+              run: |
+                cd config-server 
+                mvn spring-boot:run
             - name: Step 7 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
