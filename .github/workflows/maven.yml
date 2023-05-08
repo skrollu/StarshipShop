@@ -77,6 +77,7 @@ jobs:
               # restart the service
               # start of VM restart
               run: |
+                cd config-server
                 sudo cp config-server.service /etc/systemd/system/config-server.service
                 sudo systemctl daemon-reload
                 sudo systemctl restart config-server
