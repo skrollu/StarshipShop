@@ -73,10 +73,17 @@ jobs:
                   mysql -e 'CREATE DATABASE ${{ env.DB_IMAGE_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
             - name: Step 6 - Run config-server in background
               run: |
-                cd config-server 
-                mvn spring-boot:run
+                cd config-server
+                mvn clean package
+                sudo useradd skrollu
+                sudo passwd skrollu
+                sudo chown skrollu:skrollu config-server-0.0.1.jar
+                sudo chmod 500 config-server-0.0.1.jar
+                sudo ln -s ./target/config-server-0.0.1.jar /etc/init.d/config-server-0.0.1
+                sudo service config-server-0.0.1 start
             - name: Step 7 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-              run: mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop
+              run:
+                mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop

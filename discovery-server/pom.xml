@@ -9,7 +9,6 @@
         <version>0.0.1</version>
     </parent>
     <artifactId>discovery-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>discovery-server</name>
     <description>Edge microservice to discover all instances of started services</description>
 
