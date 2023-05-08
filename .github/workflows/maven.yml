@@ -75,10 +75,6 @@ jobs:
               run: |
                 cd config-server
                 mvn clean package
-                sudo useradd skrollu
-                sudo passwd skrollu
-                sudo chown skrollu:skrollu config-server-0.0.1.jar
-                sudo chmod 500 config-server-0.0.1.jar
                 sudo ln -s ./target/config-server-0.0.1.jar /etc/init.d/config-server-0.0.1
                 sudo service config-server-0.0.1 start
             - name: Step 7 - Run tests with Maven and analyze with sonarcloud
