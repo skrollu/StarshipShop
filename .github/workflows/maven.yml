@@ -72,11 +72,9 @@ jobs:
                   mysql -e 'CREATE DATABASE ${{ env.DB_CART_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
                   mysql -e 'CREATE DATABASE ${{ env.DB_IMAGE_SERVICE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
             - name: Step 6 - Run config-server in background
-              with:
-                script: /bin/sh /config-server/run-as-a-service.sh
+              run: /config-server/run-as-a-service.sh
             - name: Step 7 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-              run:
-                mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop
+              run: mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=skrollu_StarshipShop
