@@ -84,12 +84,16 @@ jobs:
                 sudo systemctl restart config-server
                 sudo systemctl enable config-server
             - name: Step 7 - Setup keycloak to be able to run integration tests
-              uses: addnab/docker-run-action@v3
+              uses: docker://bitnami/keycloak:latest
               with:
-                image: docker://jboss/keycloak:16.1.1
-                options: -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin
-                run: |
-                  bin/kc.bat import --file realms/starshipshop-realm.json
+                env: |
+                  KEYCLOAK_ADMIN_USER=admin
+                  KEYCLOAK_ADMIN_PASSWORD=admin
+                  KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json
+                ports: |
+                  8181:8080
+                volumes: |
+                  ${{ github.workspace }}/realms:/config
             - name: Step 8 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
