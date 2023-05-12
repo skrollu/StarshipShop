@@ -36,7 +36,7 @@ jobs:
             env:
               POSTGRES_USER: root
               POSTGRES_PASSWORD: root
-              POSTGRES_DB: keycloak
+              POSTGRES_DB: bitnami_keycloak
             # Set health checks to wait until postgres has started
             options: >-
               --health-cmd pg_isready
@@ -106,7 +106,6 @@ jobs:
                   KEYCLOAK_ADMIN_USER=admin
                   KEYCLOAK_ADMIN_PASSWORD=admin
                   KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json
-                  KEYCLOAK_DATABASE_NAME=keycloak
                   KEYCLOAK_DATABASE_USER=root
                   KEYCLOAK_DATABASE_PASSWORD=root
                 ports: |
