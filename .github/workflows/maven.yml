@@ -28,6 +28,22 @@ jobs:
         needs: build
         runs-on: ubuntu-latest
 
+        # Service containers to run with `test` job
+        services:
+          # Label used to access the service container
+          postgres:
+            image: postgres
+            env:
+              POSTGRES_USER: root
+              POSTGRES_PASSWORD: root
+              POSTGRES_DB: keycloak
+            # Set health checks to wait until postgres has started
+            options: >-
+              --health-cmd pg_isready
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
+
         env:
             DB_STARSHIP_SERVICE: starship_service_test
             DB_ORDER_SERVICE: order_service_test
@@ -90,6 +106,9 @@ jobs:
                   KEYCLOAK_ADMIN_USER=admin
                   KEYCLOAK_ADMIN_PASSWORD=admin
                   KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json
+                  KEYCLOAK_DATABASE_NAME=keycloak
+                  KEYCLOAK_DATABASE_USER=root
+                  KEYCLOAK_DATABASE_PASSWORD=root
                 ports: |
                   8181:8080
                 volumes: |
