@@ -99,19 +99,23 @@ jobs:
                 sudo systemctl daemon-reload
                 sudo systemctl restart config-server
                 sudo systemctl enable config-server
-            - name: Step 7 - Setup keycloak to be able to run integration tests
-              uses: docker://bitnami/keycloak:latest
-              with:
-                env: |
-                  KEYCLOAK_ADMIN_USER=admin
-                  KEYCLOAK_ADMIN_PASSWORD=admin
-                  KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json
-                  KEYCLOAK_DATABASE_USER=root
-                  KEYCLOAK_DATABASE_PASSWORD=root
-                ports: |
-                  8181:8080
-                volumes: |
-                  ${{ github.workspace }}/realms:/config
+            - name: Run Keycloak container
+              run: docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -p 8181:8080 -v ${{ github.workspace }}/realms:/config --link postgres -d bitnami/keycloak:latest
+            - name: Wait for Keycloak to start
+              run: docker exec keycloak /bin/bash -c 'until curl --silent --fail http://localhost:8081; do sleep 1; done'
+#            - name: Step 7 - Setup keycloak to be able to run integration tests
+#              uses: docker://bitnami/keycloak:latest
+#              with:
+#                env: |
+#                  KEYCLOAK_ADMIN_USER=admin
+#                  KEYCLOAK_ADMIN_PASSWORD=admin
+#                  KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json
+#                  KEYCLOAK_DATABASE_USER=root
+#                  KEYCLOAK_DATABASE_PASSWORD=root
+#                ports: |
+#                  8181:8080
+#                volumes: |
+#                  ${{ github.workspace }}/realms:/config
             - name: Step 8 - Run tests with Maven and analyze with sonarcloud
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
