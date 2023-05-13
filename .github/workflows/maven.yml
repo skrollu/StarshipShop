@@ -29,20 +29,20 @@ jobs:
         runs-on: ubuntu-latest
 
         # Service containers to run with `test` job
-        services:
-          # Label used to access the service container
-          postgresql:
-            image: postgres
-            env:
-              POSTGRES_USER: root
-              POSTGRES_PASSWORD: root
-              POSTGRES_DB: bitnami_keycloak
-            # Set health checks to wait until postgres has started
-            options: >-
-              --health-cmd pg_isready
-              --health-interval 10s
-              --health-timeout 5s
-              --health-retries 5
+#        services:
+#          # Label used to access the service container
+#          postgresql:
+#            image: postgres
+#            env:
+#              POSTGRES_USER: root
+#              POSTGRES_PASSWORD: root
+#              POSTGRES_DB: bitnami_keycloak
+#            # Set health checks to wait until postgres has started
+#            options: >-
+#              --health-cmd pg_isready
+#              --health-interval 10s
+#              --health-timeout 5s
+#              --health-retries 5
 
         env:
             DB_STARSHIP_SERVICE: starship_service_test
@@ -99,6 +99,8 @@ jobs:
                 sudo systemctl daemon-reload
                 sudo systemctl restart config-server
                 sudo systemctl enable config-server
+            - name: Run PostgreSQL container
+              run: docker run --name postgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Run Keycloak container
               run: docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -p 8181:8080 -v ${{ github.workspace }}/realms:/config --link postgres -d bitnami/keycloak:latest
             - name: Wait for Keycloak to start
