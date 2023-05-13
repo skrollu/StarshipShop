@@ -104,7 +104,7 @@ jobs:
             - name: Run Keycloak container
               run: docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -p 8181:8080 -v ${{ github.workspace }}/realms:/config --link postgres -d bitnami/keycloak:latest
             - name: Wait for Keycloak to start
-              run: docker exec keycloak /bin/bash -c 'until curl --silent --fail http://localhost:8081; do sleep 1; done'
+              run: docker exec keycloak /bin/bash -c 'until curl --silent --fail http://localhost:8181; do sleep 5; done'
 #            - name: Step 7 - Setup keycloak to be able to run integration tests
 #              uses: docker://bitnami/keycloak:latest
 #              with:
