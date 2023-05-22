@@ -101,11 +101,11 @@ jobs:
             - name: Step 7 - Run Keycloak container
               run: |
                 docker run --name keycloak -d -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
-                docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
+#                docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
 #            - name: Step 8 - Wait for Keycloak to be up and running
 #              run: docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
             - name: Step 9 - Wait for Keycloak to be up and running
-              run: docker exec keycloak /bin/bash -c 'until curl http://localhost:8181/health/live; do sleep 5; done'
+              run: docker exec keycloak /bin/bash -c 'until curl http://localhost:8181/admin/master/console/; do sleep 5; done'
 #            - name: Step 7 - Setup keycloak to be able to run integration tests
 #              uses: docker://bitnami/keycloak:latest
 #              with:
