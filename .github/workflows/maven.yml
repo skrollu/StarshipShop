@@ -101,7 +101,7 @@ jobs:
             - name: Step 7 - Run Keycloak container
               run: |
                 docker run --name keycloak -d -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true -p 8080:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
-                sleep 20
+                sleep 180
 #                docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
 #            - name: Step 8 - Wait for Keycloak to be up and running
 #              run: docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
