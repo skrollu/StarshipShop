@@ -105,7 +105,7 @@ jobs:
 #            - name: Step 8 - Wait for Keycloak to be up and running
 #              run: docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
             - name: Step 9 - Wait for Keycloak to be up and running
-              run: docker exec keycloak /bin/bash -c 'until curl http://localhost:8181; do sleep 5; done'
+              run: docker exec keycloak /bin/bash -c 'until curl http://google.fr; do sleep 5; done'
 #            - name: Step 7 - Setup keycloak to be able to run integration tests
 #              uses: docker://bitnami/keycloak:latest
 #              with:
