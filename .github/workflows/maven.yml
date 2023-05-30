@@ -40,7 +40,7 @@ jobs:
         # Service containers to run with `test` job
         services:
           # Label used to access the service container
-          postgresql:
+          postgres:
             image: postgres
             env:
               POSTGRES_USER: root
