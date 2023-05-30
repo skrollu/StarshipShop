@@ -38,20 +38,20 @@ jobs:
           DB_PASSWORD: root
 
         # Service containers to run with `test` job
-        services:
+        #services:
           # Label used to access the service container
-          postgres:
-            image: postgres
-            env:
-              POSTGRES_USER: root
-              POSTGRES_PASSWORD: root
-              POSTGRES_DB: bitnami_keycloak
+          #postgres:
+            #image: postgres
+            #env:
+              #POSTGRES_USER: root
+              #POSTGRES_PASSWORD: root
+              #POSTGRES_DB: bitnami_keycloak
             # Set health checks to wait until postgres has started
-            options: >-
-              --health-cmd pg_isready
-              --health-interval 10s
-              --health-timeout 5s
-              --health-retries 5
+            #options: >-
+             # --health-cmd pg_isready
+              #--health-interval 10s
+              #--health-timeout 5s
+              #--health-retries 5
 
         steps:
             - name: Step 1 - Checkout branch
@@ -98,9 +98,11 @@ jobs:
                 sudo systemctl daemon-reload
                 sudo systemctl restart config-server
                 sudo systemctl enable config-server
+            - name: Run PostgreSQL container
+              run: docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Step 7 - Run Keycloak container
               run: |
-                docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
+                docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true --link postgresql -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
                 sleep 30
                 bash -c 'until curl http://localhost:8181; do sleep 5; done'
                 exit
