@@ -101,16 +101,15 @@ jobs:
             - name: Run PostgreSQL container
               run: docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Step 7 - Run Keycloak container
-              run: |
-                docker run --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true --link postgresql -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
-                sleep 30
-                bash -c 'until curl http://localhost:8181; do sleep 5; done'
-                exit
+              run: docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true --link postgresql -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
+#                sleep 30
+#                bash -c 'until curl http://localhost:8181; do sleep 5; done'
+#                exit
 #                docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
 #            - name: Step 8 - Wait for Keycloak to be up and running
 #              run: docker exec keycloak opt/keycloak/bin/kc.sh build --health-enabled=true
-#            - name: Step 9 - Wait for Keycloak to be up and running
-#              run: docker exec keycloak /bin/bash -c 'until curl http://localhost:8080; do sleep 5; done'
+            - name: Step 9 - Wait for Keycloak to be up and running
+              run: docker exec keycloak /bin/bash -c 'until curl http://localhost:8181; do sleep 5; done'
 #            - name: Step 7 - Setup keycloak to be able to run integration tests
 #              uses: docker://bitnami/keycloak:latest
 #              with:
