@@ -17,13 +17,11 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryAdapter inventoryAdapter;
 
     @Override
-    @Transactional(readOnly = true)
     public List<Inventory> getInventoriesIn(List<String> skuCodes) {
         return inventoryAdapter.findBySkuCodeIn(skuCodes);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Inventory getInventory(String skuCode) {
         return inventoryAdapter.findBySkuCode(skuCode);
     }
