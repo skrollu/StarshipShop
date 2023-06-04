@@ -9,6 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name = "hyperdrive_system")
