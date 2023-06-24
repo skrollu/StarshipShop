@@ -28,12 +28,12 @@ jobs:
         needs: build
         runs-on: ubuntu-latest
         env:
-          DB_STARSHIP_SERVICE: starship_service_test
-          DB_ORDER_SERVICE: order_service_test
-          DB_INVENTORY_SERVICE: inventory_service_test
-          DB_CART_SERVICE: cart_service_test
-          DB_IMAGE_SERVICE: image_service_test
-          DB_PRODUCT_SERVICE: product_service_test
+          DB_STARSHIP_SERVICE: starship_service
+          DB_ORDER_SERVICE: order_service
+          DB_INVENTORY_SERVICE: inventory_service
+          DB_CART_SERVICE: cart_service
+          DB_IMAGE_SERVICE: image_service
+          DB_PRODUCT_SERVICE: product_service
           DB_USER: root
           DB_PASSWORD: root
 
