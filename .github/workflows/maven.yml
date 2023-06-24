@@ -85,6 +85,7 @@ jobs:
               run: |
                 cd config-server
                 mvn spring-boot:run
+                echo "done"
             - name: Step 7 - Run PostgreSQL container
               run: docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Step 8 - Run Keycloak container
