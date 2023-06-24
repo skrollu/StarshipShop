@@ -76,12 +76,15 @@ jobs:
               # reload configurations incase if service file has changed
               # restart the service
               # start of VM restart
+              #run: |
+              #  cd config-server
+              #  sudo cp config-server.service /etc/systemd/system/config-server.service
+              #  sudo systemctl daemon-reload
+              #  sudo systemctl restart config-server
+              #  sudo systemctl enable config-server
               run: |
                 cd config-server
-                sudo cp config-server.service /etc/systemd/system/config-server.service
-                sudo systemctl daemon-reload
-                sudo systemctl restart config-server
-                sudo systemctl enable config-server
+                mvn spring-boot:run
             - name: Step 7 - Run PostgreSQL container
               run: docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Step 8 - Run Keycloak container
