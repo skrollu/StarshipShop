@@ -1,10 +1,10 @@
-package com.starshipshop.starshipservice.service;
+package com.starshipshop.starshipservice.adapter;
 
 import com.starshipshop.starshipservice.domain.Starship;
 
 import java.util.List;
 
-public interface StarshipService {
+public interface StarshipAdapter {
 
     List<Starship> getStarshipByIdIn(List<Long> ids);
 }

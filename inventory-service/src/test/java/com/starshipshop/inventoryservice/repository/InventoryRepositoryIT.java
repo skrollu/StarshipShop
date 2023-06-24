@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class InventoryRepositoryIT {
 
     @Autowired
@@ -39,12 +41,12 @@ public class InventoryRepositoryIT {
 
     @Test
     void findBySkuCode_withValidSkuCode_givesInventoryJpaInfo() {
-        String skuCode = "123";
+        String skuCode = "123456789";
 
         Optional<InventoryJpa> result = inventoryRepository.findBySkuCode(skuCode);
 
         assertThat(result.isEmpty()).isFalse();
-        assertThat(result.get().getSkuCode()).isEqualTo("123");
+        assertThat(result.get().getSkuCode()).isEqualTo("123456789");
     }
 
     @Test
@@ -68,14 +70,14 @@ public class InventoryRepositoryIT {
 
     @Test
     void findBySkuCodeIn_withValidListOfSkuCodes_givesEmptyList() {
-        List<String> list = Arrays.asList("123", "456");
+        List<String> list = Arrays.asList("123456789", "123456788");
 
         List<InventoryJpa> result = inventoryRepository.findBySkuCodeIn(list);
 
         assertThat(result).isNotNull();
         assertThat(result.isEmpty()).isFalse();
-        assertThat(result.get(0).getSkuCode()).isEqualTo("123");
-        assertThat(result.get(1).getSkuCode()).isEqualTo("456");
+        assertThat(result.get(0).getSkuCode()).isEqualTo("123456789");
+        assertThat(result.get(1).getSkuCode()).isEqualTo("123456788");
     }
 
     @Test
@@ -90,13 +92,13 @@ public class InventoryRepositoryIT {
 
     @Test
     void findBySkuCodeIn_withPartialyNonValidListOfSkuCodes_givesEmptyList() {
-        List<String> list = Arrays.asList("123", "9999");
+        List<String> list = Arrays.asList("123456789", "9999");
 
         List<InventoryJpa> result = inventoryRepository.findBySkuCodeIn(list);
 
         assertThat(result).isNotNull();
         assertThat(result.isEmpty()).isFalse();
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getSkuCode()).isEqualTo("123");
+        assertThat(result.get(0).getSkuCode()).isEqualTo("123456789");
     }
 }

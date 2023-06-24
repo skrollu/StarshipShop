@@ -1,7 +1,9 @@
 # TODO:
 ### Cloud
 
-[ ] config server cannot handle circuit breaker config of product-service. It needs a specials move -> see documentation:
+- [ ] rewrite Starship service and others to use oauth2
+- [ ] find a way to launch config server in background during ci or had a test application.yml file to every servicesc
+- [ ] config server cannot handle circuit breaker config of product-service. It needs a specials move -> see documentation:
 https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#config-client-retry
 ### Feature
 
