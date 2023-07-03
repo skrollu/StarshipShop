@@ -90,7 +90,8 @@ jobs:
             - name: Step 7 - Run PostgreSQL container
               run: docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
             - name: Step 8 - Run Keycloak container
-              run: docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true --link postgresql -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
+              run: docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HEALTH_ENABLED=true -p 8181:8080 --link postgresql -v ${{ github.workspace }}/realms:/opt/keycloak/data/import quay.io/keycloak/keycloak:latest start-dev --import-realm
+              # run: docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_IMPORT=/config/starshipshop-realm-export.json -e KC_HEALTH_ENABLED=true --link postgresql -p 8181:8080 -v ${{ github.workspace }}/realms:/config bitnami/keycloak:latest
             - name: Step 9 - Wait for Keycloak to be up and running
               run: until curl http://localhost:8181; do sleep 5; done
             - name: Step 10 - Run tests with Maven and analyze with sonarcloud
