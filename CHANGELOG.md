@@ -1,3 +1,7 @@
+### 03-07-2023
+
+- Finally, get a CI that able to run integration tests using keycloak.
+
 ### 09-04-2023
 
 - Add basic AudienceValidator and JWTDecoder to see JWT content
