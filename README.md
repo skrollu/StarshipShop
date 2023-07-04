@@ -4,54 +4,28 @@
 
 # Starship shop S3
 
-This project describe a starships management api. Originaly created to improve my skills different features will appear by time. See the to learn more about it: [description](#description).
+This is a fullstack multimodule project and is composed by api microservices that part of an ecommerce api.
+Modules suffixed with "server" are responsable for specific cloud feature (configuration, gateway, discovery...). Others 
+are responsable of their own API (see [schema](./starshipShop.drawio))
+We want to create a Star Wars starships e-commerce project.
+Using react(type script)/SpringBoot and lots of technologies.
 
-### Used tehcnologies:
+# Summary
 
--  Spring boot
--  Spring Cloud
-    -   Hibernate
-    -   Lombok
-    -   Mapstruct
-    -   Hashids
-    -   Junit
-    -   Jacoco
--   Sonarqube (See how to configure Sonarqube [here](#run-tests-and-report-on-sonarqube))
--   Mysql (See how to configure MySQL [here](#run-application-with-a-mysql-server-on-a-docker-container).)
+- Description
+- Getting Started
+- Used Technologies
+- CI
+- Run tests on a local Sonarqube.
 
-# Shortcut to document soon
+# Getting Started (dev)
 
-```sh
-docker run  --name zipkin -d -p 9411:9411 openzipkin/zipkin
-ou 
-java -jar zipkin-server-2.24.0-exec.jar
----
-./kc.bat start-dev --http-port=8181
-docker run --name keycloak -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin  quay.io/keycloak/keycloak:21.0.1 start-dev
-export seams not to be allowed in docker keycloak container but may works with jboss image. Works correctly with server version.
-kc.bat export --file starshipshop-realm-export.json
-```
+To start the project you'll need to execute the following instructions step by step.
 
-# Run application
+## MySQL
 
-This project is using a MySQL database which need to be install. Personnaly I use WAMP.
+This project is using a MySQL database which need to be installed. I use WAMP.
 But below I made a simple config to [run a MySQL server on a docker container](#run-application-with-a-mysql-server-on-a-docker-container).
-
-> DEV mode:
-
-```sh
-mvn clean package -DskipTests -Pdev
-mvn spring-boot:run -Pdev
-```
-
-> DEFAULT mode:
-
-```sh
-mvn clean package -DskipTests
-mvn spring-boot:run
-```
-
-## Run applicationwith a MySQL server on a docker container
 
 ```docker
 docker volume create mysql-volume
@@ -78,6 +52,80 @@ FLUSH PRIVILEGES;
 ```sql
 CREATE DATABASE starship_shop_test;
 ```
+
+## PostgreSQL
+
+To use Keycloak, postgreSQL is also needed.
+
+```sh
+docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=bitnami_keycloak -p 5432:5432 -d postgres:latest
+```
+
+## Keycloak
+
+Run Keycloak for authentication and authorization.
+
+```sh
+docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HEALTH_ENABLED=true -p 8181:8080 --link postgresql -v ./realms:/opt/keycloak/data/import quay.io/keycloak/keycloak:latest start-dev --import-realm
+```
+
+## Zipkin
+
+Run Zipkin for a better API monitoring.
+
+```sh
+docker run  --name zipkin -d -p 9411:9411 openzipkin/zipkin:latest
+```
+
+## Server modules
+
+Then run the *server modules* using the following commands:
+
+```sh
+cd config-server
+mvn spring-boot:run -Pdev
+cd ..
+cd discovery-server
+mvn spring-boot:run -Pdev 
+cd ..
+cd gateway-server
+mvn spring-boot:run -Pdev
+cd ..
+```
+
+## Service modules
+
+Finally run the *service module* you want to use:
+
+```sh
+cd XXX-service
+mvn spring-boot:run -Pdev
+cd ..
+```
+
+# Used technologies:
+
+-  Spring boot
+-  Spring Cloud
+    -   Hibernate
+    -   Lombok
+    -   Mapstruct
+    -   Hashids
+    -   Junit
+    -   Jacoco
+-   Sonarqube (See how to configure Sonarqube [here](#run-tests-and-report-on-sonarqube))
+-   Mysql (See how to configure MySQL [here](#run-application-with-a-mysql-server-on-a-docker-container).)
+-   Keycloak
+-   Zipkin
+-   Docker
+
+# Export Keycloak realm
+
+```sh
+export seams not to be allowed in docker keycloak container but may works with jboss image. Works correctly with server version.
+kc.bat export --file starshipshop-realm-export.json
+```
+
 
 # Run tests and report on Sonarqube
 
@@ -114,11 +162,6 @@ The **sonar-maven-plugin** execute the SonarQube analysis via a regular Maven. S
 ```sh
 mvn clean verify
 ```
-
-# Description
-
-We want to create a Star Wars starships e-commerce project.
-Using react(type script)/SpringBoot technologies
 
 ### Feature 0
 
