@@ -1,3 +1,10 @@
+### 15-08-2023
+
+- Change the authorization flow of keycloak with a user id user password user
+- Add a client  with client_id client
+- totally review with successful test of the security of gateway
+- gateway -> product -> inventory + starship work fine from navigator 
+
 ### 03-07-2023
 
 - Finally, get a CI that able to run integration tests using keycloak.

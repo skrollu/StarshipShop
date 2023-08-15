@@ -7,4 +7,5 @@ import java.util.List;
 public interface StarshipService {
 
     List<Starship> getStarshipByIdIn(List<Long> ids);
+    Starship getStarshipById(Long id);
 }

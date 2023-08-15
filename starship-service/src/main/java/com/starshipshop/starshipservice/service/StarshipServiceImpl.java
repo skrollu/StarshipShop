@@ -17,6 +17,9 @@ public class StarshipServiceImpl implements StarshipService {
 		return this.starshipAdapter.getStarshipByIdIn(ids);
 	}
 
+	public Starship getStarshipById(Long id) {
+		return this.starshipAdapter.getStarshipById(id);
+	}
 //	private List<Starship> getStarships() {
 //		return starshipRepository.findAll();
 //	}

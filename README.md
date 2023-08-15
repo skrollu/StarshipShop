@@ -66,7 +66,7 @@ docker run --name postgresql -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e 
 Run Keycloak for authentication and authorization.
 
 ```sh
-docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HEALTH_ENABLED=true -p 8181:8080 --link postgresql -v ./realms:/opt/keycloak/data/import quay.io/keycloak/keycloak:latest start-dev --import-realm
+docker run -d --name keycloak -e KEYCLOAK_ADMIN_USER=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KEYCLOAK_DATABASE_USER=root -e KEYCLOAK_DATABASE_PASSWORD=root -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HEALTH_ENABLED=true -p 8181:8080 --link postgresql -v full/path/to/realms/folder:/opt/keycloak/data/import quay.io/keycloak/keycloak:latest start-dev --import-realm
 ```
 
 ## Zipkin

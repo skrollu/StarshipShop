@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StarshipRepository extends JpaRepository<StarshipJpa, Long> {
@@ -16,4 +17,10 @@ public interface StarshipRepository extends JpaRepository<StarshipJpa, Long> {
      */
     @NonNull
     List<StarshipJpa> findByIdIn(@NonNull List<Long> id);
+
+    /**
+     * @param id
+     * @return the list of {@link StarshipJpa} that match the give ids
+     */
+    Optional<StarshipJpa> findById(@NonNull Long id);
 }
