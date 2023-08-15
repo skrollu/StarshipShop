@@ -3,7 +3,8 @@
 - Change the authorization flow of keycloak with a user id user password user
 - Add a client  with client_id client
 - totally review with successful test of the security of gateway
-- gateway -> product -> inventory + starship work fine from navigator 
+- product -> inventory + starship work fine from navigator 
+- Gateway can't find service using lb:service-url in config But it works fine using the full url localhost:XXXX
 
 ### 03-07-2023
 
