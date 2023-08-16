@@ -5,6 +5,7 @@
 - totally review with successful test of the security of gateway
 - product -> inventory + starship work fine from navigator 
 - Gateway can't find service using lb:service-url in config But it works fine using the full url localhost:XXXX
+- Keycloak and Gateway configured following this guide: https://www.youtube.com/watch?v=YHWfJHKGYGI&list=PLab_if3UBk99jYV1jfe_7fKQczVX9H4zZ&index=11
 
 ### 03-07-2023
 
