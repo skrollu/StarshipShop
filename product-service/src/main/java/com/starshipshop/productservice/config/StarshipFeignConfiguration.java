@@ -1,6 +1,7 @@
 package com.starshipshop.productservice.config;
 
 import com.starshipshop.productservice.client.StarshipFeignClient;
+import com.starshipshop.productservice.client.auth.BearerTokenRequestInterceptor;
 import feign.Client;
 import feign.Contract;
 import feign.Feign;
@@ -21,6 +22,7 @@ public class StarshipFeignConfiguration {
                 .contract(contract)
                 .decoder(decoder)
                 .encoder(encoder)
+//                .requestInterceptor(new BearerTokenRequestInterceptor()) not useful for now there aren't route that need authorization
                 .target(StarshipFeignClient.class, "starship-service");
     }
 }
