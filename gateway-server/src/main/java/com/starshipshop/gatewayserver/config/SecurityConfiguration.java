@@ -15,10 +15,10 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**") // static resources
-                        .permitAll()
-                        .anyExchange()
-                        .authenticated())
+                        .pathMatchers("/api/v1/products/**").permitAll()
+                        .pathMatchers("/api/v1/starships/**").permitAll()
+                        .pathMatchers("/api/v1/inventory/**").permitAll()
+                        .anyExchange().authenticated())
                 .oauth2Login();
         return http.build();
     }

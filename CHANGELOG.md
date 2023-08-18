@@ -1,3 +1,7 @@
+### 18-08-2023
+
+- Requests through the gateway now works fine for un/authenticated requests.
+
 ### 15-08-2023
 
 - Change the authorization flow of keycloak with a user id user password user
