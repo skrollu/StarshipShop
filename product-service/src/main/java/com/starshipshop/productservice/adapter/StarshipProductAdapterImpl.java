@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -30,19 +27,18 @@ public class StarshipProductAdapterImpl implements StarshipProductAdapter {
     private final StarshipFeignClient starshipFeignClient;
 
     @Override
-    public Page<StarshipProduct> findPage(Pageable paging) {
-        // TODO improve pageable for all fields not only jpa fields /!\ errors may happened
-        Page<StarshipProductJpa> starshipProductsJpa = starshipProductRepository.findAll(paging);
+    public Page<StarshipProduct> findPage(Pageable page) {
+        Page<StarshipProductJpa> starshipProductsJpa = starshipProductRepository.findAll(page);
 
-        List<String> skuCodes = new ArrayList<>();
-        List<Long> starshipIds = new ArrayList<>();
+        Set<String> skuCodes = new HashSet<>();
+        Set<Long> starshipIds = new HashSet<>();
         starshipProductsJpa.stream().forEach(sp -> {
             skuCodes.add(sp.getSkuCode());
             starshipIds.add(sp.getStarshipId());
         });
 
-        List<InventoryResponse> inventoryResponses = inventoryFeignClient.isInStockIn(skuCodes);
-        List<StarshipResponse> starshipResponses = starshipFeignClient.getStarshipByIds(starshipIds)
+        List<InventoryResponse> inventoryResponses = inventoryFeignClient.isInStockIn(skuCodes.stream().toList());
+        List<StarshipResponse> starshipResponses = starshipFeignClient.getStarshipByIds(starshipIds.stream().toList())
                 .getContent()
                 .stream()
                 .map(EntityModel::getContent)
@@ -55,7 +51,7 @@ public class StarshipProductAdapterImpl implements StarshipProductAdapter {
         }
 
         // Gather starship response list in a map
-        Map<String, StarshipResponse> starshipResponseMap = new HashMap<>();
+        Map<Long, StarshipResponse> starshipResponseMap = new HashMap<>();
         for (StarshipResponse i : starshipResponses) {
             starshipResponseMap.put(i.getId(), i);
         }
@@ -70,7 +66,7 @@ public class StarshipProductAdapterImpl implements StarshipProductAdapter {
                 result.add(sp);
             }
         }
-        return new PageImpl(result);
+        return new PageImpl(result, page, page.getPageSize());
     }
 
     @Override

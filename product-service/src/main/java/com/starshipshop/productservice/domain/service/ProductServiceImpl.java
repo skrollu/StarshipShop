@@ -14,7 +14,6 @@ public class ProductServiceImpl implements ProductService {
     private final StarshipProductAdapter starshipProductAdapter;
 
     public Page<StarshipProduct> getStarshipProductFromPage(Pageable pageable) {
-        // TODO improve the sort to sort by field contained in the StarshipProductResponse object
         return starshipProductAdapter.findPage(pageable);
     }
 

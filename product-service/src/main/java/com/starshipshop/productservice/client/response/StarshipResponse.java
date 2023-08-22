@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class StarshipResponse {
 
-    private String id;
+    private Long id;
     private String name;
     private String engines;
     private double height;
