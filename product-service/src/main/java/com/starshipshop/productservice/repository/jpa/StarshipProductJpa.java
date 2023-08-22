@@ -14,14 +14,14 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name = "starship_product")
-public class StarshipProduct {
+public class StarshipProductJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_starship_product", updatable = false, columnDefinition = "BIGINT")
     private Long id;
     @Column(name = "id_starship", nullable = false)
-    private String starshipId;
+    private Long starshipId;
     @Column(name = "sku_code", nullable = false)
     private String skuCode;
     @Column(name = "price")

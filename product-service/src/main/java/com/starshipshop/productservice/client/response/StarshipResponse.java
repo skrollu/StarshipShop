@@ -18,7 +18,7 @@ public class StarshipResponse {
     private String engines;
     private double height;
     private double width;
-    private double lenght;
+    private double length;
     private double weight;
     private String description;
     private ManufacturerResponse manufacturer;

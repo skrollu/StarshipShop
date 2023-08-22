@@ -1,6 +1,5 @@
 package com.starshipshop.productservice.client;
 
-import com.starshipshop.productservice.client.response.InventoryResponse;
 import com.starshipshop.productservice.client.response.StarshipResponse;
 import com.starshipshop.productservice.config.StarshipFeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,8 +15,8 @@ import java.util.List;
 public interface StarshipFeignClient {
 
     @GetMapping("/api/v1/starships/{id}")
-    StarshipResponse getStarshipById(@PathVariable String id);
+    StarshipResponse getStarshipById(@PathVariable Long id);
 
     @GetMapping("/api/v1/starships/in")
-    CollectionModel<EntityModel<StarshipResponse>> getStarshipByIds(@RequestParam List<String> ids);
+    CollectionModel<EntityModel<StarshipResponse>> getStarshipByIds(@RequestParam List<Long> ids);
 }

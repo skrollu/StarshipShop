@@ -1,15 +1,17 @@
-package com.starshipshop.starshipservice.domain;
+package com.starshipshop.productservice.domain.model;
 
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
 @Builder
-public class Starship {
-
-    private Long id;
+public class StarshipProduct {
+    private String skuCode;
+    private BigDecimal price;
+    private String color;
     private String name;
     private String engines;
     private double height;
