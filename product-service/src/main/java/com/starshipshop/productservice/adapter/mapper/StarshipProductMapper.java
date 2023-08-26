@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface StarshipProductMapper {
 
+    @Mapping(source = "spJpa.id", target = "id")
     @Mapping(source = "spJpa.skuCode", target = "skuCode")
     public StarshipProduct mapToStarshipProduct(StarshipResponse sr, InventoryResponse ir, StarshipProductJpa spJpa);
 }

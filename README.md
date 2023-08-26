@@ -29,7 +29,7 @@ But below I made a simple config to [run a MySQL server on a docker container](#
 
 ```docker
 docker volume create mysql-volume
-docker run -it --rm --name mysql -p3306:3306 -v mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=starship_shop mysql:8
+docker run -it --rm --name mysql -p3306:3306 -v mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=starship_service mysql:8
 ```
 
 > Wait for this kind of log (it can take some minutes... so using a volume recommanded for next connection): _2022-09-11T10:42:07.458801Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock_ Which means MySQL Server is now fully available and you can connect throught the container.

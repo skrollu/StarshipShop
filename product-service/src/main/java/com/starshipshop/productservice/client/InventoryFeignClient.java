@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @FeignClient(name = "inventory-service", configuration = InventoryFeignConfiguration.class)
-public interface InventoryFeignClient {
+public interface    InventoryFeignClient {
 
     @GetMapping("/api/v1/inventory/{skuCode}")
     InventoryResponse isInStock(@PathVariable String skuCode);

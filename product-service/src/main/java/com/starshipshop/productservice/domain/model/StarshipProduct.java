@@ -9,6 +9,8 @@ import java.util.List;
 @Data
 @Builder
 public class StarshipProduct {
+    private Long id;
+    private int quantity;
     private String skuCode;
     private BigDecimal price;
     private String color;

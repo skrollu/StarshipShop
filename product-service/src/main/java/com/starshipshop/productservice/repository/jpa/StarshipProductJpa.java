@@ -18,7 +18,7 @@ public class StarshipProductJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_starship_product", updatable = false, columnDefinition = "BIGINT")
+    @Column(name = "id_product", updatable = false, columnDefinition = "BIGINT")
     private Long id;
     @Column(name = "id_starship", nullable = false)
     private Long starshipId;
